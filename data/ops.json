@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-16T00:56:00+09:00",
+    "generated_at": "2026-08-16T00:57:11+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -68,7 +68,7 @@
       {
         "id": "dept",
         "name": "하위 부서",
-        "role": "개발 · 검수 · 마케팅 · 디자인 · 영상",
+        "role": "개발 · 검수 (가동) · 마케팅 · 디자인 · 영상 (대기)",
         "engine": "슬랙 앱",
         "act": "실행 → 검수 → 결과 보고",
         "from": [
@@ -121,7 +121,8 @@
         "ceo"
       ],
       "channel": "slack",
-      "model": "GPT-5"
+      "model": "GPT-5",
+      "last_seen_note": "2026-08-15 20:05"
     },
     {
       "id": "chk",
@@ -144,19 +145,20 @@
         "plan"
       ],
       "channel": "slack",
-      "model": "Claude 4.5"
+      "model": "Claude 4.5",
+      "last_seen_note": "2026-08-15 20:06"
     },
     {
       "id": "rt",
-      "name": "성재경 실장",
-      "title": "총괄 라우터",
-      "dept": "총괄",
+      "name": "김서연 비서실장",
+      "title": "총괄 라우터 · 비서실",
+      "dept": "총괄 · 비서실",
       "engine": "에이전트",
-      "slack_id": "U0BQ2GK7DE1",
-      "app_id": "A0BR0G5RY64",
+      "slack_id": "U0BA8MJQEHG",
+      "app_id": "A0BAAE7T76D",
       "reports_to": "ceo",
       "state": "live",
-      "status": "정리중",
+      "status": "대기중",
       "desk": "router",
       "hair": "#33363f",
       "skin": "#f3cdaa",
@@ -167,9 +169,10 @@
         "plan",
         "chk"
       ],
-      "channel": "slack",
+      "channel": "slack+telegram",
       "model": "GPT-5 + Claude 4.5",
-      "name_was": "김서연 실장"
+      "last_seen_note": "2026-08-15 20:25",
+      "aide": true
     },
     {
       "id": "mkt",
@@ -193,6 +196,7 @@
       ],
       "channel": "slack",
       "track": "Marketing",
+      "last_seen_note": "2026-08-01",
       "name_was": "최유나 주임"
     },
     {
@@ -217,6 +221,7 @@
       ],
       "channel": "slack",
       "track": "Designer",
+      "last_seen_note": "2026-08-01",
       "name_was": "정수아 과장"
     },
     {
@@ -241,19 +246,20 @@
       ],
       "channel": "slack",
       "track": "Video",
+      "last_seen_note": "2026-08-01",
       "name_was": "한도윤 과장"
     },
     {
       "id": "ops",
       "name": "검수팀 박지민 대리",
       "title": "검수 대리",
-      "dept": "검수담당",
+      "dept": "검수팀",
       "engine": "슬랙 앱",
       "slack_id": "U0BA8UVAE90",
       "app_id": "A0BACHEUUH2",
       "reports_to": "rt",
       "state": "live",
-      "status": "근무중",
+      "status": "활동중",
       "desk": "floor",
       "hair": "#4d3f2e",
       "skin": "#f4d2b2",
@@ -266,19 +272,20 @@
       "channel": "slack",
       "model": "GPT-4o",
       "track": "QA",
+      "last_seen_note": "2026-08-15 20:06",
       "name_was": "박지민 대리"
     },
     {
       "id": "dev",
       "name": "개발팀 이준호 과장",
       "title": "개발 과장",
-      "dept": "개발담당",
+      "dept": "개발팀",
       "engine": "슬랙 앱",
       "slack_id": "U0BA2HH2LBV",
       "app_id": "A0BAAML3RL1",
       "reports_to": "rt",
       "state": "live",
-      "status": "근무중",
+      "status": "활동중",
       "desk": "floor",
       "hair": "#343440",
       "skin": "#eec9a6",
@@ -291,28 +298,8 @@
       "channel": "slack",
       "model": "Claude Sonnet 4",
       "track": "Engineering",
+      "last_seen_note": "2026-08-15 20:06",
       "name_was": "이준호 과장"
-    },
-    {
-      "id": "sec",
-      "name": "김서연 비서실장",
-      "title": "대표 전용 비서",
-      "dept": "비서실",
-      "engine": "슬랙 앱",
-      "slack_id": "U0BA8MJQEHG",
-      "app_id": "A0BAAE7T76D",
-      "reports_to": "ceo",
-      "state": "live",
-      "status": "근무중",
-      "desk": "aide",
-      "hair": "#403a4c",
-      "skin": "#f3cfae",
-      "cloth": "#9085e9",
-      "sprite": "long",
-      "tier": 0,
-      "workflow_after": [],
-      "channel": "telegram",
-      "name_was": "비서실장"
     }
   ],
   "open_seats": [
@@ -538,9 +525,9 @@
     }
   ],
   "assistant": {
-    "person": "sec",
+    "person": "rt",
     "title": "비서실 · 대표 전용",
-    "subtitle": "파이프라인 밖 · 텔레그램 전용 통로. 대표님만 씁니다.",
+    "subtitle": "김서연 비서실장이 담당 · 텔레그램 전용 통로. 대표님만 씁니다.",
     "duties": [
       {
         "icon": "📌",
@@ -609,6 +596,7 @@
       "note": "텔레 자비스 1~3단계 완료 (07-05). 업무 파이프라인은 타지 않습니다."
     }
   ],
+  "worklog": [],
   "activity": {
     "range": "08-14 ~ 08-15",
     "total": 165,
@@ -638,11 +626,6 @@
       },
       {
         "id": "rt",
-        "n": "성재경 실장",
-        "v": 46
-      },
-      {
-        "id": "sec",
         "n": "김서연 비서실장",
         "v": 40
       },
@@ -703,7 +686,6 @@
       }
     ]
   },
-  "worklog": [],
   "feed": [],
   "feed_note": "공개 배포본에서는 슬랙 원문을 표시하지 않습니다."
 }
