@@ -35,6 +35,9 @@ ONCE       = os.environ.get("ONCE", "").lower() in ("1", "true", "yes")
 LIVE_HOURS = int(os.environ.get("LIVE_HOURS", "72"))          # 최근 N시간 발언 = 연결됨
 TOKEN_STATS = os.environ.get("TOKEN_STATS_FILE", "").strip()  # 선택: 토큰/비용 JSON
 PUBLIC_MODE = os.environ.get("PUBLIC_MODE", "").lower() in ("1", "true", "yes")
+# 더 이상 안 쓰는 채널 — 수집에서 뺍니다 (쉼표로 여러 개)
+SKIP_CHANNELS = [c.strip().lstrip("#") for c in
+                 os.environ.get("SKIP_CHANNELS", "아테즈-업무단체방").split(",") if c.strip()]
 
 API = "https://slack.com/api/"
 
@@ -146,6 +149,9 @@ def collect():
 
     for c in chans:
         cid, cname = c["id"], "#" + c["name"]
+        if c["name"] in SKIP_CHANNELS:
+            log(f"  {cname}: 제외 (더 이상 사용 안 함)")
+            continue
         msgs, cur = [], None
         while True:
             p = dict(channel=cid, limit=200, oldest=f"{oldest:.6f}")
