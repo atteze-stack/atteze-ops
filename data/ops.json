@@ -2,9 +2,9 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-15T14:30:00+09:00",
-    "source": "seed (수동 시드 — refresh.py 첫 실행 시 슬랙 데이터로 덮어씀)",
-    "notes": "공개 배포본입니다. 민감한 내용은 이 파일에 적지 마세요 — 저장소가 공개라 그대로 노출됩니다."
+    "generated_at": "2026-08-16T00:26:26+09:00",
+    "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
+    "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
   "tokens": {
     "today": null,
@@ -75,7 +75,7 @@
           "rt"
         ],
         "out": "결과 보고",
-        "state": "pending"
+        "state": "live"
       }
     ]
   },
@@ -152,7 +152,7 @@
       "title": "총괄 라우터",
       "dept": "총괄",
       "engine": "에이전트",
-      "slack_id": "B0BB30JGNG0",
+      "slack_id": "U0BQ2GK7DE1",
       "app_id": "A0BR0G5RY64",
       "reports_to": "ceo",
       "state": "live",
@@ -176,7 +176,7 @@
       "title": "마케팅 주임",
       "dept": "마케팅담당",
       "engine": "슬랙 앱",
-      "slack_id": "B0B9TFH5PSB",
+      "slack_id": "U0BACJ72QTE",
       "app_id": "A0BA8V6LFDG",
       "reports_to": "rt",
       "state": "pending",
@@ -199,7 +199,7 @@
       "title": "디자인 과장",
       "dept": "디자인담당",
       "engine": "슬랙 앱",
-      "slack_id": "B0BAQ8S6RNY",
+      "slack_id": "U0BAJHTCE4W",
       "app_id": "A0BBEU5JX88",
       "reports_to": "rt",
       "state": "pending",
@@ -222,7 +222,7 @@
       "title": "영상 과장",
       "dept": "영상담당",
       "engine": "슬랙 앱",
-      "slack_id": "B0BA56EGQA3",
+      "slack_id": "U0BAQ957CGL",
       "app_id": "A0BAQ94ADQU",
       "reports_to": "rt",
       "state": "pending",
@@ -245,11 +245,11 @@
       "title": "검수 대리",
       "dept": "검수담당",
       "engine": "슬랙 앱",
-      "slack_id": "B0BA6SUB8DU",
+      "slack_id": "U0BA8UVAE90",
       "app_id": "A0BACHEUUH2",
       "reports_to": "rt",
-      "state": "pending",
-      "status": "미연결",
+      "state": "live",
+      "status": "근무중",
       "desk": "floor",
       "hair": "#4d3f2e",
       "skin": "#f4d2b2",
@@ -269,11 +269,11 @@
       "title": "개발 과장",
       "dept": "개발담당",
       "engine": "슬랙 앱",
-      "slack_id": null,
+      "slack_id": "U0BA2HH2LBV",
       "app_id": "A0BAAML3RL1",
       "reports_to": "rt",
-      "state": "pending",
-      "status": "미연결",
+      "state": "live",
+      "status": "근무중",
       "desk": "floor",
       "hair": "#343440",
       "skin": "#eec9a6",
@@ -293,11 +293,11 @@
       "title": "대표 전용 비서",
       "dept": "비서실",
       "engine": "슬랙 앱",
-      "slack_id": null,
+      "slack_id": "U0BA8MJQEHG",
       "app_id": "A0BAAE7T76D",
       "reports_to": "ceo",
-      "state": "pending",
-      "status": "미연결",
+      "state": "live",
+      "status": "근무중",
       "desk": "aide",
       "hair": "#403a4c",
       "skin": "#f3cfae",
@@ -530,119 +530,6 @@
       "d": "MeTube 칸반 t_5e01ea3d 블로킹"
     }
   ],
-  "activity": {
-    "range": "2026-07-16 ~ 08-15",
-    "total": 152,
-    "sampled": true,
-    "channels": [
-      {
-        "n": "#아테즈-업무단체방",
-        "v": 100,
-        "sub": "지시·보고·검수 단일 창구"
-      },
-      {
-        "n": "#아테즈-신규",
-        "v": 52,
-        "sub": "신규 안건 파이프라인"
-      },
-      {
-        "n": "#일반",
-        "v": 0,
-        "sub": "미사용"
-      },
-      {
-        "n": "#랜덤",
-        "v": 0,
-        "sub": "미사용"
-      }
-    ],
-    "by_person": [
-      {
-        "id": "rt",
-        "n": "김서연 실장",
-        "v": 71
-      },
-      {
-        "id": "mkt",
-        "n": "최유나 주임",
-        "v": 27
-      },
-      {
-        "id": "ceo",
-        "n": "백준우 대표",
-        "v": 16
-      },
-      {
-        "id": "plan",
-        "n": "성재경 실장",
-        "v": 12
-      },
-      {
-        "id": "chk",
-        "n": "차소희 실장",
-        "v": 11
-      },
-      {
-        "id": "ops",
-        "n": "박지민 대리",
-        "v": 5
-      },
-      {
-        "id": "vid",
-        "n": "한도윤 과장",
-        "v": 5
-      },
-      {
-        "id": "dsn",
-        "n": "정수아 과장",
-        "v": 5
-      },
-      {
-        "id": "dev",
-        "n": "이준호 과장",
-        "v": 0
-      }
-    ],
-    "daily": [
-      {
-        "d": "07-16",
-        "v": 10
-      },
-      {
-        "d": "07-18",
-        "v": 12
-      },
-      {
-        "d": "07-19",
-        "v": 42
-      },
-      {
-        "d": "07-21",
-        "v": 14
-      },
-      {
-        "d": "07-31",
-        "v": 6
-      },
-      {
-        "d": "08-01",
-        "v": 10
-      },
-      {
-        "d": "08-13",
-        "v": 4
-      },
-      {
-        "d": "08-14",
-        "v": 16
-      },
-      {
-        "d": "08-15",
-        "v": 38
-      }
-    ]
-  },
-  "feed": [],
   "assistant": {
     "person": "sec",
     "title": "비서실 · 대표 전용",
@@ -715,5 +602,149 @@
       "note": "텔레 자비스 1~3단계 완료 (07-05). 업무 파이프라인은 타지 않습니다."
     }
   ],
+  "activity": {
+    "range": "07-18 ~ 08-15",
+    "total": 255,
+    "sampled": false,
+    "channels": [
+      {
+        "n": "#아테즈-신규",
+        "v": 165,
+        "sub": ""
+      },
+      {
+        "n": "#아테즈-업무단체방",
+        "v": 90,
+        "sub": ""
+      },
+      {
+        "n": "#랜덤",
+        "v": 0,
+        "sub": "이 채널은 어떤 것이든 나눌 수 있습니다. 팀 내 농담, 즉흥적인 아이디어, 재밌는 GIF를 위한 공간입니다."
+      },
+      {
+        "n": "#일반",
+        "v": 0,
+        "sub": "이것은 언제나 모두를 포함하게 될 단 하나의 채널로 공지를 올리고 팀 전체의 대화를 나누기에 적합한 공간입니다."
+      }
+    ],
+    "by_person": [
+      {
+        "id": "plan",
+        "n": "성재경 실장",
+        "v": 46
+      },
+      {
+        "id": "rt",
+        "n": "김서연 실장",
+        "v": 46
+      },
+      {
+        "id": "ceo",
+        "n": "백준우",
+        "v": 43
+      },
+      {
+        "id": "B0BB30JGNG0",
+        "n": "B0BB30JGNG0",
+        "v": 43
+      },
+      {
+        "id": "sec",
+        "n": "비서실장",
+        "v": 40
+      },
+      {
+        "id": "chk",
+        "n": "차소희 실장",
+        "v": 27
+      },
+      {
+        "id": "B0B9TFH5PSB",
+        "n": "B0B9TFH5PSB",
+        "v": 27
+      },
+      {
+        "id": "U0BR0EZCERW",
+        "n": "부총괄",
+        "v": 8
+      },
+      {
+        "id": "B0BA56EGQA3",
+        "n": "B0BA56EGQA3",
+        "v": 5
+      },
+      {
+        "id": "B0BAQ8S6RNY",
+        "n": "B0BAQ8S6RNY",
+        "v": 5
+      },
+      {
+        "id": "ops",
+        "n": "박지민 대리",
+        "v": 4
+      },
+      {
+        "id": "dev",
+        "n": "이준호 과장",
+        "v": 4
+      },
+      {
+        "id": "B0BA6SUB8DU",
+        "n": "B0BA6SUB8DU",
+        "v": 3
+      },
+      {
+        "id": "mkt",
+        "n": "최유나 주임",
+        "v": 0
+      },
+      {
+        "id": "dsn",
+        "n": "정수아 과장",
+        "v": 0
+      },
+      {
+        "id": "vid",
+        "n": "한도윤 과장",
+        "v": 0
+      }
+    ],
+    "daily": [
+      {
+        "d": "07-18",
+        "v": 12
+      },
+      {
+        "d": "07-19",
+        "v": 42
+      },
+      {
+        "d": "07-21",
+        "v": 14
+      },
+      {
+        "d": "07-31",
+        "v": 6
+      },
+      {
+        "d": "08-01",
+        "v": 10
+      },
+      {
+        "d": "08-13",
+        "v": 4
+      },
+      {
+        "d": "08-14",
+        "v": 95
+      },
+      {
+        "d": "08-15",
+        "v": 72
+      }
+    ]
+  },
+  "feed": [],
   "feed_note": "공개 배포본에서는 슬랙 원문을 표시하지 않습니다."
 }
