@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-16T00:34:18+09:00",
+    "generated_at": "2026-08-16T00:47:48+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -148,7 +148,7 @@
     },
     {
       "id": "rt",
-      "name": "김서연 실장",
+      "name": "성재경 실장",
       "title": "총괄 라우터",
       "dept": "총괄",
       "engine": "에이전트",
@@ -168,11 +168,12 @@
         "chk"
       ],
       "channel": "slack",
-      "model": "GPT-5 + Claude 4.5"
+      "model": "GPT-5 + Claude 4.5",
+      "name_was": "김서연 실장"
     },
     {
       "id": "mkt",
-      "name": "최유나 주임",
+      "name": "마케팅 최유나 주임",
       "title": "마케팅 주임",
       "dept": "마케팅담당",
       "engine": "슬랙 앱",
@@ -191,11 +192,12 @@
         "rt"
       ],
       "channel": "slack",
-      "track": "Marketing"
+      "track": "Marketing",
+      "name_was": "최유나 주임"
     },
     {
       "id": "dsn",
-      "name": "정수아 과장",
+      "name": "디자인 정수아 과장",
       "title": "디자인 과장",
       "dept": "디자인담당",
       "engine": "슬랙 앱",
@@ -214,11 +216,12 @@
         "rt"
       ],
       "channel": "slack",
-      "track": "Designer"
+      "track": "Designer",
+      "name_was": "정수아 과장"
     },
     {
       "id": "vid",
-      "name": "한도윤 과장",
+      "name": "영상 한도윤 과장",
       "title": "영상 과장",
       "dept": "영상담당",
       "engine": "슬랙 앱",
@@ -237,11 +240,12 @@
         "rt"
       ],
       "channel": "slack",
-      "track": "Video"
+      "track": "Video",
+      "name_was": "한도윤 과장"
     },
     {
       "id": "ops",
-      "name": "박지민 대리",
+      "name": "검수팀 박지민 대리",
       "title": "검수 대리",
       "dept": "검수담당",
       "engine": "슬랙 앱",
@@ -261,11 +265,12 @@
       ],
       "channel": "slack",
       "model": "GPT-4o",
-      "track": "QA"
+      "track": "QA",
+      "name_was": "박지민 대리"
     },
     {
       "id": "dev",
-      "name": "이준호 과장",
+      "name": "개발팀 이준호 과장",
       "title": "개발 과장",
       "dept": "개발담당",
       "engine": "슬랙 앱",
@@ -285,11 +290,12 @@
       ],
       "channel": "slack",
       "model": "Claude Sonnet 4",
-      "track": "Engineering"
+      "track": "Engineering",
+      "name_was": "이준호 과장"
     },
     {
       "id": "sec",
-      "name": "비서실장",
+      "name": "김서연 비서실장",
       "title": "대표 전용 비서",
       "dept": "비서실",
       "engine": "슬랙 앱",
@@ -305,7 +311,8 @@
       "sprite": "long",
       "tier": 0,
       "workflow_after": [],
-      "channel": "telegram"
+      "channel": "telegram",
+      "name_was": "비서실장"
     }
   ],
   "open_seats": [
@@ -636,7 +643,7 @@
       },
       {
         "id": "rt",
-        "n": "김서연 실장",
+        "n": "성재경 실장",
         "v": 46
       },
       {
@@ -651,7 +658,7 @@
       },
       {
         "id": "sec",
-        "n": "비서실장",
+        "n": "김서연 비서실장",
         "v": 40
       },
       {
@@ -681,12 +688,12 @@
       },
       {
         "id": "ops",
-        "n": "박지민 대리",
+        "n": "검수팀 박지민 대리",
         "v": 4
       },
       {
         "id": "dev",
-        "n": "이준호 과장",
+        "n": "개발팀 이준호 과장",
         "v": 4
       },
       {
@@ -696,17 +703,17 @@
       },
       {
         "id": "mkt",
-        "n": "최유나 주임",
+        "n": "마케팅 최유나 주임",
         "v": 0
       },
       {
         "id": "dsn",
-        "n": "정수아 과장",
+        "n": "디자인 정수아 과장",
         "v": 0
       },
       {
         "id": "vid",
-        "n": "한도윤 과장",
+        "n": "영상 한도윤 과장",
         "v": 0
       }
     ],
@@ -745,6 +752,7 @@
       }
     ]
   },
+  "worklog": [],
   "feed": [],
   "feed_note": "공개 배포본에서는 슬랙 원문을 표시하지 않습니다."
 }
