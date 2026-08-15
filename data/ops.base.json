@@ -1,0 +1,605 @@
+{
+  "meta": {
+    "company": "아테즈 (ATTEZE)",
+    "workspace": "테즈",
+    "generated_at": "2026-08-15T14:30:00+09:00",
+    "source": "ops.base.json (수동 큐레이션)",
+    "notes": "공개 배포본입니다. 민감한 내용은 이 파일에 적지 마세요 — 저장소가 공개라 그대로 노출됩니다."
+  },
+  "tokens": {
+    "today": null,
+    "cost_usd": null,
+    "fx_krw": 1400,
+    "sessions": null,
+    "spark7": [],
+    "note": "토큰 집계 소스 미연결 — refresh.py 의 TOKEN_LOG_PATH 를 지정하면 채워집니다."
+  },
+  "pipeline": {
+    "title": "업무 처리 파이프라인",
+    "subtitle": "대표 지시 한 줄이 실행 카드까지 내려가는 순서 (보고 계층과는 별개)",
+    "steps": [
+      {
+        "id": "ceo",
+        "name": "백준우",
+        "role": "대표이사",
+        "engine": "사람",
+        "act": "슬랙으로 업무 지시",
+        "from": [],
+        "out": "지시",
+        "state": "live"
+      },
+      {
+        "id": "plan",
+        "name": "성재경 실장",
+        "role": "전략기획",
+        "engine": "GPT",
+        "act": "기획 · 초안 작성",
+        "from": [
+          "ceo"
+        ],
+        "out": "기획안",
+        "state": "live"
+      },
+      {
+        "id": "chk",
+        "name": "차소희 실장",
+        "role": "품질검증",
+        "engine": "Claude",
+        "act": "반박 · 검증 · 보완안 제시",
+        "from": [
+          "plan"
+        ],
+        "out": "반박안 · 보완안",
+        "state": "live"
+      },
+      {
+        "id": "rt",
+        "name": "김서연 실장",
+        "role": "총괄 · 라우터",
+        "engine": "에이전트",
+        "act": "기획안 + 반박안 분석 · 최종 실행안 확정 · 부서 배분",
+        "from": [
+          "plan",
+          "chk"
+        ],
+        "out": "실행 카드",
+        "state": "live"
+      },
+      {
+        "id": "dept",
+        "name": "하위 부서",
+        "role": "개발 · 검수 · 마케팅 · 디자인 · 영상",
+        "engine": "슬랙 앱",
+        "act": "실행 → 검수 → 결과 보고",
+        "from": [
+          "rt"
+        ],
+        "out": "결과 보고",
+        "state": "pending"
+      }
+    ]
+  },
+  "people": [
+    {
+      "id": "ceo",
+      "name": "백준우",
+      "title": "대표이사",
+      "dept": "경영",
+      "engine": "사람",
+      "slack_id": "U0B2A457F37",
+      "app_id": null,
+      "reports_to": null,
+      "state": "live",
+      "status": "지시",
+      "desk": "exec",
+      "hair": "#3c3a44",
+      "skin": "#f0c9a4",
+      "cloth": "#22304a",
+      "sprite": "suit",
+      "tier": 0,
+      "workflow_after": [],
+      "channel": "slack+telegram"
+    },
+    {
+      "id": "plan",
+      "name": "성재경 실장",
+      "title": "전략기획 실장",
+      "dept": "전략기획",
+      "engine": "GPT",
+      "slack_id": "U0BQ2GK7DE1",
+      "app_id": null,
+      "reports_to": "ceo",
+      "state": "live",
+      "status": "기획중",
+      "desk": "chief",
+      "hair": "#5a3f2c",
+      "skin": "#f2cfae",
+      "cloth": "#1baf7a",
+      "sprite": "short",
+      "tier": 1,
+      "workflow_after": [
+        "ceo"
+      ],
+      "channel": "slack",
+      "model": "GPT-5"
+    },
+    {
+      "id": "chk",
+      "name": "차소희 실장",
+      "title": "품질검증 실장",
+      "dept": "품질검증",
+      "engine": "Claude",
+      "slack_id": "U0BQ1H85BM1",
+      "app_id": null,
+      "reports_to": "ceo",
+      "state": "live",
+      "status": "검증중",
+      "desk": "chief",
+      "hair": "#3a2f45",
+      "skin": "#f5d3b4",
+      "cloth": "#eb6834",
+      "sprite": "long",
+      "tier": 1,
+      "workflow_after": [
+        "plan"
+      ],
+      "channel": "slack",
+      "model": "Claude 4.5"
+    },
+    {
+      "id": "rt",
+      "name": "김서연 실장",
+      "title": "총괄 라우터",
+      "dept": "총괄",
+      "engine": "에이전트",
+      "slack_id": "B0BB30JGNG0",
+      "app_id": "A0BR0G5RY64",
+      "reports_to": "ceo",
+      "state": "live",
+      "status": "정리중",
+      "desk": "router",
+      "hair": "#33363f",
+      "skin": "#f3cdaa",
+      "cloth": "#2a78d6",
+      "sprite": "long",
+      "tier": 2,
+      "workflow_after": [
+        "plan",
+        "chk"
+      ],
+      "channel": "slack",
+      "model": "GPT-5 + Claude 4.5"
+    },
+    {
+      "id": "mkt",
+      "name": "최유나 주임",
+      "title": "마케팅 주임",
+      "dept": "마케팅담당",
+      "engine": "슬랙 앱",
+      "slack_id": "B0B9TFH5PSB",
+      "app_id": "A0BA8V6LFDG",
+      "reports_to": "rt",
+      "state": "pending",
+      "status": "미연결",
+      "desk": "floor",
+      "hair": "#6b4230",
+      "skin": "#f4d0b0",
+      "cloth": "#e87ba4",
+      "sprite": "long",
+      "tier": 3,
+      "workflow_after": [
+        "rt"
+      ],
+      "channel": "slack",
+      "track": "Marketing"
+    },
+    {
+      "id": "dsn",
+      "name": "정수아 과장",
+      "title": "디자인 과장",
+      "dept": "디자인담당",
+      "engine": "슬랙 앱",
+      "slack_id": "B0BAQ8S6RNY",
+      "app_id": "A0BBEU5JX88",
+      "reports_to": "rt",
+      "state": "pending",
+      "status": "미연결",
+      "desk": "floor",
+      "hair": "#332b3d",
+      "skin": "#f2cdad",
+      "cloth": "#4a3aa7",
+      "sprite": "long",
+      "tier": 3,
+      "workflow_after": [
+        "rt"
+      ],
+      "channel": "slack",
+      "track": "Designer"
+    },
+    {
+      "id": "vid",
+      "name": "한도윤 과장",
+      "title": "영상 과장",
+      "dept": "영상담당",
+      "engine": "슬랙 앱",
+      "slack_id": "B0BA56EGQA3",
+      "app_id": "A0BAQ94ADQU",
+      "reports_to": "rt",
+      "state": "pending",
+      "status": "미연결",
+      "desk": "floor",
+      "hair": "#463623",
+      "skin": "#eec8a2",
+      "cloth": "#eda100",
+      "sprite": "short",
+      "tier": 3,
+      "workflow_after": [
+        "rt"
+      ],
+      "channel": "slack",
+      "track": "Video"
+    },
+    {
+      "id": "ops",
+      "name": "박지민 대리",
+      "title": "검수 대리",
+      "dept": "검수담당",
+      "engine": "슬랙 앱",
+      "slack_id": "B0BA6SUB8DU",
+      "app_id": "A0BACHEUUH2",
+      "reports_to": "rt",
+      "state": "pending",
+      "status": "미연결",
+      "desk": "floor",
+      "hair": "#4d3f2e",
+      "skin": "#f4d2b2",
+      "cloth": "#eb6834",
+      "sprite": "short",
+      "tier": 3,
+      "workflow_after": [
+        "dev"
+      ],
+      "channel": "slack",
+      "model": "GPT-4o",
+      "track": "QA"
+    },
+    {
+      "id": "dev",
+      "name": "이준호 과장",
+      "title": "개발 과장",
+      "dept": "개발담당",
+      "engine": "슬랙 앱",
+      "slack_id": null,
+      "app_id": "A0BAAML3RL1",
+      "reports_to": "rt",
+      "state": "pending",
+      "status": "미연결",
+      "desk": "floor",
+      "hair": "#343440",
+      "skin": "#eec9a6",
+      "cloth": "#3987e5",
+      "sprite": "short",
+      "tier": 3,
+      "workflow_after": [
+        "rt"
+      ],
+      "channel": "slack",
+      "model": "Claude Sonnet 4",
+      "track": "Engineering"
+    },
+    {
+      "id": "sec",
+      "name": "비서실장",
+      "title": "대표 전용 비서",
+      "dept": "비서실",
+      "engine": "슬랙 앱",
+      "slack_id": null,
+      "app_id": "A0BAAE7T76D",
+      "reports_to": "ceo",
+      "state": "pending",
+      "status": "미연결",
+      "desk": "aide",
+      "hair": "#403a4c",
+      "skin": "#f3cfae",
+      "cloth": "#9085e9",
+      "sprite": "long",
+      "tier": 0,
+      "workflow_after": [],
+      "channel": "telegram"
+    }
+  ],
+  "open_seats": [
+    {
+      "title": "블로그 본부장",
+      "dept": "콘텐츠"
+    },
+    {
+      "title": "카피라이터",
+      "dept": "콘텐츠"
+    },
+    {
+      "title": "SEO 에디터",
+      "dept": "콘텐츠"
+    },
+    {
+      "title": "숏폼 본부장",
+      "dept": "영상"
+    },
+    {
+      "title": "컷편집 담당",
+      "dept": "영상"
+    },
+    {
+      "title": "Hermes 마케팅",
+      "dept": "마케팅"
+    }
+  ],
+  "boards": [
+    {
+      "id": "revenue",
+      "icon": "💰",
+      "name": "수익화",
+      "cards": [
+        {
+          "t": "뽀용베베·뽀용스푼 SNS 자동화 — 나노바나나 API 연동",
+          "s": "todo",
+          "owner": "mkt",
+          "note": "GEMINI_API_KEY 발급 대기"
+        },
+        {
+          "t": "신통방통 도도네 이야기 — 캐릭터 생성 + 채널 개설",
+          "s": "todo",
+          "owner": "dsn",
+          "note": ""
+        },
+        {
+          "t": "AI 인플루언서 페르소나 최종 확정 (하린·현우)",
+          "s": "todo",
+          "owner": "vid",
+          "note": "한 달 넘게 영상 0편"
+        },
+        {
+          "t": "Suno 채널 개설 + 구독 상태 확인",
+          "s": "todo",
+          "owner": "mkt",
+          "note": "가사 10곡 완료 · 음원 0곡"
+        },
+        {
+          "t": "인스타 정리함 온디맨드 INGEST 운영 검증",
+          "s": "doing",
+          "owner": "ops",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "jarvis",
+      "icon": "🤖",
+      "name": "자비스",
+      "cards": [
+        {
+          "t": "OpenAI PR 교차검증 파일럿 — 리뷰 품질 관찰",
+          "s": "doing",
+          "owner": "dev",
+          "note": "관찰중"
+        },
+        {
+          "t": "텔레 자비스 1~3단계 (날씨폴백·할일관리·캘린더)",
+          "s": "done",
+          "owner": "dev",
+          "note": "07-05"
+        }
+      ]
+    },
+    {
+      "id": "ops",
+      "icon": "🔧",
+      "name": "운영",
+      "cards": [
+        {
+          "t": "보안 점검 진행 중",
+          "s": "todo",
+          "owner": "ops",
+          "note": "상세는 비공개",
+          "urgent": true
+        },
+        {
+          "t": "아테즈 홈페이지 배포",
+          "s": "todo",
+          "owner": "dev",
+          "note": "상태 확인 필요"
+        },
+        {
+          "t": "정리함 구글시트 웹훅 세팅",
+          "s": "todo",
+          "owner": "ops",
+          "note": "구글 API 자격증명 부재"
+        },
+        {
+          "t": "NAS + MeTube 내부망 구축",
+          "s": "doing",
+          "owner": "dev",
+          "note": "보안 가이드 완료 · DSM 버전 확인 대기"
+        },
+        {
+          "t": "하위 부서 슬랙 앱 5종 연결 (Not distributed)",
+          "s": "todo",
+          "owner": "rt",
+          "note": "파이프라인 마지막 단계",
+          "urgent": true
+        },
+        {
+          "t": "LLM 위키 도입 방향 확정",
+          "s": "done",
+          "owner": "dev",
+          "note": "07-04"
+        },
+        {
+          "t": "레포 구조 방침 — atteze-agents 최상위화",
+          "s": "done",
+          "owner": "dev",
+          "note": "07-11"
+        },
+        {
+          "t": "Anthropic 자동충전 설정",
+          "s": "done",
+          "owner": "ops",
+          "note": "07-04"
+        },
+        {
+          "t": "Ponytail 플러그인 설치 (과설계 방지 도구)",
+          "s": "doing",
+          "owner": "dev",
+          "note": "marketplace add·install 완료, /reload-plugins 필요"
+        }
+      ]
+    },
+    {
+      "id": "money",
+      "icon": "📒",
+      "name": "자금",
+      "cards": [
+        {
+          "t": "미수금 회수 — 달빛 84만 (6/26)",
+          "s": "done",
+          "owner": "ops",
+          "note": "수금 완료"
+        },
+        {
+          "t": "미수금 회수 — 나비 72만 (6/27)",
+          "s": "done",
+          "owner": "ops",
+          "note": "수금 완료"
+        },
+        {
+          "t": "미수금 실사 정정 (합계 156만원)",
+          "s": "done",
+          "owner": "ops",
+          "note": "놀터·스윙·보스는 미수 아님"
+        },
+        {
+          "t": "미수금 전액 수금 완료",
+          "s": "done",
+          "owner": "ops",
+          "note": "잔여 미수금 없음"
+        },
+        {
+          "t": "가비앱 정산",
+          "s": "hold",
+          "owner": "ops",
+          "note": "월말까지 잠정 중단"
+        }
+      ]
+    }
+  ],
+  "blockers": [
+    {
+      "rank": 1,
+      "sev": "crit",
+      "t": "판매채널 계정 접근 권한",
+      "d": "쿠팡·스마트스토어·자사몰 — 매출·재고·리뷰 수치 확보 불가"
+    },
+    {
+      "rank": 2,
+      "sev": "crit",
+      "t": "보안 점검 진행 중",
+      "d": "상세는 비공개"
+    },
+    {
+      "rank": 3,
+      "sev": "warn",
+      "t": "하위 부서 앱 5종 미연결",
+      "d": "Not distributed 상태 — 라우터가 배분해도 받을 곳이 없음"
+    },
+    {
+      "rank": 4,
+      "sev": "warn",
+      "t": "구글 API 자격증명 부재",
+      "d": "구글 시트 자동 기재 불가 · 동일 이슈 2회 재발"
+    },
+    {
+      "rank": 5,
+      "sev": "warn",
+      "t": "GEMINI_API_KEY 발급 대기",
+      "d": "나노바나나 이미지 자동화가 여기서 멈춤"
+    },
+    {
+      "rank": 6,
+      "sev": "info",
+      "t": "NAS DSM 버전 미확인",
+      "d": "MeTube 칸반 t_5e01ea3d 블로킹"
+    }
+  ],
+  "assistant": {
+    "person": "sec",
+    "title": "비서실 · 대표 전용",
+    "subtitle": "파이프라인 밖 · 텔레그램 전용 통로. 대표님만 씁니다.",
+    "duties": [
+      {
+        "icon": "📌",
+        "n": "어제 한 일",
+        "d": "전날 처리된 것 정리해서 아침에 보고"
+      },
+      {
+        "icon": "✅",
+        "n": "오늘 할 일",
+        "d": "오늘 처리할 것 우선순위대로"
+      },
+      {
+        "icon": "🔜",
+        "n": "내일 할 일",
+        "d": "미리 잡아둘 것 · 준비물"
+      },
+      {
+        "icon": "📅",
+        "n": "일정 관리",
+        "d": "미팅 · 마감 · 리마인드"
+      },
+      {
+        "icon": "🍜",
+        "n": "맛집 검색",
+        "d": "대표 전용 · 위치 기반 추천"
+      }
+    ],
+    "agenda": {
+      "yesterday": [],
+      "today": [],
+      "tomorrow": []
+    },
+    "schedule": [],
+    "note": "비서실장 앱이 아직 연결(distribute)되지 않아 내용이 비어 있습니다. 붙는 순간 여기에 채워집니다.",
+    "channel": "telegram"
+  },
+  "channels_io": [
+    {
+      "id": "slack",
+      "name": "슬랙",
+      "use": "업무 지시 · 파이프라인 전체",
+      "scope": "pipeline",
+      "state": "live",
+      "note": "대표 지시 → 실장 3인 → 실무 5팀이 도는 메인 통로"
+    },
+    {
+      "id": "telegram",
+      "name": "텔레그램",
+      "use": "자비스 전용 · 비서실",
+      "scope": "aide",
+      "state": "live",
+      "features": [
+        {
+          "n": "날씨 폴백",
+          "s": "done"
+        },
+        {
+          "n": "할일 관리",
+          "s": "done"
+        },
+        {
+          "n": "캘린더",
+          "s": "done"
+        }
+      ],
+      "note": "텔레 자비스 1~3단계 완료 (07-05). 업무 파이프라인은 타지 않습니다."
+    }
+  ]
+}

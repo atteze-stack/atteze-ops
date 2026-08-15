@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATTEZE OPS — 실시간 오피스 현황</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230d0d0d'/%3E%3Crect x='3' y='4' width='3' height='8' fill='%233987e5'/%3E%3Crect x='7' y='7' width='3' height='5' fill='%23eb6834'/%3E%3Crect x='11' y='5' width='2' height='7' fill='%231baf7a'/%3E%3C/svg%3E">
+<style>
+:root{
+  color-scheme: dark;
+  --plane:#0d0d0d; --surface:#1a1a19; --raise:#232322;
+  --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s7:#9085e9;
+  --good:#0ca30c; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
+  --wash:rgba(57,135,229,0.14);
+  --floor:#15161c; --wall:#191b23; --deskw:#2a2d38;
+}
+:root[data-theme="light"]{
+  color-scheme: light;
+  --plane:#f9f9f7; --surface:#fcfcfb; --raise:#f2f1ed;
+  --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,0.10);
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s7:#4a3aa7;
+  --wash:rgba(42,120,214,0.08);
+  --floor:#e8e6df; --wall:#f0eee7; --deskw:#cfcbbf;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; background:var(--plane); color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  font-size:14px; line-height:1.55; -webkit-font-smoothing:antialiased;
+}
+.app{display:grid; grid-template-columns:236px 1fr; min-height:100vh}
+
+/* ---------- sidebar ---------- */
+aside{
+  background:var(--surface); border-right:1px solid var(--border);
+  padding:20px 18px; display:flex; flex-direction:column; gap:20px;
+  position:sticky; top:0; height:100vh; overflow-y:auto;
+}
+.brand{font-size:15px; font-weight:700; letter-spacing:.06em}
+.brand small{display:block; font-size:11px; font-weight:400; color:var(--muted); letter-spacing:0; margin-top:2px}
+.livedot{display:inline-flex; align-items:center; gap:6px; font-size:10.5px; color:var(--good); letter-spacing:.04em; margin-top:8px}
+.livedot i{width:7px;height:7px;border-radius:50%;background:var(--good);animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.8)}}
+.sblk{border-top:1px solid var(--border); padding-top:16px}
+.sblk .lab{font-size:11px; color:var(--muted); margin-bottom:4px}
+.sblk .big{font-size:26px; font-weight:650; line-height:1.1; letter-spacing:-.02em}
+.sblk .sm{font-size:11.5px; color:var(--ink2); margin-top:2px}
+.spark{display:flex; align-items:flex-end; gap:3px; height:36px; margin-top:10px}
+.spark i{flex:1; background:var(--s2); border-radius:2px 2px 0 0; min-height:2px; opacity:.8}
+.spark.empty i{background:var(--axis); opacity:.5}
+nav{display:flex; flex-direction:column; gap:2px; margin-top:2px}
+nav button{
+  background:none; border:0; color:var(--ink2); font:inherit; font-size:13px;
+  text-align:left; padding:8px 10px; border-radius:8px; cursor:pointer; display:flex; gap:9px; align-items:center;
+}
+nav button:hover{background:var(--raise); color:var(--ink)}
+nav button.on{background:var(--wash); color:var(--ink); font-weight:600}
+nav button .k{font-size:13px; width:16px; text-align:center}
+.mini{font-size:11.5px; color:var(--ink2)}
+.mini div{padding:5px 0; border-bottom:1px solid var(--grid); display:flex; gap:7px; align-items:flex-start}
+.mini div:last-child{border-bottom:0}
+.mini .sq{width:6px;height:6px;border-radius:1px;margin-top:6px;flex:none}
+.tbtn{background:none;border:1px solid var(--border);color:var(--muted);font:inherit;font-size:11px;
+  border-radius:7px;padding:5px 9px;cursor:pointer;width:100%}
+.tbtn:hover{color:var(--ink)}
+
+/* ---------- main ---------- */
+main{padding:22px 26px 60px; max-width:1500px}
+.head{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:18px}
+h1{font-size:19px; font-weight:650; margin:0; letter-spacing:-.01em}
+.stamp{font-size:11.5px; color:var(--muted)}
+.card{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px 20px; margin-bottom:16px}
+h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
+.cap{color:var(--muted); font-size:11.5px; margin:0 0 16px}
+.view{display:none} .view.on{display:block}
+
+/* ---------- pixel office ---------- */
+.office{
+  background:var(--wall); border:1px solid var(--border); border-radius:12px;
+  padding:0; overflow:hidden; position:relative;
+}
+.zone{padding:10px 14px 12px; border-bottom:1px solid var(--border); position:relative}
+.zone:last-child{border-bottom:0}
+.zone.exec{background:linear-gradient(180deg,rgba(57,135,229,.10),transparent)}
+.zone.chief{background:linear-gradient(180deg,rgba(144,133,233,.09),transparent)}
+.zone.floor{background:var(--floor)}
+.ztitle{font-size:9.5px; letter-spacing:.10em; color:var(--muted); text-transform:uppercase; margin-bottom:9px; display:flex; align-items:center; gap:8px}
+.ztitle b{color:var(--ink2); font-weight:600; letter-spacing:.02em; text-transform:none; font-size:10.5px}
+.pods{display:flex; gap:9px; flex-wrap:wrap; align-items:flex-end}
+.pods.center{justify-content:center}
+.pod{width:88px; display:flex; flex-direction:column; align-items:center; position:relative; cursor:default; padding-top:17px}
+.sprite{position:relative; width:52px; height:67px; margin-bottom:-10px}
+.sprite svg{width:100%; height:100%; display:block; shape-rendering:crispEdges; image-rendering:pixelated}
+.pod.pending .sprite svg{filter:grayscale(1) opacity(.42)}
+.pod.stopped .sprite svg{filter:grayscale(1) opacity(.3)}
+.pod.live .arms{animation:type 1.1s steps(2,end) infinite}
+.pod.live .body{animation:breathe 3.4s ease-in-out infinite}
+@keyframes type{0%,100%{transform:translateY(0)}50%{transform:translateY(1px)}}
+@keyframes breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-0.6px)}}
+.desk{width:100%; height:19px; position:relative}
+.desk svg{width:100%; height:100%; display:block; shape-rendering:crispEdges}
+.pod.live .scr{animation:flick 2.6s steps(1,end) infinite}
+@keyframes flick{0%,60%{opacity:1}62%,66%{opacity:.55}68%,100%{opacity:1}}
+.plate{
+  margin-top:5px; width:100%; text-align:center; border-radius:5px;
+  padding:3px 3px 4px; border:1px solid var(--border); background:var(--surface);
+}
+.plate .nm{font-size:10px; font-weight:650; line-height:1.25; color:var(--ink)}
+.plate .rl{font-size:8.5px; color:var(--muted); line-height:1.25}
+.plate .mdl{font-size:7.5px; color:var(--s4); margin-top:2px; letter-spacing:.01em; font-weight:600}
+.pod.pending .plate .mdl,.pod.stopped .plate .mdl{color:var(--muted)}
+.pod.pending .plate{border-style:dashed}
+.badge{
+  position:absolute; top:0; left:50%; transform:translateX(-50%);
+  font-size:8.5px; font-weight:650; padding:1px 6px; border-radius:99px;
+  white-space:nowrap; border:1px solid var(--border); background:var(--surface); z-index:3;
+}
+.badge.live{color:var(--good)} .badge.pending{color:var(--serious)} .badge.stopped{color:var(--muted)}
+.pod.live .badge{animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-3px)}}
+.seat{
+  width:88px; height:126px; border:1.5px dashed var(--axis); border-radius:9px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+  color:var(--muted); text-align:center; padding:8px; background:rgba(128,128,128,.04);
+}
+.seat .p{font-size:15px; line-height:1; opacity:.4}
+.seat .t{font-size:9.5px; font-weight:600; color:var(--ink2); line-height:1.3}
+.seat .d{font-size:8.5px; line-height:1.3}
+.tracks{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; padding-top:11px; border-top:1px solid var(--border)}
+.trk{flex:1; min-width:110px; border:1px solid var(--border); border-radius:8px; padding:7px 10px; background:var(--surface)}
+.trk .tn{font-size:10.5px; font-weight:650; letter-spacing:.03em}
+.trk .tm{font-size:9px; color:var(--muted); margin-top:1px}
+.trk .ts{font-size:9px; color:var(--ink2); margin-top:3px}
+
+/* pipeline arrows inside office */
+.flowline{display:flex; align-items:center; gap:0; justify-content:center; flex-wrap:wrap}
+.arrow{width:46px; height:2px; background:var(--axis); position:relative; margin:0 4px 40px}
+.arrow::after{content:""; position:absolute; right:-1px; top:-3px; border-left:7px solid var(--axis); border-top:4px solid transparent; border-bottom:4px solid transparent}
+.arrow i{position:absolute; top:-2px; left:0; width:6px; height:6px; border-radius:50%; background:var(--s1); animation:travel 2.4s linear infinite}
+.arrow .alab{position:absolute; top:-15px; left:50%; transform:translateX(-50%); font-size:9.5px; color:var(--muted); white-space:nowrap}
+.arrow.dead{opacity:.4} .arrow.dead i{display:none}
+@keyframes travel{0%{left:-2px;opacity:0}12%{opacity:1}88%{opacity:1}100%{left:44px;opacity:0}}
+.merge{display:block; width:100%; max-width:400px; height:38px; margin:0 auto}
+.mlab{font-size:13px; fill:var(--muted)}
+.down{display:flex; flex-direction:column; align-items:center; gap:1px; margin-top:3px}
+.down span{font-size:9px; color:var(--muted); letter-spacing:.02em}
+.down svg{width:11px; height:24px; overflow:visible}
+.execpair{gap:20px; align-items:flex-start}
+.aide{display:flex; flex-direction:column; align-items:center; position:relative; margin-top:46px}
+/* 대표 ↔ 비서실장 사이의 텔레그램 전용 통로 */
+.tglink{display:flex; flex-direction:column; align-items:center; gap:5px; margin:52px 2px 0}
+.tgbar{width:46px; height:2px; background:var(--s7); position:relative; border-radius:1px}
+.tgbar::before,.tgbar::after{content:""; position:absolute; top:-3px; border-top:4px solid transparent; border-bottom:4px solid transparent}
+.tgbar::before{left:-1px; border-right:7px solid var(--s7)}
+.tgbar::after{right:-1px; border-left:7px solid var(--s7)}
+.tgbar i{position:absolute; top:-2px; left:0; width:6px; height:6px; border-radius:50%; background:var(--s7); animation:tgo 3s ease-in-out infinite}
+@keyframes tgo{0%,100%{left:0;opacity:.2}25%{left:40px;opacity:1}50%{left:40px;opacity:.2}75%{left:0;opacity:1}}
+.tgchip{font-size:9px; color:var(--s7); text-align:center; line-height:1.35; font-weight:650}
+.tgchip b{display:block; color:var(--muted); font-weight:400; font-size:8.5px}
+.aidelab{font-size:8.5px; color:var(--muted); margin-top:4px; text-align:center; letter-spacing:.02em}
+
+/* 비서실 탭 */
+.aidegrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px}
+.aidecol{border:1px solid var(--border); border-radius:10px; padding:14px 15px; background:var(--surface)}
+.aidecol h4{margin:0 0 3px; font-size:12.5px; font-weight:650; display:flex; align-items:center; gap:7px}
+.aidecol .sub{font-size:10.5px; color:var(--muted); margin-bottom:11px}
+.aidecol ul{list-style:none; margin:0; padding:0; font-size:12.5px; color:var(--ink2)}
+.aidecol li{padding:6px 0; border-bottom:1px solid var(--grid); display:flex; gap:8px}
+.aidecol li:last-child{border-bottom:0}
+.aidecol li::before{content:"·"; color:var(--muted)}
+.empty{font-size:11.5px; color:var(--muted); padding:14px 0; text-align:center; border:1px dashed var(--border);
+  border-radius:8px; background:rgba(128,128,128,.04)}
+.tgcard{border:1px solid var(--border); border-left:3px solid var(--s7); border-radius:10px; padding:13px 15px; background:var(--surface)}
+.tghead{display:flex; align-items:center; gap:9px}
+.tgname{font-size:13px; font-weight:650}
+.tguse{font-size:11.5px; color:var(--ink2); margin-top:3px}
+.tgfeat{display:flex; gap:6px; flex-wrap:wrap; margin-top:10px}
+.tgnote{font-size:11px; color:var(--muted); margin-top:9px}
+.duty{display:flex; gap:11px; padding:10px 0; border-bottom:1px solid var(--grid); align-items:flex-start}
+.duty:last-child{border-bottom:0}
+.duty .ic{font-size:15px; line-height:1.3; width:20px; text-align:center; flex:none}
+.duty .n{font-size:12.5px; font-weight:600; color:var(--ink)}
+.duty .d{font-size:11.5px; color:var(--muted)}
+.sidelab{font-size:10px; color:var(--ink2); text-align:center; line-height:1.5}
+.sidelab span{color:var(--muted); font-size:9.5px}
+
+/* ---------- org pipeline view ---------- */
+.chain{display:flex; flex-direction:column; gap:0; align-items:stretch; max-width:640px}
+.step{display:grid; grid-template-columns:46px 1fr; gap:14px}
+.rail{position:relative; display:flex; flex-direction:column; align-items:center}
+.rail .dotn{width:14px;height:14px;border-radius:50%;border:2px solid var(--s1);background:var(--surface);margin-top:16px;flex:none;z-index:2}
+.rail .dotn.pending{border-color:var(--serious); border-style:dashed}
+.rail .bar{flex:1; width:2px; background:var(--axis)}
+.step:last-child .bar{display:none}
+.stepbody{padding:12px 0 20px}
+.stepbody .l1{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+.stepbody .nm{font-size:14px; font-weight:650}
+.stepbody .eng{font-size:10px; color:var(--muted); border:1px solid var(--border); border-radius:99px; padding:1px 7px}
+.stepbody .act{font-size:12.5px; color:var(--ink2); margin-top:3px}
+.stepbody .rl{font-size:11.5px; color:var(--muted)}
+.stepbody .io{display:flex; gap:14px; flex-wrap:wrap; margin-top:7px; font-size:10.5px}
+.stepbody .in{color:var(--muted)} .stepbody .out{color:var(--s1)}
+
+/* 보고 계층 트리 */
+ul.tree, ul.tree ul{list-style:none; margin:0; padding:0}
+ul.tree ul{margin-left:14px; padding-left:16px; border-left:1px solid var(--axis)}
+ul.tree li{position:relative; padding:3px 0}
+ul.tree ul > li::before{content:""; position:absolute; left:-16px; top:19px; width:12px; height:1px; background:var(--axis)}
+.tnode{display:inline-flex; align-items:center; gap:9px; padding:6px 12px; border-radius:8px;
+  border:1px solid var(--border); background:var(--surface)}
+.tnode.pending{border-style:dashed; opacity:.8}
+.tnode.stopped{opacity:.55}
+.tnode .tn{font-size:12.5px; font-weight:650}
+.tnode .tt{font-size:11px; color:var(--muted)}
+
+/* ---------- kanban ---------- */
+.board{margin-bottom:26px}
+.bhead{display:flex; align-items:center; gap:10px; margin-bottom:11px}
+.bhead .nm{font-size:13.5px; font-weight:650}
+.bhead .prog{flex:1; max-width:210px; height:4px; background:var(--grid); border-radius:99px; overflow:hidden}
+.bhead .prog i{display:block; height:100%; background:var(--good); border-radius:99px}
+.bhead .cnt{font-size:11px; color:var(--muted)}
+.cards{display:grid; grid-template-columns:repeat(auto-fill,minmax(216px,1fr)); gap:11px}
+.kc{background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:12px 13px; transition:transform .12s, border-color .12s}
+.kc:hover{transform:translateY(-2px); border-color:var(--s1)}
+.kc .t{font-size:12.5px; font-weight:550; line-height:1.45}
+.kc .meta{display:flex; gap:6px; align-items:center; flex-wrap:wrap; margin-top:9px}
+.kc .note{font-size:10.5px; color:var(--muted); margin-top:7px; line-height:1.45}
+.kc.urgent{border-left:3px solid var(--crit)}
+.chip{display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:600;
+  padding:2px 7px; border-radius:99px; border:1px solid var(--border); color:var(--ink2); white-space:nowrap}
+.chip.todo{color:var(--muted)} .chip.doing{color:var(--s1)} .chip.done{color:var(--good)}
+.chip.hold{color:var(--warn)} .chip.crit{color:var(--crit)}
+.chip.who{color:var(--ink2)}
+
+/* ---------- charts ---------- */
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+.bars{display:flex; flex-direction:column; gap:8px}
+.brow{display:grid; grid-template-columns:118px 1fr 42px; align-items:center; gap:10px}
+.bname{font-size:11.5px; color:var(--ink2); text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.bfill{height:15px; background:var(--s1); border-radius:0 4px 4px 0; min-width:2px}
+.bfill.zero{background:var(--axis); border-radius:0 2px 2px 0}
+.bval{font-size:11.5px; color:var(--ink2); font-variant-numeric:tabular-nums}
+svg.chart{display:block; width:100%}
+.tick{font-size:10px; fill:var(--muted); font-variant-numeric:tabular-nums}
+.glin{stroke:var(--grid); stroke-width:1}
+table{width:100%; border-collapse:collapse; font-size:12.5px}
+th{text-align:left; font-size:10.5px; color:var(--muted); letter-spacing:.04em; text-transform:uppercase;
+  font-weight:600; padding:0 10px 8px 0; border-bottom:1px solid var(--border)}
+td{padding:9px 10px 9px 0; border-bottom:1px solid var(--grid); color:var(--ink2); vertical-align:top}
+td.k{color:var(--ink); font-weight:550}
+tbody tr:last-child td{border-bottom:0}
+.feed div{display:flex; gap:9px; padding:9px 0; border-bottom:1px solid var(--grid); font-size:12.5px}
+.feed div:last-child{border-bottom:0}
+.feed .w{color:var(--ink); font-weight:600; white-space:nowrap; font-size:11.5px; padding-top:1px; min-width:78px}
+.feed .tm{color:var(--muted); font-size:10.5px; white-space:nowrap; margin-left:auto}
+.foot{font-size:11px; color:var(--muted); line-height:1.7}
+@media (max-width:1000px){
+  .app{grid-template-columns:1fr}
+  aside{position:static; height:auto; flex-direction:row; flex-wrap:wrap; align-items:center; gap:14px}
+  nav{flex-direction:row; flex-wrap:wrap}
+  .sblk{border-top:0; padding-top:0}
+  .grid2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<aside>
+  <div>
+    <div class="brand">ATTEZE OPS<small>실시간 오피스 · 조직 · 진행 현황</small></div>
+    <div class="livedot"><i></i><span id="liveTxt">LIVE</span></div>
+  </div>
+
+  <nav>
+    <button class="on" data-v="office"><span class="k">🏢</span>오피스</button>
+    <button data-v="org"><span class="k">🧭</span>조직 파이프라인</button>
+    <button data-v="aide"><span class="k">🗒️</span>비서실</button>
+    <button data-v="proj"><span class="k">📋</span>프로젝트</button>
+    <button data-v="act"><span class="k">📈</span>슬랙 활동</button>
+  </nav>
+
+  <div class="sblk">
+    <div class="lab">오늘 토큰</div>
+    <div class="big" id="tkToday">—</div>
+    <div class="sm" id="tkNote">데이터 없음</div>
+  </div>
+  <div class="sblk">
+    <div class="lab">예상 비용</div>
+    <div class="big" id="tkCost">—</div>
+    <div class="sm" id="tkKrw"></div>
+    <div class="spark empty" id="spark"></div>
+    <div class="sm" style="margin-top:4px">최근 7일</div>
+  </div>
+  <div class="sblk">
+    <div class="lab">막힌 것 TOP 3</div>
+    <div class="mini" id="miniBlock"></div>
+  </div>
+  <div class="sblk">
+    <button class="tbtn" id="themeBtn">라이트 모드</button>
+  </div>
+</aside>
+
+<main>
+  <div class="head">
+    <h1 id="vTitle">오피스 현황</h1>
+    <span class="stamp" id="stamp"></span>
+  </div>
+
+  <!-- ============ OFFICE ============ -->
+  <section class="view on" id="v-office">
+    <div class="office" id="office"></div>
+    <div class="card" style="margin-top:16px">
+      <h2>읽는 법</h2>
+      <p class="cap" style="margin-bottom:12px">자리는 실제 슬랙 상태를 따라갑니다.</p>
+      <div class="mini" style="font-size:12px">
+        <div><span class="sq" style="background:var(--good)"></span><span><b>움직임 + 초록 배지</b> — 연결돼서 실제로 일하고 있는 자리</span></div>
+        <div><span class="sq" style="background:var(--serious)"></span><span><b>회색 + 점선</b> — 슬랙 앱은 만들어졌지만 아직 연결(distribute) 안 된 자리</span></div>
+        <div><span class="sq" style="background:var(--muted)"></span><span><b>흐림</b> — 작업 중단 상태</span></div>
+        <div><span class="sq" style="background:var(--axis)"></span><span><b>빈 점선 박스</b> — 앞으로 채울 자리</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ORG ============ -->
+  <section class="view" id="v-org">
+    <div class="card">
+      <h2 id="pipeTitle"></h2>
+      <p class="cap" id="pipeSub"></p>
+      <div class="chain" id="chain"></div>
+    </div>
+    <div class="card">
+      <h2>보고 계층</h2>
+      <p class="cap">위 업무 순서와는 별개입니다. 실장 3인과 비서실장은 모두 대표 직속이고, 실무 5팀만 김서연 실장 산하입니다.</p>
+      <div id="tree"></div>
+    </div>
+    <div class="card">
+      <h2>구성원 · 슬랙 앱 연결 상태</h2>
+      <p class="cap">App ID 가 있는데 연결 안 된 자리가 지금 병목입니다.</p>
+      <table><thead><tr><th>이름</th><th>직책</th><th>부서</th><th>엔진</th><th>App ID</th><th>상태</th></tr></thead>
+      <tbody id="ppl"></tbody></table>
+    </div>
+  </section>
+
+  <!-- ============ AIDE ============ -->
+  <section class="view" id="v-aide">
+    <div class="card">
+      <h2 id="aTitle"></h2>
+      <p class="cap" id="aSub"></p>
+      <div class="aidegrid" id="aAgenda"></div>
+    </div>
+    <div class="card">
+      <h2>텔레그램 · 자비스</h2>
+      <p class="cap">비서실 전용 통로입니다. 업무 파이프라인(슬랙)은 타지 않습니다.</p>
+      <div id="aChan"></div>
+    </div>
+    <div class="card">
+      <h2>일정</h2>
+      <p class="cap">미팅 · 마감 · 리마인드</p>
+      <div id="aSched"></div>
+    </div>
+    <div class="card">
+      <h2>비서실장이 맡는 것</h2>
+      <p class="cap">대표님 전용입니다. 실무 5팀 파이프라인과 섞이지 않습니다.</p>
+      <div id="aDuty"></div>
+      <p class="foot" style="margin-top:14px" id="aNote"></p>
+    </div>
+  </section>
+
+  <!-- ============ PROJECTS ============ -->
+  <section class="view" id="v-proj">
+    <div id="boards"></div>
+    <div class="card">
+      <h2>지금 막고 있는 것</h2>
+      <p class="cap">대표님 손이 닿아야 풀리는 순서.</p>
+      <table><thead><tr><th style="width:44px">순위</th><th>항목</th><th>내용</th></tr></thead>
+      <tbody id="blk"></tbody></table>
+    </div>
+  </section>
+
+  <!-- ============ ACTIVITY ============ -->
+  <section class="view" id="v-act">
+    <div class="card">
+      <h2>슬랙 활동</h2>
+      <p class="cap" id="actCap"></p>
+      <div class="grid2">
+        <div>
+          <div class="cap" style="margin-bottom:10px; color:var(--ink2); font-weight:600; font-size:12.5px">채널별</div>
+          <div class="bars" id="chanBars"></div>
+        </div>
+        <div>
+          <div class="cap" style="margin-bottom:10px; color:var(--ink2); font-weight:600; font-size:12.5px">구성원별</div>
+          <div class="bars" id="userBars"></div>
+        </div>
+      </div>
+      <div style="margin-top:24px">
+        <div class="cap" style="margin-bottom:8px; color:var(--ink2); font-weight:600; font-size:12.5px">일자별 (활동 있는 날만)</div>
+        <svg class="chart" id="line" viewBox="0 0 900 210"></svg>
+      </div>
+    </div>
+    <div class="card">
+      <h2>최근 대화</h2>
+      <p class="cap">슬랙에서 마지막으로 오간 내용.</p>
+      <div class="feed" id="feed"></div>
+    </div>
+    <div class="card">
+      <h2>데이터 출처</h2>
+      <p class="foot" id="srcNote"></p>
+    </div>
+  </section>
+</main>
+</div>
+
+<script>
+/* ============================================================
+   ATTEZE OPS — 렌더러
+   데이터는 전부 data/ops.json 에서만 옵니다. 이 파일은 건드릴 필요 없습니다.
+   ============================================================ */
+const REFRESH_MS = 30000;
+let D = null;
+
+/* ---------- 픽셀 캐릭터 ---------- */
+const SPRITES = {
+  short: [
+    "..............",
+    "....HHHHHH....",
+    "...HHHHHHHH...",
+    "..HHHHHHHHHH..",
+    "..HHSSSSSSHH..",
+    "..HSSSSSSSSH..",
+    "..SSEESSEESS..",
+    "..SSSSSSSSSS..",
+    "...SSSMMSSS...",
+    "....SSSSSS....",
+    ".....NNNN.....",
+    "...CCCCCCCC...",
+    "..CCCCCCCCCC..",
+    ".ACCCCCCCCCCA.",
+    ".ACCCCCCCCCCA.",
+    ".SSCCCCCCCCSS.",
+    "..CCCCCCCCCC..",
+    "..CCC....CCC.."
+  ],
+  long: [
+    "..............",
+    "....HHHHHH....",
+    "...HHHHHHHH...",
+    "..HHHHHHHHHH..",
+    "..HHSSSSSSHH..",
+    "..HSSSSSSSSH..",
+    "..HSEESSEESH..",
+    "..HSSSSSSSSH..",
+    "..HSSSMMSSSH..",
+    "..HHSSSSSSHH..",
+    "..HH.NNNN.HH..",
+    "...CCCCCCCC...",
+    "..CCCCCCCCCC..",
+    ".ACCCCCCCCCCA.",
+    ".ACCCCCCCCCCA.",
+    ".SSCCCCCCCCSS.",
+    "..CCCCCCCCCC..",
+    "..CCC....CCC.."
+  ],
+  suit: [
+    "..............",
+    "....HHHHHH....",
+    "...HHHHHHHH...",
+    "..HHHHHHHHHH..",
+    "..HHSSSSSSHH..",
+    "..HSSSSSSSSH..",
+    "..SSEESSEESS..",
+    "..SSSSSSSSSS..",
+    "...SSSMMSSS...",
+    "....SSSSSS....",
+    ".....NNNN.....",
+    "...CCWWWWCC...",
+    "..CCCWTTWCCC..",
+    ".ACCCCTTCCCCA.",
+    ".ACCCCTTCCCCA.",
+    ".SSCCCCCCCCSS.",
+    "..CCCCCCCCCC..",
+    "..CCC....CCC.."
+  ]
+};
+function shade(hex, f){
+  const n = parseInt(hex.slice(1),16);
+  let r=(n>>16)&255, g=(n>>8)&255, b=n&255;
+  r=Math.max(0,Math.min(255,Math.round(r*f)));
+  g=Math.max(0,Math.min(255,Math.round(g*f)));
+  b=Math.max(0,Math.min(255,Math.round(b*f)));
+  return "#"+((r<<16)|(g<<8)|b).toString(16).padStart(6,"0");
+}
+function spriteSVG(p){
+  const C = { H:p.hair, S:p.skin, C:p.cloth, N:shade(p.skin,.86), E:"#14141a",
+              M:shade(p.skin,.72), T:shade(p.cloth,.5), W:"#e9e9e6", A:p.cloth };
+  const map = SPRITES[p.sprite] || SPRITES.short;
+  let body="", arms="";
+  map.forEach((row,y)=>{
+    for(let x=0;x<row.length;x++){
+      const k=row[x]; if(k===".") continue;
+      const r=`<rect x="${x}" y="${y}" width="1" height="1" fill="${C[k]}"/>`;
+      if(k==="A") arms+=r; else body+=r;
+    }
+  });
+  return `<svg viewBox="0 0 14 18"><g class="body">${body}</g><g class="arms">${arms}</g></svg>`;
+}
+function deskSVG(live){
+  const scr = live ? "#3987e5" : "#4a4a52";
+  return `<svg viewBox="0 0 40 9">
+    <rect x="0" y="4" width="40" height="2" fill="var(--deskw)"/>
+    <rect x="2" y="6" width="2" height="3" fill="var(--deskw)"/>
+    <rect x="36" y="6" width="2" height="3" fill="var(--deskw)"/>
+    <rect x="24" y="0" width="9" height="4" fill="#2a2d38"/>
+    <rect class="scr" x="25" y="1" width="7" height="2" fill="${scr}"/>
+    <rect x="6" y="2" width="6" height="2" fill="#3a3d48"/>
+  </svg>`;
+}
+function pod(p){
+  const st = p.state;
+  const badge = p.status || (st==="live" ? "근무중" : st==="stopped" ? "중단" : "미연결");
+  return `<div class="pod ${st}" title="${p.name} · ${p.title} · ${p.engine}">
+    <div class="badge ${st}">${badge}</div>
+    <div class="sprite">${spriteSVG(p)}</div>
+    <div class="desk">${deskSVG(st==="live")}</div>
+    <div class="plate"><div class="nm">${p.name}</div><div class="rl">${p.title}</div>
+      ${p.model?`<div class="mdl">${p.model}</div>`:""}</div>
+  </div>`;
+}
+function seat(s){
+  return `<div class="seat"><div class="p">＋</div><div class="t">${s.title}</div><div class="d">${s.dept} · 채울 자리</div></div>`;
+}
+
+/* ---------- 오피스 렌더 ---------- */
+function mergeSVG(live, label){
+  // 성재경·차소희 두 갈래가 김서연 한 명으로 모이는 그림
+  const c = live ? "var(--s1)" : "var(--axis)";
+  const dot = live ? `<circle r="3.5" fill="var(--s1)">
+      <animateMotion dur="2.2s" repeatCount="indefinite" path="%P%"/></circle>` : "";
+  const L = "M118,2 L250,44", R = "M382,2 L250,44";
+  return `<svg class="merge" viewBox="0 0 500 52" preserveAspectRatio="none">
+    <path d="${L}" stroke="${c}" stroke-width="2" fill="none"/>
+    <path d="${R}" stroke="${c}" stroke-width="2" fill="none"/>
+    <path d="M250,44 L250,50" stroke="${c}" stroke-width="2" fill="none"/>
+    ${dot.replace("%P%", L)}${dot.replace("%P%", R)}
+    <text x="250" y="20" text-anchor="middle" class="mlab">${label}</text>
+  </svg>`;
+}
+function downArrow(live, label){
+  const c = live ? "var(--s1)" : "var(--axis)";
+  return `<div class="down"><span>${label}</span>
+    <svg viewBox="0 0 12 34"><path d="M6,0 L6,26" stroke="${c}" stroke-width="2" fill="none"/>
+    <path d="M2,25 L6,33 L10,25 Z" fill="${c}"/>
+    ${live?`<circle cx="6" r="3" fill="var(--s1)"><animate attributeName="cy" values="0;26" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;1;0" dur="1.8s" repeatCount="indefinite"/></circle>`:""}
+    </svg></div>`;
+}
+function renderOffice(){
+  const by = id => D.people.find(p=>p.id===id);
+  const plan = by("plan"), chk = by("chk"), rt = by("rt"), sec = by("sec");
+  const floor = D.people.filter(p=>p.desk==="floor");
+  const floorLive = floor.filter(f=>f.state==="live").length;
+  const deptLive  = floor.filter(f=>f.app_id && f.state==="live").length;
+  const deptTotal = floor.filter(f=>f.app_id).length;
+  const arrow = ok => `<div class="arrow${ok?"":" dead"}"><span class="alab">기획안</span><i></i></div>`;
+
+  document.getElementById("office").innerHTML = `
+    <div class="zone exec">
+      <div class="ztitle">대표실 · <b>업무 지시 투입</b></div>
+      <div class="pods center execpair">
+        ${pod(by("ceo"))}
+        ${sec ? `<div class="tglink"><div class="tgbar"><i></i></div>
+            <div class="tgchip">텔레그램<b>자비스 전용</b></div></div>
+          <div class="aide">${pod(sec)}<div class="aidelab">대표 전용 · 파이프라인 밖</div></div>` : ""}
+      </div>
+      ${downArrow(true, "슬랙 · 업무 지시")}
+    </div>
+
+    <div class="zone chief">
+      <div class="ztitle">실장실 1단 · <b>기획 → 반박 · 검증</b></div>
+      <div class="pods center flowline">
+        ${pod(plan)}${arrow(plan.state==="live"&&chk.state==="live")}${pod(chk)}
+      </div>
+      ${mergeSVG(rt.state==="live", "기획안 + 반박안 · 보완안")}
+    </div>
+
+    <div class="zone chief" style="background:linear-gradient(180deg,rgba(57,135,229,.10),transparent)">
+      <div class="ztitle">실장실 2단 · <b>분석 → 최종 실행안 → 배분</b></div>
+      <div class="pods center">${pod(rt)}</div>
+      ${downArrow(deptLive>0, "실행 카드 배분")}
+    </div>
+
+    <div class="zone floor">
+      <div class="ztitle">실무층 · <b>부서 ${deptLive}/${deptTotal} 연결됨</b>
+        <span style="color:var(--muted)">(자리 ${floorLive}/${floor.length})</span></div>
+      <div class="pods flowline" style="justify-content:flex-start">${(()=>{
+        // 실무층 안에서 이어지는 흐름(개발 → 검수)은 붙여서 화살표로 잇습니다
+        const fid = new Set(floor.map(f=>f.id)), nextOf = {};
+        floor.forEach(f=>(f.workflow_after||[]).forEach(a=>{ if(fid.has(a)) nextOf[a]=f; }));
+        const isNext = new Set(Object.values(nextOf).map(f=>f.id));
+        let out = "";
+        floor.filter(f=>!isNext.has(f.id)).forEach(f=>{
+          out += pod(f);
+          const nx = nextOf[f.id];
+          if(nx) out += `<div class="arrow${(f.state==="live"&&nx.state==="live")?"":" dead"}">`
+                      + `<span class="alab">제출 · 검수</span><i></i></div>` + pod(nx);
+        });
+        return out;
+      })()}</div>
+      <div class="tracks">${
+        [...new Set(floor.map(f=>f.track).filter(Boolean))].map(t=>{
+          const mem = floor.filter(f=>f.track===t);
+          return `<div class="trk"><div class="tn">${t}</div>
+            <div class="tm">${mem.map(m=>m.dept).join(" · ")}</div>
+            <div class="ts">${mem.filter(m=>m.state==="live").length}/${mem.length} 연결</div></div>`;
+        }).join("")}</div>
+    </div>
+
+    <div class="zone floor" style="background:transparent">
+      <div class="ztitle">빈 자리 · <b>${D.open_seats.length}석</b></div>
+      <div class="pods">${D.open_seats.map(seat).join("")}</div>
+    </div>`;
+}
+
+/* ---------- 조직 파이프라인 ---------- */
+function renderOrg(){
+  document.getElementById("pipeTitle").textContent = D.pipeline.title;
+  document.getElementById("pipeSub").textContent   = D.pipeline.subtitle;
+  const nameOf = id => (D.pipeline.steps.find(x=>x.id===id)||{}).name || id;
+  document.getElementById("chain").innerHTML = D.pipeline.steps.map((s,i)=>`
+    <div class="step">
+      <div class="rail"><div class="dotn ${s.state==='pending'?'pending':''}"></div><div class="bar"></div></div>
+      <div class="stepbody">
+        <div class="l1"><span class="nm">${s.name}</span><span class="eng">${s.engine}</span>
+          ${s.state==='pending'?'<span class="chip crit">미연결</span>':''}</div>
+        <div class="rl">${s.role}</div>
+        <div class="act">${s.act}</div>
+        <div class="io">
+          ${(s.from&&s.from.length)?`<span class="in">받음 ← ${s.from.map(nameOf).join(" + ")}</span>`:""}
+          ${s.out?`<span class="out">넘김 → ${s.out}</span>`:""}
+        </div>
+      </div>
+    </div>`).join("");
+
+  // 보고 계층 — 업무 순서와 별개
+  const kids = pid => D.people.filter(p=>p.reports_to===pid);
+  const line = p => `<div class="tnode ${p.state}">
+      <span class="tn">${p.name}</span><span class="tt">${p.title}</span>
+      ${p.app_id?`<span class="chip ${p.state==='live'?'done':'crit'}">${p.state==='live'?'연결됨':'미연결'}</span>`:""}
+    </div>`;
+  const branch = p => `<li>${line(p)}${kids(p.id).length?`<ul>${kids(p.id).map(branch).join("")}</ul>`:""}</li>`;
+  const root = D.people.find(p=>!p.reports_to);
+  document.getElementById("tree").innerHTML = `<ul class="tree">${branch(root)}</ul>`;
+
+  document.getElementById("ppl").innerHTML = D.people.map(p=>{
+    const cls = p.state==="live"?"done":(p.state==="stopped"?"todo":"crit");
+    const txt = p.state==="live"?"연결됨":(p.state==="stopped"?"중단":"Not distributed");
+    return `<tr><td class="k">${p.name}</td><td>${p.title}</td><td>${p.dept}</td>
+      <td>${p.engine}</td><td style="font-variant-numeric:tabular-nums">${p.app_id||"—"}</td>
+      <td><span class="chip ${cls}">${txt}</span></td></tr>`;
+  }).join("");
+}
+
+/* ---------- 비서실 ---------- */
+function renderAide(){
+  const a = D.assistant; if(!a) return;
+  const sec = D.people.find(p=>p.id===a.person) || {};
+  const off = sec.state !== "live";
+  document.getElementById("aTitle").textContent = a.title;
+  document.getElementById("aSub").textContent =
+    a.subtitle + (off ? " · 아직 연결 안 됨" : " · 연결됨");
+
+  const COLS = [
+    ["yesterday","📌","어제 한 일","전날 처리된 것"],
+    ["today","✅","오늘 할 일","오늘 처리할 것"],
+    ["tomorrow","🔜","내일 할 일","미리 잡아둘 것"]
+  ];
+  document.getElementById("aAgenda").innerHTML = COLS.map(([k,ic,nm,sub])=>{
+    const items = (a.agenda && a.agenda[k]) || [];
+    return `<div class="aidecol"><h4><span>${ic}</span>${nm}</h4><div class="sub">${sub}</div>
+      ${items.length ? `<ul>${items.map(x=>`<li><span>${x}</span></li>`).join("")}</ul>`
+                     : `<div class="empty">${off?"비서실장 연결 후 채워집니다":"아직 등록된 항목 없음"}</div>`}
+    </div>`;
+  }).join("");
+
+  const tg = (D.channels_io||[]).find(c=>c.id===(a.channel||"telegram"));
+  document.getElementById("aChan").innerHTML = tg ? `
+    <div class="tgcard">
+      <div class="tghead"><span class="tgname">${tg.name}</span>
+        <span class="chip ${tg.state==='live'?'done':'crit'}">${tg.state==='live'?'가동중':'미연결'}</span></div>
+      <div class="tguse">${tg.use}</div>
+      <div class="tgfeat">${(tg.features||[]).map(f=>
+        `<span class="chip ${f.s==='done'?'done':'todo'}">${f.s==='done'?'✓':'·'} ${f.n}</span>`).join("")}</div>
+      <div class="tgnote">${tg.note||""}</div>
+    </div>` : `<div class="empty">등록된 채널 없음</div>`;
+
+  const sch = a.schedule || [];
+  document.getElementById("aSched").innerHTML = sch.length
+    ? `<table><thead><tr><th style="width:110px">언제</th><th>내용</th><th style="width:120px">비고</th></tr></thead>
+       <tbody>${sch.map(s=>`<tr><td class="k">${s.when||""}</td><td>${s.t||""}</td><td>${s.note||""}</td></tr>`).join("")}</tbody></table>`
+    : `<div class="empty">${off?"비서실장 연결 후 일정이 들어옵니다":"등록된 일정 없음"}</div>`;
+
+  document.getElementById("aDuty").innerHTML = (a.duties||[]).map(x=>
+    `<div class="duty"><span class="ic">${x.icon}</span>
+      <span><span class="n">${x.n}</span><div class="d">${x.d}</div></span></div>`).join("");
+  document.getElementById("aNote").textContent = a.note || "";
+}
+
+/* ---------- 칸반 ---------- */
+const SL = { todo:"할일", doing:"진행중", done:"완료", hold:"보류" };
+function renderBoards(){
+  document.getElementById("boards").innerHTML = D.boards.map(b=>{
+    const done = b.cards.filter(c=>c.s==="done").length;
+    const pct = Math.round(done/b.cards.length*100);
+    return `<div class="board">
+      <div class="bhead">
+        <span style="font-size:15px">${b.icon}</span>
+        <span class="nm">${b.name}</span>
+        <span class="prog"><i style="width:${pct}%"></i></span>
+        <span class="cnt">${done}/${b.cards.length} 완료</span>
+      </div>
+      <div class="cards">${b.cards.map(c=>{
+        const who = D.people.find(p=>p.id===c.owner);
+        return `<div class="kc ${c.urgent?'urgent':''}">
+          <div class="t">${c.t}</div>
+          <div class="meta">
+            <span class="chip ${c.s}">${SL[c.s]||c.s}</span>
+            ${who?`<span class="chip who">${who.name.split(" ")[0]}</span>`:""}
+            ${c.urgent?'<span class="chip crit">긴급</span>':""}
+          </div>
+          ${c.note?`<div class="note">${c.note}</div>`:""}
+        </div>`;}).join("")}</div>
+    </div>`;
+  }).join("");
+
+  document.getElementById("blk").innerHTML = D.blockers.map(b=>{
+    const c = b.sev==="crit"?"crit":(b.sev==="warn"?"hold":"todo");
+    return `<tr><td><span class="chip ${c}">${b.rank}</span></td><td class="k">${b.t}</td><td>${b.d}</td></tr>`;
+  }).join("");
+}
+
+/* ---------- 활동 ---------- */
+function bars(el, data, total){
+  const max = Math.max(...data.map(d=>d.v), 1);
+  el.innerHTML = data.map(d=>`<div class="brow" title="${d.n}: ${d.v}건">
+    <div class="bname">${d.n}</div>
+    <div><div class="bfill ${d.v===0?'zero':''}" style="width:${d.v===0?4:Math.max(2,d.v/max*100)}%"></div></div>
+    <div class="bval">${d.v}</div></div>`).join("");
+}
+function renderAct(){
+  const a = D.activity;
+  document.getElementById("actCap").textContent =
+    `${a.range} · 총 ${a.total}건${a.sampled?" (최근 구간 표본 — 이전 이력 더 있음)":""}`;
+  bars(document.getElementById("chanBars"), a.channels, a.total);
+  bars(document.getElementById("userBars"), a.by_person, a.total);
+
+  const days=a.daily, W=900,H=210,L=40,R=18,T=14,B=30;
+  const pw=W-L-R, ph=H-T-B;
+  const max = Math.max(10, Math.ceil(Math.max(...days.map(d=>d.v))/10)*10);
+  const X=i=>L+(days.length<2?pw/2:i*pw/(days.length-1)), Y=v=>T+ph-v/max*ph;
+  let s="";
+  for(let t=0;t<=max;t+=max/5){
+    s+=`<line class="glin" x1="${L}" y1="${Y(t)}" x2="${W-R}" y2="${Y(t)}"/>`;
+    s+=`<text class="tick" x="${L-8}" y="${Y(t)+3.5}" text-anchor="end">${t}</text>`;
+  }
+  let path="", area=`M${X(0)},${Y(0)}`;
+  days.forEach((p,i)=>{ path+=(i?"L":"M")+X(i)+","+Y(p.v); area+=`L${X(i)},${Y(p.v)}`; });
+  area+=`L${X(days.length-1)},${Y(0)}Z`;
+  const c=getComputedStyle(document.documentElement).getPropertyValue("--s1").trim();
+  const sf=getComputedStyle(document.documentElement).getPropertyValue("--surface").trim();
+  s+=`<path d="${area}" fill="${c}" opacity=".12"/><path d="${path}" fill="none" stroke="${c}" stroke-width="2" stroke-linejoin="round"/>`;
+  days.forEach((p,i)=>{ s+=`<text class="tick" x="${X(i)}" y="${H-B+17}" text-anchor="middle">${p.d}</text>`; });
+  const peak = days.reduce((m,p,i)=>p.v>days[m].v?i:m,0), last=days.length-1;
+  [peak,last].forEach(i=>{
+    s+=`<circle cx="${X(i)}" cy="${Y(days[i].v)}" r="4.5" fill="${c}" stroke="${sf}" stroke-width="2"/>`;
+    s+=`<text class="tick" x="${X(i)}" y="${Y(days[i].v)-10}" text-anchor="middle" style="font-size:11px;fill:var(--ink2);font-weight:600">${days[i].v}</text>`;
+  });
+  document.getElementById("line").innerHTML=s;
+
+  document.getElementById("feed").innerHTML = (D.feed||[]).map(f=>{
+    const w = D.people.find(p=>p.id===f.who);
+    return `<div><span class="w">${w?w.name:f.who}</span><span>${f.text}</span><span class="tm">${f.when}</span></div>`;
+  }).join("");
+
+  document.getElementById("srcNote").innerHTML =
+    `<b>생성 시각</b> · ${D.meta.generated_at}<br><b>출처</b> · ${D.meta.source}<br><b>참고</b> · ${D.meta.notes}`;
+}
+
+/* ---------- 사이드바 ---------- */
+function renderSide(){
+  const t=D.tokens;
+  document.getElementById("tkToday").textContent = t.today==null ? "—" : t.today.toLocaleString();
+  document.getElementById("tkNote").textContent  = t.today==null ? (t.note||"데이터 없음") : "오늘 누적";
+  document.getElementById("tkCost").textContent  = t.cost_usd==null ? "—" : "$"+t.cost_usd.toFixed(2);
+  document.getElementById("tkKrw").textContent   = t.cost_usd==null ? "" :
+    `≈ ₩${Math.round(t.cost_usd*(t.fx_krw||1400)).toLocaleString()} ($1=${(t.fx_krw||1400).toLocaleString()}원)`;
+  const sp=document.getElementById("spark"), v=t.spark7||[];
+  const mx=Math.max(...v,1);
+  sp.className = "spark"+(v.length?"":" empty");
+  sp.innerHTML = (v.length?v:[1,1,1,1,1,1,1]).map(x=>`<i style="height:${v.length?Math.max(4,x/mx*100):6}%"></i>`).join("");
+
+  const SEV={crit:"var(--crit)",warn:"var(--warn)",info:"var(--muted)"};
+  document.getElementById("miniBlock").innerHTML = D.blockers.slice(0,3).map(b=>
+    `<div><span class="sq" style="background:${SEV[b.sev]}"></span><span>${b.t}</span></div>`).join("");
+
+  const d=new Date(D.meta.generated_at);
+  document.getElementById("stamp").textContent =
+    isNaN(d) ? D.meta.generated_at : `${D.meta.company} · 갱신 ${d.toLocaleString("ko-KR",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"})}`;
+}
+
+/* ---------- 부팅 ---------- */
+const TITLES={office:"오피스 현황",org:"조직 파이프라인",aide:"비서실",proj:"프로젝트 진행 상황",act:"슬랙 활동"};
+function renderAll(){ renderSide(); renderOffice(); renderOrg(); renderAide(); renderBoards(); renderAct(); }
+
+async function load(first){
+  try{
+    const r = await fetch("data/ops.json?t="+Date.now(), {cache:"no-store"});
+    if(!r.ok) throw new Error(r.status);
+    D = await r.json();
+    renderAll();
+    document.getElementById("liveTxt").textContent="LIVE";
+  }catch(e){
+    if(first && window.__OPS_FALLBACK__){   // 미리보기용 내장 데이터 (NAS 배포본에는 없음)
+      D = window.__OPS_FALLBACK__; renderAll();
+      document.getElementById("liveTxt").textContent="미리보기";
+      return;
+    }
+    document.getElementById("liveTxt").textContent="연결 끊김";
+    if(first) document.getElementById("office").innerHTML =
+      `<div style="padding:40px;text-align:center;color:var(--muted)">data/ops.json 을 읽지 못했습니다.<br><small>${e}</small></div>`;
+  }
+}
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("nav button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on");
+  const v=b.dataset.v;
+  document.querySelectorAll(".view").forEach(s=>s.classList.toggle("on", s.id==="v-"+v));
+  document.getElementById("vTitle").textContent=TITLES[v];
+}));
+const tb=document.getElementById("themeBtn");
+tb.addEventListener("click",()=>{
+  const dark = document.documentElement.getAttribute("data-theme")==="dark";
+  document.documentElement.setAttribute("data-theme", dark?"light":"dark");
+  tb.textContent = dark?"다크 모드":"라이트 모드";
+  if(D) renderAct();
+});
+load(true);
+setInterval(()=>load(false), REFRESH_MS);
+</script>
+</body>
+</html>
