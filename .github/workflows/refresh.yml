@@ -1,0 +1,48 @@
+# ATTEZE OPS — 슬랙 자동 수집 (15분마다 data/ops.json 갱신)
+name: refresh
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 슬랙에서 최신 상태 수집
+        env:
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+          DATA_DIR: ${{ github.workspace }}/data
+          DAYS: "30"
+          LIVE_HOURS: "72"
+          ONCE: "1"
+          PUBLIC_MODE: "1"
+        run: python -u refresh.py
+
+      - name: 바뀐 게 있으면 저장
+        run: |
+          git config user.name  "atteze-ops-bot"
+          git config user.email "bot@users.noreply.github.com"
+          if git diff --quiet -- data/ops.json; then
+            echo "변경 없음 — 커밋 생략"
+          else
+            git add data/ops.json
+            git commit -m "chore: 슬랙 데이터 갱신 $(date -u +'%Y-%m-%d %H:%MZ')"
+            git push
+          fi
