@@ -96,6 +96,7 @@ h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
 .sprite{position:relative; width:52px; height:67px; margin-bottom:-10px}
 .sprite svg{width:100%; height:100%; display:block; shape-rendering:crispEdges; image-rendering:pixelated}
 .pod.pending .sprite svg{filter:grayscale(1) opacity(.42)}
+.pod.idle .sprite svg{filter:saturate(.55) opacity(.72)}
 .pod.stopped .sprite svg{filter:grayscale(1) opacity(.3)}
 .pod.live .arms{animation:type 1.1s steps(2,end) infinite}
 .pod.live .body{animation:breathe 3.4s ease-in-out infinite}
@@ -114,12 +115,14 @@ h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
 .plate .mdl{font-size:7.5px; color:var(--s4); margin-top:2px; letter-spacing:.01em; font-weight:600}
 .pod.pending .plate .mdl,.pod.stopped .plate .mdl{color:var(--muted)}
 .pod.pending .plate{border-style:dashed}
+.pod.idle .plate{border-color:rgba(250,178,25,.35)}
 .badge{
   position:absolute; top:0; left:50%; transform:translateX(-50%);
   font-size:8.5px; font-weight:650; padding:1px 6px; border-radius:99px;
   white-space:nowrap; border:1px solid var(--border); background:var(--surface); z-index:3;
 }
-.badge.live{color:var(--good)} .badge.pending{color:var(--serious)} .badge.stopped{color:var(--muted)}
+.badge.live{color:var(--good)} .badge.pending{color:var(--serious)}
+.badge.stopped{color:var(--muted)} .badge.idle{color:var(--warn)}
 .pod.live .badge{animation:float 3s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-3px)}}
 .seat{
@@ -180,6 +183,19 @@ h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
 .tguse{font-size:11.5px; color:var(--ink2); margin-top:3px}
 .tgfeat{display:flex; gap:6px; flex-wrap:wrap; margin-top:10px}
 .tgnote{font-size:11px; color:var(--muted); margin-top:9px}
+.logday{margin-bottom:18px}
+.logdate{font-size:11px; color:var(--muted); letter-spacing:.04em; padding-bottom:6px;
+  border-bottom:1px solid var(--border); margin-bottom:9px; display:flex; justify-content:space-between}
+.logitem{border-left:3px solid var(--axis); background:var(--surface); border:1px solid var(--border);
+  border-left-width:3px; border-radius:8px; padding:10px 13px; margin-bottom:7px}
+.logitem .l1{display:flex; gap:10px; align-items:baseline}
+.logitem .ls{font-size:12.5px; font-weight:600; flex:1; line-height:1.45}
+.logitem .lt{font-size:10.5px; color:var(--muted); white-space:nowrap; font-variant-numeric:tabular-nums}
+.logitem .l2{display:flex; gap:7px; align-items:center; flex-wrap:wrap; margin-top:7px}
+.logitem .lw{font-size:10.5px; color:var(--ink2)}
+.logitem .lsess{font-size:10px; color:var(--muted); font-family:ui-monospace,monospace}
+.logitem .l3{font-size:11.5px; color:var(--muted); margin-top:6px; line-height:1.5}
+.logitem .l3.res{color:var(--ink2)}
 .duty{display:flex; gap:11px; padding:10px 0; border-bottom:1px solid var(--grid); align-items:flex-start}
 .duty:last-child{border-bottom:0}
 .duty .ic{font-size:15px; line-height:1.3; width:20px; text-align:center; flex:none}
@@ -281,6 +297,7 @@ tbody tr:last-child td{border-bottom:0}
     <button class="on" data-v="office"><span class="k">🏢</span>오피스</button>
     <button data-v="org"><span class="k">🧭</span>조직 파이프라인</button>
     <button data-v="aide"><span class="k">🗒️</span>비서실</button>
+    <button data-v="log"><span class="k">📝</span>작업 로그</button>
     <button data-v="proj"><span class="k">📋</span>프로젝트</button>
     <button data-v="act"><span class="k">📈</span>슬랙 활동</button>
   </nav>
@@ -320,7 +337,8 @@ tbody tr:last-child td{border-bottom:0}
       <p class="cap" style="margin-bottom:12px">자리는 실제 슬랙 상태를 따라갑니다.</p>
       <div class="mini" style="font-size:12px">
         <div><span class="sq" style="background:var(--good)"></span><span><b>움직임 + 초록 배지</b> — 연결돼서 실제로 일하고 있는 자리</span></div>
-        <div><span class="sq" style="background:var(--serious)"></span><span><b>회색 + 점선</b> — 슬랙 앱은 만들어졌지만 아직 연결(distribute) 안 된 자리</span></div>
+        <div><span class="sq" style="background:var(--warn)"></span><span><b>살짝 흐림 + 노란 배지</b> — 붙어는 있는데 최근에 조용한 자리</span></div>
+        <div><span class="sq" style="background:var(--serious)"></span><span><b>회색 + 점선</b> — 앱은 있지만 아직 발언 기록이 없는 자리</span></div>
         <div><span class="sq" style="background:var(--muted)"></span><span><b>흐림</b> — 작업 중단 상태</span></div>
         <div><span class="sq" style="background:var(--axis)"></span><span><b>빈 점선 박스</b> — 앞으로 채울 자리</span></div>
       </div>
@@ -369,6 +387,15 @@ tbody tr:last-child td{border-bottom:0}
       <p class="cap">대표님 전용입니다. 실무 5팀 파이프라인과 섞이지 않습니다.</p>
       <div id="aDuty"></div>
       <p class="foot" style="margin-top:14px" id="aNote"></p>
+    </div>
+  </section>
+
+  <!-- ============ WORKLOG ============ -->
+  <section class="view" id="v-log">
+    <div class="card">
+      <h2>작업 로그</h2>
+      <p class="cap" id="logCap"></p>
+      <div id="logBody"></div>
     </div>
   </section>
 
@@ -562,8 +589,9 @@ function renderOffice(){
   const by = id => D.people.find(p=>p.id===id);
   const plan = by("plan"), chk = by("chk"), rt = by("rt"), sec = by("sec");
   const floor = D.people.filter(p=>p.desk==="floor");
-  const floorLive = floor.filter(f=>f.state==="live").length;
-  const deptLive  = floor.filter(f=>f.app_id && f.state==="live").length;
+  const conn = f => f.state==="live" || f.state==="idle";      // 붙어 있음 (조용해도 붙은 건 붙은 것)
+  const floorLive = floor.filter(conn).length;
+  const deptLive  = floor.filter(f=>f.app_id && conn(f)).length;
   const deptTotal = floor.filter(f=>f.app_id).length;
   const arrow = ok => `<div class="arrow${ok?"":" dead"}"><span class="alab">기획안</span><i></i></div>`;
 
@@ -615,7 +643,7 @@ function renderOffice(){
           const mem = floor.filter(f=>f.track===t);
           return `<div class="trk"><div class="tn">${t}</div>
             <div class="tm">${mem.map(m=>m.dept).join(" · ")}</div>
-            <div class="ts">${mem.filter(m=>m.state==="live").length}/${mem.length} 연결</div></div>`;
+            <div class="ts">${mem.filter(m=>m.state==="live"||m.state==="idle").length}/${mem.length} 연결</div></div>`;
         }).join("")}</div>
     </div>
 
@@ -656,8 +684,9 @@ function renderOrg(){
   document.getElementById("tree").innerHTML = `<ul class="tree">${branch(root)}</ul>`;
 
   document.getElementById("ppl").innerHTML = D.people.map(p=>{
-    const cls = p.state==="live"?"done":(p.state==="stopped"?"todo":"crit");
-    const txt = p.state==="live"?"연결됨":(p.state==="stopped"?"중단":"Not distributed");
+    const M = {live:["done","연결됨"], idle:["hold","붙음 · 대기"],
+               stopped:["todo","중단"], pending:["crit","Not distributed"]};
+    const [cls, txt] = M[p.state] || M.pending;
     return `<tr><td class="k">${p.name}</td><td>${p.title}</td><td>${p.dept}</td>
       <td>${p.engine}</td><td style="font-variant-numeric:tabular-nums">${p.app_id||"—"}</td>
       <td><span class="chip ${cls}">${txt}</span></td></tr>`;
@@ -707,6 +736,37 @@ function renderAide(){
     `<div class="duty"><span class="ic">${x.icon}</span>
       <span><span class="n">${x.n}</span><div class="d">${x.d}</div></span></div>`).join("");
   document.getElementById("aNote").textContent = a.note || "";
+}
+
+/* ---------- 작업 로그 ---------- */
+const TOOLC = {"claude-code":"var(--s2)","cowork":"var(--s1)","claude":"var(--s7)"};
+function renderLog(){
+  const W = D.worklog || [];
+  const cap = document.getElementById("logCap"), body = document.getElementById("logBody");
+  if(!W.length){
+    cap.textContent = "Claude Code · Cowork 에서 한 작업이 슬랙을 거쳐 여기에 쌓입니다.";
+    body.innerHTML = `<div class="empty">아직 기록이 없습니다 · atteze_log.py 를 연결하면 채워집니다</div>`;
+    return;
+  }
+  const days = [...new Set(W.map(w=>w.day))];
+  const tools = [...new Set(W.map(w=>w.tool))];
+  cap.textContent = `${W.length}건 · ${days.length}일 · ${tools.join(" · ")}`;
+  body.innerHTML = days.map(day=>{
+    const items = W.filter(w=>w.day===day);
+    return `<div class="logday"><div class="logdate">${day}<span>${items.length}건</span></div>
+      ${items.map(w=>`<div class="logitem" style="border-left-color:${TOOLC[w.tool]||"var(--axis)"}">
+        <div class="l1"><span class="ls">${w.summary}</span>
+          <span class="lt">${w.when}</span></div>
+        <div class="l2">
+          <span class="chip who">${w.tool}</span>
+          ${w.where?`<span class="lw">${w.where}</span>`:""}
+          ${w.tag?`<span class="chip doing">${w.tag}</span>`:""}
+          ${w.session?`<span class="lsess">${w.session}</span>`:""}
+        </div>
+        ${w.detail?`<div class="l3">${w.detail}</div>`:""}
+        ${w.result?`<div class="l3 res">${w.result}</div>`:""}
+      </div>`).join("")}</div>`;
+  }).join("");
 }
 
 /* ---------- 칸반 ---------- */
@@ -812,8 +872,8 @@ function renderSide(){
 }
 
 /* ---------- 부팅 ---------- */
-const TITLES={office:"오피스 현황",org:"조직 파이프라인",aide:"비서실",proj:"프로젝트 진행 상황",act:"슬랙 활동"};
-function renderAll(){ renderSide(); renderOffice(); renderOrg(); renderAide(); renderBoards(); renderAct(); }
+const TITLES={office:"오피스 현황",org:"조직 파이프라인",aide:"비서실",log:"작업 로그",proj:"프로젝트 진행 상황",act:"슬랙 활동"};
+function renderAll(){ renderSide(); renderOffice(); renderOrg(); renderAide(); renderLog(); renderBoards(); renderAct(); }
 
 async function load(first){
   try{

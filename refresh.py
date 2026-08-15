@@ -18,7 +18,7 @@ ATTEZE OPS — 슬랙 데이터 수집기
 표준 라이브러리만 씁니다. pip install 필요 없음.
 """
 
-import json, os, sys, time, urllib.parse, urllib.request, urllib.error
+import json, os, re, sys, time, urllib.parse, urllib.request, urllib.error
 from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
 
@@ -37,6 +37,36 @@ TOKEN_STATS = os.environ.get("TOKEN_STATS_FILE", "").strip()  # 선택: 토큰/�
 PUBLIC_MODE = os.environ.get("PUBLIC_MODE", "").lower() in ("1", "true", "yes")
 
 API = "https://slack.com/api/"
+
+WORKLOG_MARKER = "📋 작업 로그"     # atteze_log.py 가 붙이는 표시
+# 실수로 로그에 섞여 들어온 비밀값은 대시보드에 올리기 전에 지웁니다
+SECRET_RE = re.compile(
+    r"(xox[baprs]-[A-Za-z0-9-]+|gh[pousr]_[A-Za-z0-9]{20,}|sk-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16})")
+
+
+def parse_worklog(text, ts):
+    """atteze_log.py 가 올린 메시지를 대시보드용 항목으로 바꿉니다."""
+    if WORKLOG_MARKER not in text:
+        return None
+    text = SECRET_RE.sub("[비밀값 제거됨]", text)
+    def field(label):
+        m = re.search(r"\*" + label + r"\*\s*·\s*(.+)", text)
+        return m.group(1).strip() if m else ""
+    meta = dict(re.findall(r"`(\w+):([^`]+)`", text))
+    head = re.search(re.escape(WORKLOG_MARKER) + r"\s*·\s*(\S+)", text)
+    dt = datetime.fromtimestamp(ts, KST)
+    return {
+        "tool":    meta.get("tool") or (head.group(1) if head else "unknown"),
+        "summary": field("한 일") or "(요약 없음)",
+        "detail":  field("상세"),
+        "where":   field("위치"),
+        "result":  field("결과"),
+        "tag":     meta.get("tag", ""),
+        "session": meta.get("session", ""),
+        "when":    dt.strftime("%m-%d %H:%M"),
+        "day":     dt.strftime("%Y-%m-%d"),
+        "ts":      ts,
+    }
 
 
 def log(*a):
@@ -111,7 +141,7 @@ def collect():
              if c.get("is_member") or c.get("is_channel") or c.get("is_group")]
 
     per_channel, per_user, per_day = [], Counter(), Counter()
-    last_seen, feed = {}, []
+    last_seen, feed, worklog = {}, [], []
     total = 0
 
     for c in chans:
@@ -145,7 +175,12 @@ def collect():
             per_day[dt.strftime("%m-%d")] += 1
             if uid not in last_seen or ts > last_seen[uid]:
                 last_seen[uid] = ts
-            txt = (m.get("text") or "").replace("\n", " ").strip()
+            raw = m.get("text") or ""
+            wl = parse_worklog(raw, ts)
+            if wl:
+                worklog.append(wl)
+                continue                      # 작업 로그는 일반 대화 피드에 넣지 않습니다
+            txt = raw.replace("\n", " ").strip()
             if txt:
                 feed.append({"uid": uid, "text": txt[:180], "ts": ts,
                              "when": dt.strftime("%m-%d %H:%M")})
@@ -159,6 +194,7 @@ def collect():
         "uname": uname, "ubot": ubot, "app2uid": app2uid,
         "channels": per_channel, "per_user": per_user, "daily": daily,
         "last_seen": last_seen, "feed": feed[:12], "total": total,
+        "worklog": sorted(worklog, key=lambda w: -w["ts"])[:60],
     }
 
 
@@ -177,24 +213,35 @@ def merge(base, s):
             p["slack_id"] = uid
         if not uid:
             continue                       # 슬랙에 존재하지 않는 슬롯은 손으로 정한 값 유지
+        # 슬랙에서 표시명을 바꾸면 대시보드 이름도 따라갑니다.
+        # 손으로 고정하고 싶으면 그 사람에게 "name_lock": true 를 넣으세요.
+        sname = (s["uname"].get(uid) or "").strip()
+        if sname and not p.get("name_lock") and sname != p.get("name"):
+            log(f'  이름 갱신: {p.get("name")} → {sname}')
+            p["name_was"] = p.get("name")
+            p["name"] = sname
+
         seen = s["last_seen"].get(uid, 0)
         if seen >= live_cut:
             p["state"] = "live"
             if p.get("status") in ("미연결", "대기"):
                 p["status"] = "근무중"
         elif seen:
-            p["state"] = "pending"
-            p["status"] = "대기"           # 붙어는 있는데 최근 발언이 없음
+            p["state"] = "idle"            # 붙어는 있는데 최근 발언이 없음 — 미연결과 다릅니다
+            p["status"] = "대기"
+            p["last_seen_note"] = datetime.fromtimestamp(seen, KST).strftime("%Y-%m-%d")
         else:
             p["state"] = "pending"
             p["status"] = "미연결"         # 슬랙에 흔적 자체가 없음
 
     # 파이프라인 마지막 단계 — '부서'는 슬랙 앱을 가진 실무층만 셉니다
     floor_live = [p for p in people
-                  if p.get("desk") == "floor" and p.get("app_id") and p["state"] == "live"]
+                  if p.get("desk") == "floor" and p.get("app_id")
+                  and p["state"] in ("live", "idle")]
     for st in base["pipeline"]["steps"]:
         if st["id"] == "dept":
-            st["state"] = "live" if floor_live else "pending"
+            st["state"] = ("live" if any(p["state"] == "live" for p in floor_live)
+                           else "idle" if floor_live else "pending")
 
     by_slack = {p["slack_id"]: p for p in people if p.get("slack_id")}
 
@@ -217,6 +264,7 @@ def merge(base, s):
         "range": rng, "total": s["total"], "sampled": False,
         "channels": s["channels"], "by_person": by_person, "daily": days,
     }
+    base["worklog"] = s.get("worklog", [])
     base["feed"] = [{
         "who": (by_slack.get(f["uid"]) or {}).get("id") or s["uname"].get(f["uid"], f["uid"]),
         "text": f["text"], "when": f["when"],
@@ -255,8 +303,11 @@ def redact(d):
             bl["d"] = bl.pop("public_d", "")
             n += 1
         bl.pop("public_t", None); bl.pop("public_d", None)
-    for f in list(d.get("feed", [])):
-        pass  # 피드는 슬랙 원문이라 공개 모드에서 통째로 뺍니다
+    # 작업 로그는 공개 모드에서도 보여줍니다 (이게 이 기능의 목적) — 비밀값만 제거
+    for w in d.get("worklog", []):
+        for k in ("summary", "detail", "where", "result"):
+            if w.get(k):
+                w[k] = SECRET_RE.sub("[비밀값 제거됨]", w[k])
     if d.get("feed"):
         d["feed"] = []
         d.setdefault("feed_note", "공개 배포본에서는 슬랙 원문을 표시하지 않습니다.")
