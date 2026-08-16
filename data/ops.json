@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-16T14:28:02+09:00",
+    "generated_at": "2026-08-16T14:52:19+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -562,7 +562,9 @@
     },
     "schedule": [],
     "note": "비서실장 앱이 아직 연결(distribute)되지 않아 내용이 비어 있습니다. 붙는 순간 여기에 채워집니다.",
-    "channel": "telegram"
+    "channel": "telegram",
+    "ideas": [],
+    "sources": []
   },
   "channels_io": [
     {
