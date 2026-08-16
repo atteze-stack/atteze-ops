@@ -172,6 +172,9 @@ h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
 .plate .rl{font-size:var(--rl); color:var(--muted); line-height:1.2; word-break:keep-all}
 .office:not([data-size="m"]):not([data-size="l"]) .plate .mdl{display:none}
 .plate .mdl{font-size:var(--md); color:var(--s4); margin-top:2px; letter-spacing:.01em; font-weight:600}
+.plate .wk{font-size:var(--md); margin-top:2px; font-weight:700; letter-spacing:.01em}
+@keyframes wkblink{0%,100%{opacity:1}50%{opacity:.45}}
+.pod .wk{animation:wkblink 1.6s ease-in-out infinite}
 .pod.pending .plate .mdl,.pod.stopped .plate .mdl{color:var(--muted)}
 .pod.pending .plate{border-style:dashed}
 .pod.idle .plate{border-color:rgba(250,178,25,.35)}
@@ -630,15 +633,21 @@ function deskSVG(live){
     <rect x="6" y="2" width="6" height="2" fill="#3a3d48"/>
   </svg>`;
 }
+const WORKBADGE = {
+  working:["🔨 일하는 중","var(--good)"], quiet:["🟡 신호 지연","var(--warn)"],
+  stalled:["⚠️ 응답 없음","var(--bad)"],  done:["✅ 방금 완료","var(--s1)"],
+  stopped:["⛔ 중단됨","var(--bad)"] };
 function pod(p){
   const st = p.state;
   const badge = p.status || (st==="live" ? "근무중" : st==="stopped" ? "중단" : "미연결");
-  return `<div class="pod ${st}${SELP===p.id?" selp":""}" data-pid="${p.id}" title="${p.name} · ${p.title} · ${p.engine}">
+  const w = p.work && WORKBADGE[p.work.state];
+  return `<div class="pod ${st}${SELP===p.id?" selp":""}" data-pid="${p.id}" title="${p.name} · ${p.title}${p.work?` · ${WORKBADGE[p.work.state][0]} ${p.work.note||p.work.task||""}`:""}">
     <div class="badge ${st}">${badge}</div>
     <div class="sprite">${spriteSVG(p)}</div>
     <div class="desk">${deskSVG(st==="live")}</div>
     <div class="plate"><div class="nm">${p.name}</div><div class="rl">${p.title}</div>
-      ${p.model?`<div class="mdl">${p.model}</div>`:""}</div>
+      ${p.model?`<div class="mdl">${p.model}</div>`:""}
+      ${w?`<div class="wk" style="color:${w[1]}">${w[0]}</div>`:""}</div>
   </div>`;
 }
 function seat(s){
@@ -774,6 +783,9 @@ function renderDetail(){
       <div class="empty">오피스에서 사람을 누르면<br>여기에 상세가 나옵니다</div>
       <div class="kv"><span>구성원</span><b>${D.people.length}명</b></div>
       <div class="kv"><span>활동중</span><b style="color:var(--good)">${live}명</b></div>
+      <div class="kv"><span>지금 일하는 중</span><b style="color:var(--good)">${D.people.filter(x=>x.work&&x.work.state==="working").length}명</b></div>
+      ${D.people.some(x=>x.work&&(x.work.state==="stalled"||x.work.state==="stopped"))
+        ?`<div class="kv"><span>멈춤·중단</span><b style="color:var(--bad)">${D.people.filter(x=>x.work&&(x.work.state==="stalled"||x.work.state==="stopped")).map(x=>x.name).join(", ")}</b></div>`:""}
       <div class="kv"><span>메시지</span><b>${(a.total||0).toLocaleString()}건</b></div>
       <div class="kv"><span>집계 기간</span><b>${a.range||"—"}</b></div>`;
   } else {
@@ -787,6 +799,10 @@ function renderDetail(){
         ${p.model?`<div class="m">${p.model}</div>`:""}
         <div class="stt" style="color:${SCOL[p.state]}"><i style="background:${SCOL[p.state]}"></i>${p.status}</div>
         </div></div>
+      ${p.work?`<div class="kv" style="margin-top:10px"><span>지금</span>
+         <b style="color:${WORKBADGE[p.work.state][1]}">${WORKBADGE[p.work.state][0]}</b></div>
+       <div class="kv"><span>작업</span><b>${p.work.task||"—"}${p.work.note?` · ${p.work.note}`:""}</b></div>
+       <div class="kv"><span>마지막 신호</span><b>${p.work.last} (${p.work.age_min}분 전)</b></div>`:""}
       <div style="margin-top:11px">
         <div class="kv"><span>마지막 활동</span><b>${p.last_seen_note||"—"}</b></div>
         <div class="kv"><span>발언</span><b>${msg?msg.v:0}건</b></div>

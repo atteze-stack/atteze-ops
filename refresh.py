@@ -64,6 +64,17 @@ MEMO_KEEP  = int(os.environ.get("MEMO_KEEP", "200"))   # 보관함에 남길 메
 # 메모 첫 줄에 이 말이 있으면 대시보드에 안 올립니다 (공개 배포본 대비)
 MEMO_HIDE_RE = re.compile(r"^\s*(비공개|비밀|숨김|private)\b", re.I)
 
+# ── 작업 상태 신호 ────────────────────────────────────────────────────
+# 직원들이 채널에 남기는 상태 메시지를 읽어 '지금 일하는 중/멈춤'을 판정합니다.
+#   ▶ 시작 · t_xxx · 요약   ⏳ 진행 · t_xxx · 내용
+#   ✅ 완료 · t_xxx · 결과   ⛔ 중단 · t_xxx · 사유
+STATUS_RE = re.compile(
+    r"^\s*(?::\w+:\s*)?([▶⏳✅⛔])\s*(?:시작|진행|완료|중단)?\s*[·:]\s*"
+    r"(?:(t_[A-Za-z0-9_-]+)\s*[·:]\s*)?(.*)$")
+WARN_MIN      = int(os.environ.get("WARN_MIN", "10"))      # N분 무신호 = 신호 지연 (재촉)
+STALL_MIN     = int(os.environ.get("STALL_MIN", "20"))     # N분 무신호 = 멈춤 경보
+ALERT_CHANNEL = os.environ.get("ALERT_CHANNEL", "아테즈-신규").lstrip("#")
+
 # 슬랙 채널로도 받고 싶으면 이름을 넣으세요. 비워두면 안 씁니다.
 IDEA_CHANNEL = os.environ.get("IDEA_CHANNEL", "").lstrip("#")
 PLAN_CHANNEL = os.environ.get("PLAN_CHANNEL", "").lstrip("#")
@@ -430,10 +441,13 @@ def collect():
 
     per_channel, per_user, per_day = [], Counter(), Counter()
     last_seen, feed, worklog, memos = {}, [], [], []
+    status_ev, alert_cid = {}, None      # uid → 최신 상태 신호
     total = 0
 
     for c in chans:
         cid, cname = c["id"], "#" + c["name"]
+        if c["name"] == ALERT_CHANNEL:
+            alert_cid = cid
         if c["name"] in SKIP_CHANNELS:
             log(f"  {cname}: 제외 (더 이상 사용 안 함)")
             continue
@@ -469,6 +483,12 @@ def collect():
             if uid not in last_seen or ts > last_seen[uid]:
                 last_seen[uid] = ts
             raw = m.get("text") or ""
+            # 작업 상태 신호 — 각 사람의 가장 최근 신호만 기억합니다
+            sm = STATUS_RE.match(raw.strip().splitlines()[0] if raw.strip() else "")
+            if sm and (uid not in status_ev or ts > status_ev[uid]["ts"]):
+                status_ev[uid] = {"mark": sm.group(1), "task": sm.group(2) or "",
+                                  "note": SECRET_RE.sub("[비밀값 제거됨]", sm.group(3) or "").strip()[:60],
+                                  "ts": ts}
             wl = parse_worklog(raw, ts)
             if wl:
                 worklog.append(wl)
@@ -494,6 +514,7 @@ def collect():
         "last_seen": last_seen, "feed": feed[:12], "total": total,
         "worklog": sorted(worklog, key=lambda w: -w["ts"])[:60],
         "memos":   sorted(memos,   key=lambda m: -m["ts"])[:80],
+        "status_ev": status_ev, "alert_cid": alert_cid,
     }
 
 
@@ -532,6 +553,25 @@ def merge(base, s, extra_memos=None):
         else:
             p["state"] = "pending"
             p["status"] = "미연결"         # 슬랙에 흔적 자체가 없음
+
+    # 작업 상태 신호 → 지금 일하는 중 / 멈춤 판정
+    now_ts = time.time()
+    for p in people:
+        ev = s.get("status_ev", {}).get(p.get("slack_id") or "")
+        if not ev or now_ts - ev["ts"] > 24 * 3600:      # 하루 지난 신호는 무시
+            p.pop("work", None)
+            continue
+        age_min = (now_ts - ev["ts"]) / 60
+        dt = datetime.fromtimestamp(ev["ts"], KST).strftime("%H:%M")
+        if ev["mark"] in ("▶", "⏳"):
+            state = ("working" if age_min <= WARN_MIN else
+                     "quiet"   if age_min <= STALL_MIN else "stalled")
+        elif ev["mark"] == "✅":
+            state = "done"
+        else:
+            state = "stopped"
+        p["work"] = {"state": state, "task": ev["task"], "note": ev["note"],
+                     "last": dt, "age_min": int(age_min)}
 
     # 파이프라인 마지막 단계 — '부서'는 슬랙 앱을 가진 실무층만 셉니다
     floor_live = [p for p in people
@@ -624,8 +664,41 @@ def redact(d):
     return d
 
 
+def alert_stalls(out, prev, alert_cid):
+    """상태가 나빠진 사람이 있으면 슬랙 채널에 알립니다.
+       10분 무신호(quiet) → 재촉 한 번, 20분(stalled)·중단(stopped) → 경보 한 번."""
+    if not (TOKEN and alert_cid):
+        return
+    RANK = {"quiet": 1, "stalled": 2, "stopped": 2}
+    prev_rank = {p["id"]: RANK.get((p.get("work") or {}).get("state"), 0)
+                 for p in (prev or {}).get("people", [])}
+    for p in out.get("people", []):
+        w = p.get("work") or {}
+        rank = RANK.get(w.get("state"), 0)
+        if rank == 0 or rank <= prev_rank.get(p["id"], 0):
+            continue                       # 그대로거나 좋아졌으면 조용히
+        what = w.get("task") or w.get("note") or "작업"
+        if w["state"] == "quiet":
+            msg = (f"🟡 확인 — *{p['name']}* 신호 지연: {what} "
+                   f"(마지막 신호 {w.get('last','?')} · {w.get('age_min','?')}분 경과). "
+                   f"진행 중이면 ⏳ 를 남겨라. 10분 더 무신호면 경보로 올라간다.")
+        else:
+            msg = (f"⚠️ 경보 — *{p['name']}* {'응답 없음' if w['state']=='stalled' else '작업 중단'}: "
+                   f"{what} (마지막 신호 {w.get('last','?')} · {w.get('age_min','?')}분 경과). "
+                   f"진행 중이면 ⏳ 신호를, 막혔으면 ⛔ 와 사유를 남겨라.")
+        try:
+            call("chat.postMessage", channel=alert_cid, text=msg)
+            log(f"  알림 발송: {p['name']} ({w['state']})")
+        except Exception as e:
+            log(f"  알림 발송 실패({p['name']}):", repr(e))   # chat:write 권한 없으면 여기로
+
+
 def run_once():
     base = json.load(open(BASE_PATH, encoding="utf-8"))
+    try:
+        prev = json.load(open(OUT_PATH, encoding="utf-8"))
+    except Exception:
+        prev = None
 
     # 슬랙을 안 거치는 두 갈래 — 토큰/주소가 없으면 조용히 건너뜁니다
     extra = fetch_calendar() + fetch_telegram()
@@ -634,10 +707,11 @@ def run_once():
         log("SLACK_TOKEN 이 없습니다. 슬랙 수집은 건너뜁니다.")
         s = {"uname": {}, "ubot": {}, "app2uid": {}, "channels": [],
              "per_user": Counter(), "daily": [], "last_seen": {}, "feed": [],
-             "total": 0, "worklog": [], "memos": []}
+             "total": 0, "worklog": [], "memos": [], "status_ev": {}, "alert_cid": None}
     else:
         s = collect()
     out = merge(base, s, extra)
+    alert_stalls(out, prev, s.get("alert_cid"))
     if PUBLIC_MODE:
         out = redact(out)
     tmp = OUT_PATH + ".tmp"
