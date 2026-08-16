@@ -130,7 +130,7 @@
         "ceo"
       ],
       "channel": "slack",
-      "model": "GPT-5",
+      "model": "GPT-5.6 Sol",
       "last_seen_note": "2026-08-15 20:05"
     },
     {
@@ -154,7 +154,7 @@
         "plan"
       ],
       "channel": "slack",
-      "model": "Claude 4.5",
+      "model": "Claude Opus 5",
       "last_seen_note": "2026-08-15 20:06"
     },
     {
@@ -179,7 +179,7 @@
         "chk"
       ],
       "channel": "slack+telegram",
-      "model": "GPT-5 + Claude 4.5",
+      "model": "GPT-5.6 Luna",
       "last_seen_note": "2026-08-15 20:25",
       "aide": true
     },
@@ -276,7 +276,7 @@
         "dev"
       ],
       "channel": "slack",
-      "model": "GPT-4o",
+      "model": "GPT-5.6 Sol",
       "track": "QA",
       "last_seen_note": "2026-08-15 20:06"
     },
@@ -301,7 +301,7 @@
         "rt"
       ],
       "channel": "slack",
-      "model": "Claude Sonnet 4",
+      "model": "Claude Sonnet 5",
       "track": "Engineering",
       "last_seen_note": "2026-08-15 20:06"
     }
