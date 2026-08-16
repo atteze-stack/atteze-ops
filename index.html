@@ -386,6 +386,10 @@ tbody tr:last-child td{border-bottom:0}
     <div class="lab">막힌 것 TOP 3</div>
     <div class="mini" id="miniBlock"></div>
   </div>
+  <div class="sblk" id="alertStatusBlk" style="display:none">
+    <div class="lab">마지막 알림 발송</div>
+    <div class="kv"><span id="alertStatusLine">—</span></div>
+  </div>
   <div class="sblk">
     <button class="tbtn" id="themeBtn">라이트 모드</button>
     <div class="sizerow">
@@ -1073,6 +1077,27 @@ function renderSide(){
   const SEV={crit:"var(--crit)",warn:"var(--warn)",info:"var(--muted)"};
   document.getElementById("miniBlock").innerHTML = D.blockers.slice(0,3).map(b=>
     `<div><span class="sq" style="background:${SEV[b.sev]}"></span><span>${b.t}</span></div>`).join("");
+
+  // 마지막 알림 발송 상태 — 실패해도 로그 한 줄로만 묻히지 않도록 노출
+  const as=D.alert_status, blk=document.getElementById("alertStatusBlk");
+  if(as && (as.token_present===false || as.channel_configured===false || as.last_attempt_at)){
+    blk.style.display="";
+    const line=document.getElementById("alertStatusLine");
+    if(as.token_present===false){
+      line.innerHTML=`<b style="color:var(--crit)">SLACK_TOKEN 없음</b>`;
+    }else if(as.channel_configured===false){
+      line.innerHTML=`<b style="color:var(--crit)">경보 채널 미설정</b>`;
+    }else if(as.last_attempt_at==null){
+      line.innerHTML=`발송 이력 없음`;
+    }else{
+      const dt=new Date(as.last_attempt_at), when=dt.toLocaleString("ko-KR",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"});
+      line.innerHTML = as.last_attempt_ok
+        ? `<b style="color:var(--good)">✅ 성공</b> · ${when}`
+        : `<b style="color:var(--crit)">❌ 실패</b> · ${when}${as.last_error?`<br><span style="font-size:10px;color:var(--ink2)">${as.last_error}</span>`:""}`;
+    }
+  }else{
+    blk.style.display="none";
+  }
 
   const d=new Date(D.meta.generated_at);
   document.getElementById("stamp").textContent =

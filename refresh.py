@@ -795,9 +795,18 @@ def redact(d):
 
 def alert_stalls(out, prev, alert_cid):
     """상태가 나빠진 사람이 있으면 슬랙 채널에 알립니다.
-       10분 무신호(quiet) → 재촉 한 번, 20분(stalled)·중단(stopped) → 경보 한 번."""
+       10분 무신호(quiet) → 재촉 한 번, 20분(stalled)·중단(stopped) → 경보 한 번.
+
+    반환값: 이번 실행에서 발송을 '시도'했는지·성공/실패 몇 건인지 기록한 dict.
+    (관측성 개선, 2026-08-16: 전엔 실패해도 로그 한 줄만 남고 Actions는 초록불
+    이라 아무도 몰랐음. 이제 대시보드 사이드바 + Actions 어노테이션으로 눈에
+    띄게 만듦. checked=False 면 이번 실행엔 보낼 신호가 없었다는 뜻 — 이 경우
+    성공/실패를 판단할 수 없으므로 대시보드에서도 '해당 없음'으로 구분 표시.)"""
+    status = {"checked_at": datetime.now(KST).isoformat(timespec="seconds"),
+              "attempted": 0, "sent": 0, "failed": 0, "last_error": None,
+              "token_present": bool(TOKEN), "channel_configured": bool(alert_cid)}
     if not (TOKEN and alert_cid):
-        return
+        return status
     RANK = {"quiet": 1, "stalled": 2, "stopped": 2}
     prev_rank = {p["id"]: RANK.get((p.get("work") or {}).get("state"), 0)
                  for p in (prev or {}).get("people", [])}
@@ -815,11 +824,20 @@ def alert_stalls(out, prev, alert_cid):
             msg = (f"⚠️ 경보 — *{p['name']}* {'응답 없음' if w['state']=='stalled' else '작업 중단'}: "
                    f"{what} (마지막 신호 {w.get('last','?')} · {w.get('age_min','?')}분 경과). "
                    f"진행 중이면 ⏳ 신호를, 막혔으면 ⛔ 와 사유를 남겨라.")
+        status["attempted"] += 1
         try:
             call("chat.postMessage", channel=alert_cid, text=msg)
+            status["sent"] += 1
             log(f"  알림 발송: {p['name']} ({w['state']})")
         except Exception as e:
+            status["failed"] += 1
+            status["last_error"] = repr(e)
             log(f"  알림 발송 실패({p['name']}):", repr(e))   # chat:write 권한 없으면 여기로
+            # GitHub Actions 워크플로 요약에 노란 경고로 뜨게 함 — 로그 한 줄로
+            # 묻혀서 아무도 모르는 상태를 막기 위함 (Actions 자체는 계속 초록불
+            # 이지만 Summary 탭에 어노테이션이 남아 눈에 띔).
+            print(f"::warning::슬랙 알림 발송 실패 ({p['name']}, {w['state']}): {e!r}")
+    return status
 
 
 def run_once():
@@ -840,7 +858,22 @@ def run_once():
     else:
         s = collect()
     out = merge(base, s, extra)
-    alert_stalls(out, prev, s.get("alert_cid"))
+    alert_status = alert_stalls(out, prev, s.get("alert_cid"))
+    # 이번 실행에 보낼 신호가 없었으면(attempted=0) 이전 실행의 마지막 실제
+    # 시도 결과를 이어받아 대시보드에서 "마지막 알림 발송 상태"가 계속 보이게
+    # 함 — 안 그러면 알림 없는 정상적인 5분마다 상태가 사라져 버림.
+    prev_alert = (prev or {}).get("alert_status") or {}
+    if alert_status["attempted"] == 0 and prev_alert.get("last_attempt_at"):
+        alert_status["last_attempt_at"] = prev_alert.get("last_attempt_at")
+        alert_status["last_attempt_ok"] = prev_alert.get("last_attempt_ok")
+        alert_status["last_error"] = prev_alert.get("last_error")
+    elif alert_status["attempted"] > 0:
+        alert_status["last_attempt_at"] = alert_status["checked_at"]
+        alert_status["last_attempt_ok"] = alert_status["failed"] == 0
+    else:
+        alert_status["last_attempt_at"] = None
+        alert_status["last_attempt_ok"] = None
+    out["alert_status"] = alert_status
     if PUBLIC_MODE:
         out = redact(out)
     tmp = OUT_PATH + ".tmp"
