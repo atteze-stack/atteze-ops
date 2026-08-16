@@ -1,12 +1,9 @@
-# ATTEZE OPS — 슬랙 자동 수집 (15분마다 data/ops.json 갱신)
 name: refresh
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
-  workflow_dispatch:
-  push:
-    branches: [main]
+    - cron: "*/15 * * * *"     # 15분마다
+  workflow_dispatch:            # Actions 탭에서 수동 실행
 
 permissions:
   contents: write
@@ -16,33 +13,29 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  collect:
+  refresh:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: 슬랙에서 최신 상태 수집
+      - name: 수집
         env:
-          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+          SLACK_TOKEN:   ${{ secrets.SLACK_TOKEN }}
+          ICAL_URL:      ${{ secrets.ICAL_URL }}        # 구글 캘린더 비공개 iCal 주소
+          TG_MEMO_TOKEN: ${{ secrets.TG_MEMO_TOKEN }}   # 메모 전용 텔레그램 봇 토큰
           DATA_DIR: ${{ github.workspace }}/data
-          DAYS: "30"
-          LIVE_HOURS: "72"
-          ONCE: "1"
           PUBLIC_MODE: "1"
-        run: python -u refresh.py
+          ONCE: "1"
+          DAYS: "30"
+          PLAN_DAYS: "21"
+        run: python3 refresh.py
 
-      - name: 바뀐 게 있으면 저장
+      - name: 커밋
         run: |
-          git config user.name  "atteze-ops-bot"
-          git config user.email "bot@users.noreply.github.com"
-          if git diff --quiet -- data/ops.json; then
-            echo "변경 없음 — 커밋 생략"
-          else
-            git add data/ops.json
-            git commit -m "chore: 슬랙 데이터 갱신 $(date -u +'%Y-%m-%d %H:%MZ')"
-            git push
-          fi
+          git config user.name  "atteze-bot"
+          git config user.email "bot@atteze.com"
+          git add data/ops.json data/inbox.json 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "자동 갱신 $(date -u +'%Y-%m-%d %H:%M UTC')"
+          # 자비스가 같은 시각에 메모를 커밋했을 수 있으니 먼저 받아서 얹습니다
+          git pull --rebase origin main || true
+          git push
