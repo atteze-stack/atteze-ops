@@ -67,6 +67,12 @@ nav button .k{font-size:13px; width:16px; text-align:center}
 .tbtn{background:none;border:1px solid var(--border);color:var(--muted);font:inherit;font-size:11px;
   border-radius:7px;padding:5px 9px;cursor:pointer;width:100%}
 .tbtn:hover{color:var(--ink)}
+.sizerow{display:flex; align-items:center; gap:4px; margin-top:9px; font-size:10.5px; color:var(--muted)}
+.sizerow span{margin-right:auto}
+.szbtn{background:none; border:1px solid var(--border); color:var(--muted); font:inherit;
+  font-size:10px; border-radius:6px; padding:3px 7px; cursor:pointer}
+.szbtn:hover{color:var(--ink)}
+.szbtn.on{background:var(--wash); color:var(--ink); border-color:var(--s1)}
 
 /* ---------- main ---------- */
 main{padding:22px 26px 60px; max-width:1500px}
@@ -78,22 +84,74 @@ h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
 .cap{color:var(--muted); font-size:11.5px; margin:0 0 16px}
 .view{display:none} .view.on{display:block}
 
+/* ---------- 오피스 2열 + KPI 띠 ---------- */
+.offsplit{display:grid; grid-template-columns:minmax(0,1fr) 296px; gap:12px; align-items:start}
+@media(max-width:1180px){ .offsplit{grid-template-columns:1fr} }
+.offside{display:flex; flex-direction:column; gap:12px; position:sticky; top:14px}
+.offside .card{margin-bottom:0; padding:14px 15px}
+.kpibar{background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  padding:8px 13px; display:flex; gap:7px; flex-wrap:wrap; align-items:center; margin-bottom:12px}
+.kpibar .kb{border:1px solid var(--border); border-radius:7px; padding:3px 10px;
+  display:flex; align-items:baseline; gap:7px; background:var(--plane)}
+.kpibar .kb i{font-style:normal; font-size:9px; color:var(--muted); letter-spacing:.09em}
+.kpibar .kb b{font-size:14px; font-weight:650; font-variant-numeric:tabular-nums}
+.kpibar .kb.g b{color:var(--good)} .kpibar .kb.y b{color:var(--warn)}
+.kpibar .kb.r b{color:var(--serious)} .kpibar .kb.b b{color:var(--s1)}
+.pan h4{margin:0 0 10px; font-size:9.5px; letter-spacing:.13em; color:var(--muted); text-transform:uppercase}
+.who{display:flex; gap:10px; align-items:flex-start}
+.who .av{width:40px; height:44px; flex:none}
+.who .av svg{width:100%; height:100%; shape-rendering:crispEdges}
+.who .n{font-size:13.5px; font-weight:650; line-height:1.3}
+.who .t{font-size:10.5px; color:var(--ink2); margin-top:2px}
+.who .m{font-size:9.5px; color:var(--s4); margin-top:3px; font-weight:600}
+.who .stt{display:inline-flex; align-items:center; gap:5px; font-size:10px; font-weight:650; margin-top:6px}
+.who .stt i{width:6px; height:6px; border-radius:50%; display:block}
+.kv{display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--grid); font-size:11px}
+.kv:last-child{border-bottom:0}
+.kv span{color:var(--muted)} .kv b{font-weight:550; color:var(--ink2); font-variant-numeric:tabular-nums}
+.quote{font-size:11px; color:var(--ink2); line-height:1.6; padding:8px 10px; background:var(--plane);
+  border-left:2px solid var(--s1); border-radius:0 6px 6px 0; margin-top:9px}
+.quote em{display:block; font-style:normal; font-size:9.5px; color:var(--muted); margin-top:4px}
+.ubar{margin-bottom:8px}
+.ubar .l{display:flex; justify-content:space-between; font-size:10px; color:var(--ink2); margin-bottom:3px}
+.ubar .l b{font-variant-numeric:tabular-nums; color:var(--muted); font-weight:500}
+.ubar .tr{height:4px; background:var(--plane); border-radius:99px; overflow:hidden}
+.ubar .tr i{display:block; height:100%; border-radius:99px}
+.pan .empty{padding:16px 6px}
+.pod{border-radius:8px; transition:background .12s}
+.pod:hover{background:var(--wash)}
+.pod.selp{background:var(--wash); outline:1px solid var(--s1)}
+
 /* ---------- pixel office ---------- */
 .office{
   background:var(--wall); border:1px solid var(--border); border-radius:12px;
   padding:0; overflow:hidden; position:relative;
+  --pw:66px; --sw:38px; --sh:49px; --dh:14px; --nm:8.5px; --rl:7px; --md:6.5px;
+  --bgf:7px; --gap:7px; --zp:8px; --seath:98px;
 }
-.zone{padding:10px 14px 12px; border-bottom:1px solid var(--border); position:relative}
+.office[data-size="m"]{ --pw:88px; --sw:52px; --sh:67px; --dh:19px; --nm:10px; --rl:8.5px;
+  --md:7.5px; --bgf:8.5px; --gap:9px; --zp:10px; --seath:126px; }
+.office[data-size="l"]{ --pw:112px; --sw:66px; --sh:85px; --dh:24px; --nm:11.5px; --rl:9.5px;
+  --md:8.5px; --bgf:9.5px; --gap:12px; --zp:13px; --seath:158px; }
+.zone{padding:var(--zp) 14px calc(var(--zp) + 2px); border-bottom:1px solid var(--border); position:relative}
+/* 가운데 정렬이 필요한 존만 폭을 좁힙니다 — 실무층·빈자리는 넓게 씁니다 */
+.zone.exec > .pods,.zone.exec > .down,
+.zone.chief > .pods,.zone.chief > .merge,.zone.chief > .down{max-width:520px; margin-left:auto; margin-right:auto}
+.zone.floor > .pods{justify-content:flex-start}
+.tracks{gap:7px}
+.trk{min-width:96px; flex:1 1 96px}
+.seat{padding:6px 4px}
 .zone:last-child{border-bottom:0}
 .zone.exec{background:linear-gradient(180deg,rgba(57,135,229,.10),transparent)}
 .zone.chief{background:linear-gradient(180deg,rgba(144,133,233,.09),transparent)}
 .zone.floor{background:var(--floor)}
 .ztitle{font-size:9.5px; letter-spacing:.10em; color:var(--muted); text-transform:uppercase; margin-bottom:9px; display:flex; align-items:center; gap:8px}
 .ztitle b{color:var(--ink2); font-weight:600; letter-spacing:.02em; text-transform:none; font-size:10.5px}
-.pods{display:flex; gap:9px; flex-wrap:wrap; align-items:flex-end}
+.pods{display:flex; gap:var(--gap); flex-wrap:wrap; align-items:stretch}
+.pods .pod{justify-content:flex-end}
 .pods.center{justify-content:center}
-.pod{width:88px; display:flex; flex-direction:column; align-items:center; position:relative; cursor:default; padding-top:17px}
-.sprite{position:relative; width:52px; height:67px; margin-bottom:-10px}
+.pod{width:var(--pw); display:flex; flex-direction:column; align-items:center; position:relative; cursor:default; padding-top:15px}
+.sprite{position:relative; width:var(--sw); height:var(--sh); margin-bottom:-8px}
 .sprite svg{width:100%; height:100%; display:block; shape-rendering:crispEdges; image-rendering:pixelated}
 .pod.pending .sprite svg{filter:grayscale(1) opacity(.42)}
 .pod.idle .sprite svg{filter:saturate(.55) opacity(.72)}
@@ -102,7 +160,7 @@ h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
 .pod.live .body{animation:breathe 3.4s ease-in-out infinite}
 @keyframes type{0%,100%{transform:translateY(0)}50%{transform:translateY(1px)}}
 @keyframes breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-0.6px)}}
-.desk{width:100%; height:19px; position:relative}
+.desk{width:100%; height:var(--dh); position:relative}
 .desk svg{width:100%; height:100%; display:block; shape-rendering:crispEdges}
 .pod.live .scr{animation:flick 2.6s steps(1,end) infinite}
 @keyframes flick{0%,60%{opacity:1}62%,66%{opacity:.55}68%,100%{opacity:1}}
@@ -110,15 +168,16 @@ h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
   margin-top:5px; width:100%; text-align:center; border-radius:5px;
   padding:3px 3px 4px; border:1px solid var(--border); background:var(--surface);
 }
-.plate .nm{font-size:10px; font-weight:650; line-height:1.25; color:var(--ink)}
-.plate .rl{font-size:8.5px; color:var(--muted); line-height:1.25}
-.plate .mdl{font-size:7.5px; color:var(--s4); margin-top:2px; letter-spacing:.01em; font-weight:600}
+.plate .nm{font-size:var(--nm); font-weight:650; line-height:1.2; color:var(--ink); word-break:keep-all}
+.plate .rl{font-size:var(--rl); color:var(--muted); line-height:1.2; word-break:keep-all}
+.office:not([data-size="m"]):not([data-size="l"]) .plate .mdl{display:none}
+.plate .mdl{font-size:var(--md); color:var(--s4); margin-top:2px; letter-spacing:.01em; font-weight:600}
 .pod.pending .plate .mdl,.pod.stopped .plate .mdl{color:var(--muted)}
 .pod.pending .plate{border-style:dashed}
 .pod.idle .plate{border-color:rgba(250,178,25,.35)}
 .badge{
   position:absolute; top:0; left:50%; transform:translateX(-50%);
-  font-size:8.5px; font-weight:650; padding:1px 6px; border-radius:99px;
+  font-size:var(--bgf); font-weight:650; padding:1px 5px; border-radius:99px;
   white-space:nowrap; border:1px solid var(--border); background:var(--surface); z-index:3;
 }
 .badge.live{color:var(--good)} .badge.pending{color:var(--serious)}
@@ -126,7 +185,7 @@ h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
 .pod.live .badge{animation:float 3s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-3px)}}
 .seat{
-  width:88px; height:126px; border:1.5px dashed var(--axis); border-radius:9px;
+  width:var(--pw); height:var(--seath); border:1.5px dashed var(--axis); border-radius:9px;
   display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
   color:var(--muted); text-align:center; padding:8px; background:rgba(128,128,128,.04);
 }
@@ -177,6 +236,12 @@ h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
 .aidecol li::before{content:"·"; color:var(--muted)}
 .empty{font-size:11.5px; color:var(--muted); padding:14px 0; text-align:center; border:1px dashed var(--border);
   border-radius:8px; background:rgba(128,128,128,.04)}
+.idea{border:1px solid var(--border); border-left:3px solid var(--s4); border-radius:9px;
+  padding:11px 13px; margin-bottom:8px; background:var(--surface)}
+.idea .i1{display:flex; gap:8px; align-items:baseline; flex-wrap:wrap}
+.idea .it{font-size:12.5px; font-weight:600; flex:1; line-height:1.45}
+.idea .iw{font-size:10.5px; color:var(--muted); white-space:nowrap; font-variant-numeric:tabular-nums}
+.idea .il{margin:7px 0 0; padding-left:15px; font-size:11.5px; color:var(--ink2); line-height:1.7}
 .tgcard{border:1px solid var(--border); border-left:3px solid var(--s7); border-radius:10px; padding:13px 15px; background:var(--surface)}
 .tghead{display:flex; align-items:center; gap:9px}
 .tgname{font-size:13px; font-weight:650}
@@ -320,6 +385,12 @@ tbody tr:last-child td{border-bottom:0}
   </div>
   <div class="sblk">
     <button class="tbtn" id="themeBtn">라이트 모드</button>
+    <div class="sizerow">
+      <span>오피스 크기</span>
+      <button class="szbtn on" data-sz="s">작게</button>
+      <button class="szbtn" data-sz="m">보통</button>
+      <button class="szbtn" data-sz="l">크게</button>
+    </div>
   </div>
 </aside>
 
@@ -331,7 +402,14 @@ tbody tr:last-child td{border-bottom:0}
 
   <!-- ============ OFFICE ============ -->
   <section class="view on" id="v-office">
-    <div class="office" id="office"></div>
+    <div class="kpibar" id="kpibar"></div>
+    <div class="offsplit">
+      <div class="office" id="office"></div>
+      <div class="offside">
+        <div class="card pan" id="detail"></div>
+        <div class="card pan" id="util"></div>
+      </div>
+    </div>
     <div class="card" style="margin-top:16px">
       <h2>읽는 법</h2>
       <p class="cap" style="margin-bottom:12px">자리는 실제 슬랙 상태를 따라갑니다.</p>
@@ -373,8 +451,13 @@ tbody tr:last-child td{border-bottom:0}
       <div class="aidegrid" id="aAgenda"></div>
     </div>
     <div class="card">
-      <h2>텔레그램 · 자비스</h2>
-      <p class="cap">비서실 전용 통로입니다. 업무 파이프라인(슬랙)은 타지 않습니다.</p>
+      <h2>아이디어</h2>
+      <p class="cap">자비스한테 말한 아이디어가 그대로 여기 쌓입니다. 슬랙을 거치지 않습니다.</p>
+      <div id="aIdeas"></div>
+    </div>
+    <div class="card">
+      <h2>비서실로 들어오는 통로</h2>
+      <p class="cap">대표님 전용입니다. 업무 파이프라인(슬랙)은 타지 않습니다.</p>
       <div id="aChan"></div>
     </div>
     <div class="card">
@@ -550,7 +633,7 @@ function deskSVG(live){
 function pod(p){
   const st = p.state;
   const badge = p.status || (st==="live" ? "근무중" : st==="stopped" ? "중단" : "미연결");
-  return `<div class="pod ${st}" title="${p.name} · ${p.title} · ${p.engine}">
+  return `<div class="pod ${st}${SELP===p.id?" selp":""}" data-pid="${p.id}" title="${p.name} · ${p.title} · ${p.engine}">
     <div class="badge ${st}">${badge}</div>
     <div class="sprite">${spriteSVG(p)}</div>
     <div class="desk">${deskSVG(st==="live")}</div>
@@ -651,6 +734,80 @@ function renderOffice(){
       <div class="ztitle">빈 자리 · <b>${D.open_seats.length}석</b></div>
       <div class="pods">${D.open_seats.map(seat).join("")}</div>
     </div>`;
+
+  document.querySelectorAll("[data-pid]").forEach(el=>el.addEventListener("click",()=>{
+    SELP = SELP===el.dataset.pid ? null : el.dataset.pid;
+    renderOffice(); renderKpi(); renderDetail();
+  }));
+}
+
+/* ---------- KPI 띠 ---------- */
+const CONN = p => p.state==="live" || p.state==="idle";
+function renderKpi(){
+  const el=document.getElementById("kpibar"); if(!el) return;
+  const P=D.people, live=P.filter(p=>p.state==="live").length,
+        idle=P.filter(p=>p.state==="idle").length,
+        off =P.filter(p=>p.state==="pending").length;
+  const fl=P.filter(p=>p.desk==="floor"&&p.app_id);
+  const pct=Math.round(live/P.length*100);
+  const a=D.activity||{};
+  el.innerHTML=`
+    <div class="kb b"><i>가동률</i><b>${pct}%</b></div>
+    <div class="kb g"><i>활동중</i><b>${live}</b></div>
+    <div class="kb y"><i>대기</i><b>${idle}</b></div>
+    <div class="kb r"><i>미연결</i><b>${off}</b></div>
+    <div class="kb"><i>부서</i><b>${fl.filter(CONN).length}/${fl.length}</b></div>
+    <div class="kb"><i>메시지</i><b>${(a.total||0).toLocaleString()}</b></div>
+    <div class="kb"><i>빈 자리</i><b>${(D.open_seats||[]).length}</b></div>`;
+}
+
+/* ---------- 오른쪽 상세 패널 ---------- */
+const SCOL={live:"var(--good)",idle:"var(--warn)",pending:"var(--serious)",stopped:"var(--muted)"};
+function renderDetail(){
+  const d=document.getElementById("detail"), u=document.getElementById("util");
+  if(!d) return;
+  const p=(D.people||[]).find(x=>x.id===SELP);
+  const a=D.activity||{};
+  if(!p){
+    const live=D.people.filter(x=>x.state==="live").length;
+    d.innerHTML=`<h4>전체 요약</h4>
+      <div class="empty">오피스에서 사람을 누르면<br>여기에 상세가 나옵니다</div>
+      <div class="kv"><span>구성원</span><b>${D.people.length}명</b></div>
+      <div class="kv"><span>활동중</span><b style="color:var(--good)">${live}명</b></div>
+      <div class="kv"><span>메시지</span><b>${(a.total||0).toLocaleString()}건</b></div>
+      <div class="kv"><span>집계 기간</span><b>${a.range||"—"}</b></div>`;
+  } else {
+    const msg=(a.by_person||[]).find(x=>x.id===p.id);
+    const cards=(D.boards||[]).flatMap(b=>b.cards).filter(c=>c.owner===p.id);
+    const doing=cards.filter(c=>c.s!=="done").length;
+    const said=(D.feed||[]).find(f=>f.who===p.id);
+    d.innerHTML=`<h4>선택한 직원</h4>
+      <div class="who"><div class="av">${spriteSVG(p)}</div>
+        <div><div class="n">${p.name}</div><div class="t">${p.title} · ${p.dept}</div>
+        ${p.model?`<div class="m">${p.model}</div>`:""}
+        <div class="stt" style="color:${SCOL[p.state]}"><i style="background:${SCOL[p.state]}"></i>${p.status}</div>
+        </div></div>
+      <div style="margin-top:11px">
+        <div class="kv"><span>마지막 활동</span><b>${p.last_seen_note||"—"}</b></div>
+        <div class="kv"><span>발언</span><b>${msg?msg.v:0}건</b></div>
+        <div class="kv"><span>맡은 카드</span><b>${cards.length}건${doing?` (진행 ${doing})`:""}</b></div>
+        <div class="kv"><span>엔진</span><b>${p.engine}</b></div>
+        <div class="kv"><span>슬랙 앱</span><b style="font-size:10px">${p.app_id||"—"}</b></div>
+      </div>
+      ${said?`<div class="quote">${said.text}<em>최근 발언 · ${said.when}</em></div>`
+            :`<div class="quote" style="border-color:var(--axis)">최근 발언 기록이 없습니다.
+               <em>${p.state==="pending"?"앱이 아직 연결되지 않았습니다":"조용한 상태입니다"}</em></div>`}`;
+  }
+  // 부서 가동률
+  const seen=new Set(), rows=[];
+  (D.people||[]).forEach(x=>{ if(seen.has(x.dept))return; seen.add(x.dept);
+    const g=D.people.filter(y=>y.dept===x.dept), L=g.filter(CONN).length;
+    rows.push({n:x.dept, L, T:g.length, pct:Math.round(L/g.length*100)});});
+  rows.sort((a,b)=>b.pct-a.pct||b.T-a.T);
+  u.innerHTML=`<h4>부서 가동률</h4>`+rows.map(r=>`
+    <div class="ubar"><div class="l"><span>${r.n}</span><b>${r.L}/${r.T}</b></div>
+      <div class="tr"><i style="width:${r.pct||3}%;background:${r.pct?"var(--good)":"var(--axis)"}"></i></div>
+    </div>`).join("");
 }
 
 /* ---------- 조직 파이프라인 ---------- */
@@ -715,8 +872,22 @@ function renderAide(){
     </div>`;
   }).join("");
 
-  const tg = (D.channels_io||[]).find(c=>c.id===(a.channel||"telegram"));
-  document.getElementById("aChan").innerHTML = tg ? `
+  // 아이디어
+  const ideas = a.ideas || [];
+  document.getElementById("aIdeas").innerHTML = ideas.length
+    ? ideas.map(i=>`<div class="idea">
+        <div class="i1"><span class="it">${i.title}</span>
+          ${i.tag?`<span class="chip doing">${i.tag}</span>`:""}
+          <span class="iw">${i.when}</span></div>
+        ${(i.lines||[]).length?`<ul class="il">${i.lines.map(l=>`<li>${l}</li>`).join("")}</ul>`:""}
+      </div>`).join("")
+    : `<div class="empty">아직 없습니다 · 자비스한테 아이디어를 말하면 여기 쌓입니다</div>`;
+
+  // 비서실로 바로 들어오는 통로들 — 슬랙을 거치지 않습니다
+  const chans = (D.channels_io||[]).filter(c=>c.scope==="aide");
+  const list  = chans.length ? chans
+              : (D.channels_io||[]).filter(c=>c.id===(a.channel||"telegram"));
+  document.getElementById("aChan").innerHTML = list.length ? list.map(tg=>`
     <div class="tgcard">
       <div class="tghead"><span class="tgname">${tg.name}</span>
         <span class="chip ${tg.state==='live'?'done':'crit'}">${tg.state==='live'?'가동중':'미연결'}</span></div>
@@ -724,13 +895,20 @@ function renderAide(){
       <div class="tgfeat">${(tg.features||[]).map(f=>
         `<span class="chip ${f.s==='done'?'done':'todo'}">${f.s==='done'?'✓':'·'} ${f.n}</span>`).join("")}</div>
       <div class="tgnote">${tg.note||""}</div>
-    </div>` : `<div class="empty">등록된 채널 없음</div>`;
+    </div>`).join("") : `<div class="empty">등록된 채널 없음</div>`;
 
   const sch = a.schedule || [];
   document.getElementById("aSched").innerHTML = sch.length
-    ? `<table><thead><tr><th style="width:110px">언제</th><th>내용</th><th style="width:120px">비고</th></tr></thead>
-       <tbody>${sch.map(s=>`<tr><td class="k">${s.when||""}</td><td>${s.t||""}</td><td>${s.note||""}</td></tr>`).join("")}</tbody></table>`
-    : `<div class="empty">${off?"비서실장 연결 후 일정이 들어옵니다":"등록된 일정 없음"}</div>`;
+    ? `<table><thead><tr><th style="width:120px">언제</th><th>내용</th><th style="width:150px">출처</th></tr></thead>
+       <tbody>${sch.map(x=>{
+          const src = x.from==="jarvis" ? "자비스" : x.from==="telegram" ? "텔레그램 메모"
+                    : x.from && x.from!=="google" ? x.from : "구글 캘린더";
+          const note = (x.lines||[]).join(" · ")||x.note||"";
+          return `<tr><td class="k">${x.at||x.when||""}</td>
+            <td>${x.title||x.t||""}</td>
+            <td>${note ? note+" · " : ""}<span class="chip todo">${src}</span></td></tr>`;
+       }).join("")}</tbody></table>`
+    : `<div class="empty">아직 없습니다 · 구글 캘린더에 넣으면 그대로 여기 들어옵니다</div>`;
 
   document.getElementById("aDuty").innerHTML = (a.duties||[]).map(x=>
     `<div class="duty"><span class="ic">${x.icon}</span>
@@ -873,13 +1051,33 @@ function renderSide(){
 
 /* ---------- 부팅 ---------- */
 const TITLES={office:"오피스 현황",org:"조직 파이프라인",aide:"비서실",log:"작업 로그",proj:"프로젝트 진행 상황",act:"슬랙 활동"};
-function renderAll(){ renderSide(); renderOffice(); renderOrg(); renderAide(); renderLog(); renderBoards(); renderAct(); }
+function renderAll(){ renderSide(); renderOffice(); applySize(SZ); renderKpi(); renderDetail(); renderOrg(); renderAide(); renderLog(); renderBoards(); renderAct(); }
+
+/* 자비스가 깃허브에 직접 쓴 메모(data/inbox.json)를 즉시 얹습니다.
+   ops.json 은 15분마다 갱신되지만, 이건 페이지를 열 때마다 바로 반영됩니다. */
+function mergeInbox(box){
+  const items = (box && box.items) || [];
+  if(!items.length) return;
+  const a = D.assistant || (D.assistant = {});
+  const have = new Set([...(a.ideas||[]), ...(a.schedule||[])].map(x=>x.ts));
+  const fresh = items.filter(i => i && i.ts && !have.has(i.ts));
+  if(!fresh.length) return;
+  const t0 = new Date(); t0.setHours(0,0,0,0);
+  a.ideas = [...fresh.filter(i=>i.kind==="idea"), ...(a.ideas||[])]
+              .sort((x,y)=>y.ts-x.ts).slice(0,30);
+  a.schedule = [...(a.schedule||[]), ...fresh.filter(i=>i.kind==="plan" && i.ts*1000 >= t0.getTime())]
+              .sort((x,y)=>x.ts-y.ts).slice(0,30);
+}
 
 async function load(first){
   try{
     const r = await fetch("data/ops.json?t="+Date.now(), {cache:"no-store"});
     if(!r.ok) throw new Error(r.status);
     D = await r.json();
+    try{
+      const ri = await fetch("data/inbox.json?t="+Date.now(), {cache:"no-store"});
+      if(ri.ok) mergeInbox(await ri.json());
+    }catch(_){ /* inbox 가 아직 없으면 조용히 넘어갑니다 */ }
     renderAll();
     document.getElementById("liveTxt").textContent="LIVE";
   }catch(e){
@@ -900,6 +1098,19 @@ document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()
   document.querySelectorAll(".view").forEach(s=>s.classList.toggle("on", s.id==="v-"+v));
   document.getElementById("vTitle").textContent=TITLES[v];
 }));
+// 오피스 크기 토글 (작게 / 보통 / 크게) — 선택은 브라우저에 기억됩니다
+function applySize(sz){
+  const el = document.getElementById("office");
+  if(el) el.setAttribute("data-size", sz);
+  document.querySelectorAll(".szbtn").forEach(b=>b.classList.toggle("on", b.dataset.sz===sz));
+  try{ localStorage.setItem("atteze-office-size", sz); }catch(e){}
+}
+let SELP = null;
+let SZ = "s";
+try{ SZ = localStorage.getItem("atteze-office-size") || "s"; }catch(e){}
+document.querySelectorAll(".szbtn").forEach(b=>
+  b.addEventListener("click", ()=>{ SZ = b.dataset.sz; applySize(SZ); }));
+
 const tb=document.getElementById("themeBtn");
 tb.addEventListener("click",()=>{
   const dark = document.documentElement.getAttribute("data-theme")==="dark";
