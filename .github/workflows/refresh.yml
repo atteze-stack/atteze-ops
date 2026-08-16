@@ -34,8 +34,21 @@ jobs:
         run: |
           git config user.name  "atteze-bot"
           git config user.email "bot@atteze.com"
-          git add data/ops.json data/inbox.json 2>/dev/null || true
-          git diff --staged --quiet || git commit -m "자동 갱신 $(date -u +'%Y-%m-%d %H:%M UTC')"
-          # 자비스가 같은 시각에 메모를 커밋했을 수 있으니 먼저 받아서 얹습니다
+          # ⚠️ git add 는 인자 중 하나라도 없는 경로면 **통째로 실패해 아무것도 스테이징하지
+          # 않는다.** 예전엔 `git add data/ops.json data/inbox.json` 한 줄이었는데,
+          # inbox.json 이 아직 없는 상태(TG_MEMO_TOKEN 미설정)에서 ops.json 까지 같이
+          # 안 올라가 수집기가 4시간 넘게 조용히 멈춰 있었다(2026-08-16 사고).
+          # `2>/dev/null || true` 가 에러까지 지워서 Actions 는 초록불이었다.
+          # 그래서 반드시 **파일별로 따로** add 한다.
+          for f in data/ops.json data/inbox.json; do
+            if [ -f "$f" ]; then git add "$f"; fi
+          done
+          if git diff --staged --quiet; then
+            echo "::warning::스테이징된 변경이 없습니다 — 수집이 ops.json 을 갱신하지 못했을 수 있습니다"
+            exit 0
+          fi
+          git commit -m "자동 갱신 $(date -u +'%Y-%m-%d %H:%M UTC')"
+          # 자비스·사용량 수집기가 같은 시각에 커밋했을 수 있으니 먼저 받아서 얹습니다
           git pull --rebase origin main || true
           git push
+          echo "커밋·푸시 완료: $(git rev-parse --short HEAD)"
