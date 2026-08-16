@@ -2,7 +2,7 @@ name: refresh
 
 on:
   schedule:
-    - cron: "*/15 * * * *"     # 15분마다
+    - cron: "*/5 * * * *"      # 5분마다 (멈춤 감지·메모 반영 속도)
   workflow_dispatch:            # Actions 탭에서 수동 실행
 
 permissions:
