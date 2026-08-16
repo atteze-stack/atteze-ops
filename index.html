@@ -793,6 +793,16 @@ function renderDetail(){
     const cards=(D.boards||[]).flatMap(b=>b.cards).filter(c=>c.owner===p.id);
     const doing=cards.filter(c=>c.s!=="done").length;
     const said=(D.feed||[]).find(f=>f.who===p.id);
+    const usage=(D.usage&&D.usage.people&&D.usage.people[p.id])||null;
+    const fx=(D.tokens&&D.tokens.fx_krw)||1400;
+    const usageRow=(lab,u)=>{
+      if(!u) return "";
+      const tok=(u.in||0)+(u.out||0);
+      const cost = u.cost_usd>0 ? `$${u.cost_usd.toFixed(2)}`
+                 : (u.unpriced ? "단가 미등록" : "$0.00");
+      const krw = u.cost_usd>0 ? ` (≈₩${Math.round(u.cost_usd*fx).toLocaleString()})` : "";
+      return `<div class="kv"><span>${lab}</span><b>${tok.toLocaleString()} tok · ${cost}${krw}</b></div>`;
+    };
     d.innerHTML=`<h4>선택한 직원</h4>
       <div class="who"><div class="av">${spriteSVG(p)}</div>
         <div><div class="n">${p.name}</div><div class="t">${p.title} · ${p.dept}</div>
@@ -810,6 +820,10 @@ function renderDetail(){
         <div class="kv"><span>엔진</span><b>${p.engine}</b></div>
         <div class="kv"><span>슬랙 앱</span><b style="font-size:10px">${p.app_id||"—"}</b></div>
       </div>
+      ${usage?`<div style="margin-top:11px;border-top:1px solid var(--border);padding-top:9px">
+        ${usageRow("오늘 토큰",usage.today)}
+        ${usageRow("최근 7일",usage.d7)}
+      </div>`:`<div class="kv" style="margin-top:11px"><span>토큰 사용량</span><b>데이터 없음</b></div>`}
       ${said?`<div class="quote">${said.text}<em>최근 발언 · ${said.when}</em></div>`
             :`<div class="quote" style="border-color:var(--axis)">최근 발언 기록이 없습니다.
                <em>${p.state==="pending"?"앱이 아직 연결되지 않았습니다":"조용한 상태입니다"}</em></div>`}`;

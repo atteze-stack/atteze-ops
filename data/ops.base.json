@@ -14,6 +14,15 @@
     "spark7": [],
     "note": "토큰 집계 소스 미연결 — refresh.py 의 TOKEN_LOG_PATH 를 지정하면 채워집니다."
   },
+  "model_prices": {
+    "_note": "1M(백만) 토큰당 USD. data/usage/slack.json(토큰 수치만 있음)의 비용을 여기서 계산합니다. hermes.json 은 이미 계산된 cost_usd 를 그대로 씁니다(재계산 안 함). 여기 없는 모델은 0원이 아니라 '단가 미등록'으로 표시됩니다 — 실제 지출을 0으로 보이게 하는 왜곡을 막기 위함(2026-08-16).",
+    "_source": "hermes-agent agent/usage_pricing.py 의 official_docs_snapshot 값과 동일 (developer 프로필이 실행 중인 코드베이스 기준)",
+    "claude-sonnet-5":  {"in": 2.00, "out": 10.00, "cache_read": 0.20, "cache_write": 2.50},
+    "gpt-5.6-sol":      {"in": 5.00, "out": 30.00, "cache_read": 0.50, "cache_write": 6.25},
+    "gpt-5.6-terra":    {"in": 2.50, "out": 15.00, "cache_read": 0.25, "cache_write": 3.125},
+    "gpt-5.6-luna":     {"in": 1.00, "out": 6.00,  "cache_read": 0.10, "cache_write": 1.25},
+    "gpt-4o":           {"in": 2.50, "out": 10.00, "cache_read": 1.25, "cache_write": null}
+  },
   "pipeline": {
     "title": "업무 처리 파이프라인",
     "subtitle": "대표 지시 한 줄이 실행 카드까지 내려가는 순서 (보고 계층과는 별개)",

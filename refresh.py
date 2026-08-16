@@ -33,6 +33,9 @@ DATA_DIR   = os.environ.get("DATA_DIR", os.path.join(HERE, "site", "data"))
 BASE_PATH  = os.path.join(DATA_DIR, "ops.base.json")
 OUT_PATH   = os.path.join(DATA_DIR, "ops.json")
 INBOX_PATH = os.path.join(DATA_DIR, "inbox.json")   # 텔레그램 메모 누적 보관함
+USAGE_DIR         = os.path.join(DATA_DIR, "usage")
+HERMES_USAGE_PATH = os.path.join(USAGE_DIR, "hermes.json")   # Hermes 프로필별 토큰·비용 (컨테이너가 밀어줌)
+SLACK_USAGE_PATH  = os.path.join(USAGE_DIR, "slack.json")    # 슬랙 페르소나(성재경 등) 토큰 (비용은 여기서 계산)
 
 TOKEN      = os.environ.get("SLACK_TOKEN", "").strip()
 DAYS       = int(os.environ.get("DAYS", "30"))
@@ -518,6 +521,106 @@ def collect():
     }
 
 
+def _usage_load(path):
+    try:
+        return json.load(open(path, encoding="utf-8"))
+    except Exception:
+        return None
+
+
+def _usage_zero():
+    return {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0,
+            "cost_usd": 0.0, "unpriced": False}
+
+
+def merge_usage(base):
+    """직원별 토큰 사용량 — data/usage/hermes.json(비용 그대로 사용) +
+       data/usage/slack.json(토큰만 있음 → model_prices 로 비용 계산).
+       둘 중 하나가 없어도(집계기 미가동) 조용히 건너뛰고 있는 것만 반영합니다.
+       ⚠️ 단가표(ops.base.json:model_prices)에 없는 모델은 0원이 아니라
+       unpriced 로 표시합니다 — 실제 지출이 작아 보이는 왜곡을 막기 위함."""
+    prices = base.get("model_prices", {})
+
+    def price_cost(model, tok):
+        p = prices.get(model)
+        if not p:
+            return None                            # 단가 미등록 — 0 아님
+        c = (tok.get("in", 0) / 1_000_000) * (p.get("in") or 0)
+        c += (tok.get("out", 0) / 1_000_000) * (p.get("out") or 0)
+        if p.get("cache_read") is not None:
+            c += (tok.get("cache_read", 0) / 1_000_000) * p["cache_read"]
+        if p.get("cache_write") is not None:
+            c += (tok.get("cache_write", 0) / 1_000_000) * p["cache_write"]
+        return c
+
+    today = datetime.now(KST).strftime("%Y-%m-%d")
+    since7 = (datetime.now(KST) - timedelta(days=6)).strftime("%Y-%m-%d")
+
+    people_out, unpriced_models, daily_tokens = {}, set(), Counter()
+
+    def add(pid, day, tok, cost, priced):
+        daily_tokens[day] += int(tok.get("in", 0)) + int(tok.get("out", 0))
+        slot = people_out.setdefault(pid, {"today": _usage_zero(), "d7": _usage_zero()})
+        for bucket, cond in (("today", day == today), ("d7", day >= since7)):
+            if not cond:
+                continue
+            b = slot[bucket]
+            for k in ("in", "out", "cache_read", "cache_write"):
+                b[k] += int(tok.get(k, 0) or 0)
+            if priced and cost is not None:
+                b["cost_usd"] += cost
+            else:
+                b["unpriced"] = True
+
+    hermes_u = _usage_load(HERMES_USAGE_PATH)
+    if hermes_u:
+        for pid, slot in (hermes_u.get("people") or {}).items():
+            for day, d in (slot.get("days") or {}).items():
+                add(pid, day, d, d.get("cost_usd", 0.0), True)   # 재계산 안 함
+
+    slack_u = _usage_load(SLACK_USAGE_PATH)
+    if slack_u:
+        for pid, slot in (slack_u.get("people") or {}).items():
+            for day, d in (slot.get("days") or {}).items():
+                models = d.get("models") or {}
+                if not models:
+                    add(pid, day, d, None, False)   # 모델 구분 없으면 단가 계산 불가
+                    continue
+                for model, tok in models.items():
+                    cost = price_cost(model, tok)
+                    if cost is None:
+                        unpriced_models.add(model)
+                    add(pid, day, tok, cost, cost is not None)
+
+    total = {"today": _usage_zero(), "d7": _usage_zero()}
+    for slot in people_out.values():
+        for bucket in ("today", "d7"):
+            b, tb = slot[bucket], total[bucket]
+            for k in ("in", "out", "cache_read", "cache_write", "cost_usd"):
+                tb[k] += b[k]
+            tb["unpriced"] = tb["unpriced"] or b["unpriced"]
+
+    have_source = bool(hermes_u or slack_u)
+    base["usage"] = {
+        "people": people_out,
+        "total": total,
+        "unpriced_models": sorted(unpriced_models),
+        "sources": {"hermes": bool(hermes_u), "slack": bool(slack_u)},
+        "updated_at": datetime.now(KST).isoformat(timespec="seconds"),
+    }
+
+    # 사이드바 — 회사 전체 오늘 토큰·비용 (usage 소스가 있을 때만 덮어씀)
+    if have_source:
+        base["tokens"]["today"] = total["today"]["in"] + total["today"]["out"]
+        base["tokens"]["cost_usd"] = round(total["today"]["cost_usd"], 4)
+        last7 = sorted(daily_tokens)[-7:]
+        base["tokens"]["spark7"] = [daily_tokens[d] for d in last7]
+        base["tokens"]["note"] = ("일부 모델 단가 미등록 — 실비용보다 낮게 표시될 수 있습니다."
+                                   if total["today"]["unpriced"] else "")
+    log(f"  사용량: hermes={'있음' if hermes_u else '없음'} · slack={'있음' if slack_u else '없음'}"
+        + (f" · 단가 미등록 모델: {', '.join(sorted(unpriced_models))}" if unpriced_models else ""))
+
+
 def merge(base, s, extra_memos=None):
     people = base["people"]
     now = time.time()
@@ -627,6 +730,8 @@ def merge(base, s, extra_memos=None):
             base["tokens"]["note"] = ""
         except Exception as e:
             log("토큰 파일 읽기 실패:", e)
+
+    merge_usage(base)   # 직원별 토큰 사용량(data/usage/*.json) — 사이드바·상세패널용
 
     base["meta"]["generated_at"] = datetime.now(KST).isoformat(timespec="seconds")
     base["meta"]["source"] = f"슬랙 API 자동 수집 · 최근 {DAYS}일 · ops.base.json 병합"
