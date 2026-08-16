@@ -343,6 +343,33 @@ tbody tr:last-child td{border-bottom:0}
 .feed .w{color:var(--ink); font-weight:600; white-space:nowrap; font-size:11.5px; padding-top:1px; min-width:78px}
 .feed .tm{color:var(--muted); font-size:10.5px; white-space:nowrap; margin-left:auto}
 .foot{font-size:11px; color:var(--muted); line-height:1.7}
+
+/* ---------- 오늘의 요약 (5블록) ---------- */
+.sum5{display:grid; grid-template-columns:repeat(2,1fr); gap:16px}
+@media(max-width:900px){ .sum5{grid-template-columns:1fr} }
+.s5b{margin-bottom:0}
+.s5b:nth-child(5){grid-column:1 / -1}
+.s5item{border-left:3px solid var(--axis); background:var(--plane); border:1px solid var(--border);
+  border-left-width:3px; border-radius:8px; padding:9px 12px; margin-bottom:7px}
+.s5item:last-child{margin-bottom:0}
+.s5item .h1{display:flex; gap:8px; align-items:baseline}
+.s5item .tt{font-size:12.5px; font-weight:600; flex:1; line-height:1.4}
+.s5item .tm{font-size:10px; color:var(--muted); white-space:nowrap}
+.s5item .sub{font-size:11px; color:var(--ink2); margin-top:4px; line-height:1.5}
+.s5day{font-size:10.5px; color:var(--muted); letter-spacing:.04em; margin:12px 0 6px; text-transform:uppercase}
+.s5day:first-child{margin-top:0}
+.s5b.done .s5item{border-left-color:var(--good)}
+.s5b.doing .s5item{border-left-color:var(--s1)}
+.s5b.blocked .s5item{border-left-color:var(--crit)}
+.s5tok-tot{display:flex; gap:22px; flex-wrap:wrap; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid var(--border)}
+.s5tok-tot .tb{min-width:110px}
+.s5tok-tot .tb .lab{font-size:10.5px; color:var(--muted)}
+.s5tok-tot .tb .val{font-size:19px; font-weight:650; margin-top:2px}
+.s5tokrow{display:grid; grid-template-columns:140px 1fr 1fr; gap:10px; align-items:center; padding:6px 0; border-bottom:1px solid var(--grid); font-size:11.5px}
+.s5tokrow:last-child{border-bottom:0}
+.s5tokrow .nm{color:var(--ink); font-weight:550}
+.s5tokrow .v{color:var(--ink2); font-variant-numeric:tabular-nums}
+.s5tokrow .v .cost{color:var(--muted); font-size:10.5px}
 @media (max-width:1000px){
   .app{grid-template-columns:1fr}
   aside{position:static; height:auto; flex-direction:row; flex-wrap:wrap; align-items:center; gap:14px}
@@ -362,7 +389,8 @@ tbody tr:last-child td{border-bottom:0}
   </div>
 
   <nav>
-    <button class="on" data-v="office"><span class="k">🏢</span>오피스</button>
+    <button class="on" data-v="today"><span class="k">☀️</span>오늘의 요약</button>
+    <button data-v="office"><span class="k">🏢</span>오피스</button>
     <button data-v="org"><span class="k">🧭</span>조직 파이프라인</button>
     <button data-v="aide"><span class="k">🗒️</span>비서실</button>
     <button data-v="log"><span class="k">📝</span>작업 로그</button>
@@ -407,8 +435,39 @@ tbody tr:last-child td{border-bottom:0}
     <span class="stamp" id="stamp"></span>
   </div>
 
+  <!-- ============ TODAY (5-block summary) ============ -->
+  <section class="view on" id="v-today">
+    <div class="sum5">
+      <div class="card s5b" id="s5-yesterday">
+        <h2>📌 어제 한 일</h2>
+        <p class="cap">완료 신호(✅)·작업 로그·머지 커밋을 날짜별로 모았습니다</p>
+        <div id="s5YestBody"></div>
+      </div>
+      <div class="card s5b" id="s5-today">
+        <h2>▶️⏳ 오늘 할 일 / 진행 중</h2>
+        <p class="cap">진행 신호가 살아있는 작업 + 오늘 발급된 카드</p>
+        <div id="s5TodayBody"></div>
+      </div>
+      <div class="card s5b" id="s5-tomorrow">
+        <h2>⛔ 내일 해야 될 일</h2>
+        <p class="cap">미완·차단(⛔)된 작업 + 다음 순번 카드</p>
+        <div id="s5TomorrowBody"></div>
+      </div>
+      <div class="card s5b" id="s5-ideas">
+        <h2>💡 아이디어 메모</h2>
+        <p class="cap">자비스한테 말한 아이디어가 그대로 여기 쌓입니다</p>
+        <div id="s5IdeasBody"></div>
+      </div>
+      <div class="card s5b" id="s5-tokens">
+        <h2>🔢 토큰 사용량</h2>
+        <p class="cap">전체 · 직원별 — hermes.json / slack.json 실데이터 연동</p>
+        <div id="s5TokensBody"></div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ OFFICE ============ -->
-  <section class="view on" id="v-office">
+  <section class="view" id="v-office">
     <div class="kpibar" id="kpibar"></div>
     <div class="offsplit">
       <div class="office" id="office"></div>
@@ -1104,9 +1163,134 @@ function renderSide(){
     isNaN(d) ? D.meta.generated_at : `${D.meta.company} · 갱신 ${d.toLocaleString("ko-KR",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"})}`;
 }
 
+/* ---------- 오늘의 요약 (5블록) ---------- */
+function s5empty(msg){ return `<div class="empty">${msg}</div>`; }
+function s5item(title, tm, sub, extraCls){
+  return `<div class="s5item${extraCls?` ${extraCls}`:""}"><div class="h1"><span class="tt">${title}</span>${tm?`<span class="tm">${tm}</span>`:""}</div>${sub?`<div class="sub">${sub}</div>`:""}</div>`;
+}
+function renderToday(){
+  const P = D.people||[], W = D.worklog||[], boards = D.boards||[];
+  const nameOf = id => (P.find(p=>p.id===id)||{}).name || id;
+
+  /* ① 어제 한 일 — 완료 신호(✅) + 작업 로그 + 완료 카드(머지 커밋 포함) */
+  (function(){
+    const el = document.getElementById("s5YestBody");
+    const doneP = P.filter(p=>p.work && p.work.state==="done");
+    const doneCards = boards.flatMap(b=>b.cards.filter(c=>c.s==="done").map(c=>({...c, board:b.name})));
+    let html = "";
+    if(doneP.length){
+      html += `<div class="s5day">완료 신호</div>` + doneP.map(p=>
+        s5item(`${p.name}${p.work.task?` · ${p.work.task}`:""}`, `${p.work.last} · ${p.work.age_min}분 전`,
+          p.work.note||"", "")).join("");
+    }
+    if(W.length){
+      html += `<div class="s5day">작업 로그</div>` + W.slice(0,8).map(w=>
+        s5item(w.summary, w.when, [w.tool, w.where].filter(Boolean).join(" · ") + (w.result?` — ${w.result}`:""))).join("");
+    }
+    if(doneCards.length){
+      html += `<div class="s5day">완료 카드</div>` + doneCards.map(c=>
+        s5item(c.t, c.note&&/^\d{2}-\d{2}$/.test(c.note)?c.note:"", `${c.board}${c.owner?` · ${nameOf(c.owner)}`:""}${c.note&&!/^\d{2}-\d{2}$/.test(c.note)?` · ${c.note}`:""}`)).join("");
+    }
+    el.innerHTML = html || s5empty("어제 완료된 항목이 아직 없습니다");
+  })();
+
+  /* ② 오늘 할 일 / 진행 중 — 진행 신호(▶⏳) + doing 카드 */
+  (function(){
+    const el = document.getElementById("s5TodayBody");
+    const liveP = P.filter(p=>p.work && (p.work.state==="working"||p.work.state==="quiet"));
+    const doingCards = boards.flatMap(b=>b.cards.filter(c=>c.s==="doing").map(c=>({...c, board:b.name})));
+    let html = "";
+    if(liveP.length){
+      html += `<div class="s5day">진행 신호</div>` + liveP.map(p=>{
+        const tag = p.work.state==="working" ? '<span class="chip doing">진행중</span>' : '<span class="chip hold">신호 지연</span>';
+        return s5item(`${p.name}${p.work.task?` · ${p.work.task}`:""} ${tag}`, `${p.work.last} · ${p.work.age_min}분 전`, p.work.note||"");
+      }).join("");
+    }
+    if(doingCards.length){
+      html += `<div class="s5day">오늘 발급된 카드</div>` + doingCards.map(c=>
+        s5item(c.t, "", `${c.board}${c.owner?` · ${nameOf(c.owner)}`:""}${c.note?` · ${c.note}`:""}`)).join("");
+    }
+    el.innerHTML = html || s5empty("지금 진행 중인 신호가 없습니다");
+  })();
+
+  /* ③ 내일 해야 될 일 — 중단(⛔) 신호 + 미완료(todo) 카드 */
+  (function(){
+    const el = document.getElementById("s5TomorrowBody");
+    const stoppedP = P.filter(p=>p.work && p.work.state==="stopped");
+    const todoCards = boards.flatMap(b=>b.cards.filter(c=>c.s==="todo").map(c=>({...c, board:b.name})));
+    let html = "";
+    if(stoppedP.length){
+      html += `<div class="s5day">중단 신호</div>` + stoppedP.map(p=>
+        s5item(`${p.name}${p.work.task?` · ${p.work.task}`:""} <span class="chip crit">중단</span>`,
+          `${p.work.last} · ${p.work.age_min}분 전`, p.work.note||"")).join("");
+    }
+    if(todoCards.length){
+      html += `<div class="s5day">다음 순번 카드 (미완료 ${todoCards.length}건)</div>` + todoCards.map(c=>
+        s5item(`${c.t}${c.urgent?' <span class="chip crit">긴급</span>':""}`, "",
+          `${c.board}${c.owner?` · ${nameOf(c.owner)}`:""}${c.note?` · ${c.note}`:""}`)).join("");
+    }
+    el.innerHTML = html || s5empty("미완료·차단된 항목이 없습니다");
+  })();
+
+  /* ④ 아이디어 메모 — assistant.ideas 그대로 노출 (비서실 탭과 동일 소스) */
+  (function(){
+    const el = document.getElementById("s5IdeasBody");
+    const ideas = (D.assistant && D.assistant.ideas) || [];
+    el.innerHTML = ideas.length
+      ? ideas.map(i=>`<div class="idea">
+          <div class="i1"><span class="it">${i.title}</span>
+            ${i.tag?`<span class="chip doing">${i.tag}</span>`:""}
+            <span class="iw">${i.when}</span></div>
+          ${(i.lines||[]).length?`<ul class="il">${i.lines.map(l=>`<li>${l}</li>`).join("")}</ul>`:""}
+        </div>`).join("")
+      : s5empty("아직 없습니다 · 자비스한테 아이디어를 말하면 여기 쌓입니다");
+  })();
+
+  /* ⑤ 토큰 사용량 — 기존 hermes.json/slack.json 실데이터 연동 그대로 표시 */
+  (function(){
+    const el = document.getElementById("s5TokensBody");
+    const u = D.usage || {}; const tot = u.total || {};
+    const fx = (D.tokens && D.tokens.fx_krw) || 1400;
+    const fmtBucket = b => {
+      if(!b) return {tok:"0", cost:"$0.00"};
+      const tok = ((b.in||0)+(b.out||0)).toLocaleString();
+      const cost = b.cost_usd>0 ? `$${b.cost_usd.toFixed(2)} (≈₩${Math.round(b.cost_usd*fx).toLocaleString()})`
+                 : (b.unpriced ? "단가 미등록" : "$0.00");
+      return {tok, cost};
+    };
+    const t = fmtBucket(tot.today), d7 = fmtBucket(tot.d7);
+    const sourced = (u.sources && (u.sources.hermes || u.sources.slack));
+    let html = `<div class="s5tok-tot">
+      <div class="tb"><div class="lab">오늘 전체</div><div class="val">${t.tok} tok</div><div class="sm">${t.cost}</div></div>
+      <div class="tb"><div class="lab">최근 7일 전체</div><div class="val">${d7.tok} tok</div><div class="sm">${d7.cost}</div></div>
+      <div class="tb"><div class="lab">데이터 소스</div><div class="val" style="font-size:12.5px">${
+        sourced ? `hermes ${u.sources.hermes?"✓":"—"} · slack ${u.sources.slack?"✓":"—"}` : "수집 대기"
+      }</div></div>
+    </div>`;
+    const people = u.people || {};
+    const rows = Object.keys(people).map(pid=>{
+      const slot = people[pid]; const nm = nameOf(pid);
+      const tb = fmtBucket(slot.today), db = fmtBucket(slot.d7);
+      return `<div class="s5tokrow"><span class="nm">${nm}</span>
+        <span class="v">오늘 ${tb.tok} tok · ${tb.cost}</span>
+        <span class="v">7일 ${db.tok} tok · ${db.cost}</span></div>`;
+    });
+    if(rows.length){
+      html += `<div style="margin-top:6px">${rows.join("")}</div>`;
+    } else {
+      html += s5empty("수집 대기 — 직원별 상세는 usage 소스가 붙으면 자동으로 채워집니다");
+    }
+    if((D.tokens && D.tokens.note) || u.unpriced_models&&u.unpriced_models.length){
+      html += `<p class="foot" style="margin-top:10px">${D.tokens&&D.tokens.note?D.tokens.note:""}${
+        u.unpriced_models&&u.unpriced_models.length?` 단가 미등록 모델: ${u.unpriced_models.join(", ")}`:""}</p>`;
+    }
+    el.innerHTML = html;
+  })();
+}
+
 /* ---------- 부팅 ---------- */
-const TITLES={office:"오피스 현황",org:"조직 파이프라인",aide:"비서실",log:"작업 로그",proj:"프로젝트 진행 상황",act:"슬랙 활동"};
-function renderAll(){ renderSide(); renderOffice(); applySize(SZ); renderKpi(); renderDetail(); renderOrg(); renderAide(); renderLog(); renderBoards(); renderAct(); }
+const TITLES={today:"오늘의 요약",office:"오피스 현황",org:"조직 파이프라인",aide:"비서실",log:"작업 로그",proj:"프로젝트 진행 상황",act:"슬랙 활동"};
+function renderAll(){ renderSide(); renderOffice(); applySize(SZ); renderKpi(); renderDetail(); renderOrg(); renderAide(); renderLog(); renderBoards(); renderAct(); renderToday(); }
 
 /* 자비스가 깃허브에 직접 쓴 메모(data/inbox.json)를 즉시 얹습니다.
    ops.json 은 15분마다 갱신되지만, 이건 페이지를 열 때마다 바로 반영됩니다. */
