@@ -71,9 +71,32 @@ MEMO_HIDE_RE = re.compile(r"^\s*(비공개|비밀|숨김|private)\b", re.I)
 # 직원들이 채널에 남기는 상태 메시지를 읽어 '지금 일하는 중/멈춤'을 판정합니다.
 #   ▶ 시작 · t_xxx · 요약   ⏳ 진행 · t_xxx · 내용
 #   ✅ 완료 · t_xxx · 결과   ⛔ 중단 · t_xxx · 사유
+# 완화판(2026-08-16): 구분자(·/:) 도 t_ID 도 없이 이모지(유니코드 또는 슬랙
+# :코드: 표기) + 자유 텍스트만 있어도 인식하도록 완화. 기존 엄격 형식도
+# 계속 정상 인식됩니다 (하위호환 — 아래 테스트 참조).
+_STATUS_CODE2MARK = {
+    "arrow_forward": "▶", "hourglass_flowing_sand": "⏳",
+    "white_check_mark": "✅", "no_entry": "⛔",
+}
 STATUS_RE = re.compile(
-    r"^\s*(?::\w+:\s*)?([▶⏳✅⛔])\s*(?:시작|진행|완료|중단)?\s*[·:]\s*"
-    r"(?:(t_[A-Za-z0-9_-]+)\s*[·:]\s*)?(.*)$")
+    r"^\s*(?:"
+      r"(?P<mark_u>[▶⏳✅⛔])"
+      r"|:(?P<mark_c>arrow_forward|hourglass_flowing_sand|white_check_mark|no_entry):"
+    r")\s*"
+    r"(?:(?:시작|진행|완료|중단)\s*[·:]\s*)?"
+    r"(?:(?P<task>t_[A-Za-z0-9_-]+)\s*[·:]\s*)?"
+    r"(?P<note>.*)$")
+
+
+def _status_match(raw):
+    """STATUS_RE.match 를 감싸서 mark 를 항상 유니코드 기호로 정규화합니다
+    (슬랙이 :arrow_forward: 코드로 보내든 ▶ 유니코드로 보내든 다운스트림은
+    항상 ▶/⏳/✅/⛔ 만 봄)."""
+    m = STATUS_RE.match(raw)
+    if not m:
+        return None
+    mark = m.group("mark_u") or _STATUS_CODE2MARK.get(m.group("mark_c"))
+    return mark, m.group("task"), m.group("note")
 WARN_MIN      = int(os.environ.get("WARN_MIN", "10"))      # N분 무신호 = 신호 지연 (재촉)
 STALL_MIN     = int(os.environ.get("STALL_MIN", "20"))     # N분 무신호 = 멈춤 경보
 ALERT_CHANNEL = os.environ.get("ALERT_CHANNEL", "아테즈-신규").lstrip("#")
@@ -487,10 +510,11 @@ def collect():
                 last_seen[uid] = ts
             raw = m.get("text") or ""
             # 작업 상태 신호 — 각 사람의 가장 최근 신호만 기억합니다
-            sm = STATUS_RE.match(raw.strip().splitlines()[0] if raw.strip() else "")
+            sm = _status_match(raw.strip().splitlines()[0] if raw.strip() else "")
             if sm and (uid not in status_ev or ts > status_ev[uid]["ts"]):
-                status_ev[uid] = {"mark": sm.group(1), "task": sm.group(2) or "",
-                                  "note": SECRET_RE.sub("[비밀값 제거됨]", sm.group(3) or "").strip()[:60],
+                mark, task, note = sm
+                status_ev[uid] = {"mark": mark, "task": task or "",
+                                  "note": SECRET_RE.sub("[비밀값 제거됨]", note or "").strip()[:60],
                                   "ts": ts}
             wl = parse_worklog(raw, ts)
             if wl:
