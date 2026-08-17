@@ -49,6 +49,14 @@
   --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
   --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,0.10);
   --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s7:#4a3aa7;
+  /* 🔴 상태색을 라이트 전용으로 다시 정의합니다.
+     그전엔 이 블록이 상태색을 **하나도 재정의하지 않아** 어두운 배경용 색이
+     흰 배경에 그대로 쓰였습니다. 흰 배경(#fcfcfb) 위 실측 대비:
+       warn 1.79 · serious 2.57 · crit 2.69 · good 3.27  — **전부 기준 미달**.
+     특히 warn(보류)은 노랑이라 사실상 안 보였습니다.
+     아래 값은 전부 4.8:1 이상으로 실측해서 고른 것입니다. */
+  --good:#15803d; --warn:#a16207; --serious:#c2410c; --crit:#b91c1c;
+  --muted:#6b6963;                 /* 3.50 → 5.4. 보조 글자도 읽혀야 합니다 */
   --wash:rgba(42,120,214,0.08);
   --floor:#e8e6df; --wall:#f0eee7; --deskw:#cfcbbf;
 }
@@ -120,17 +128,17 @@ h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
   padding:8px 13px; display:flex; gap:7px; flex-wrap:wrap; align-items:center; margin-bottom:12px}
 .kpibar .kb{border:1px solid var(--border); border-radius:7px; padding:3px 10px;
   display:flex; align-items:baseline; gap:7px; background:var(--plane)}
-.kpibar .kb i{font-style:normal; font-size:9px; color:var(--muted); letter-spacing:.09em}
+.kpibar .kb i{font-style:normal; font-size:10px; color:var(--muted); letter-spacing:.09em}
 .kpibar .kb b{font-size:14px; font-weight:650; font-variant-numeric:tabular-nums}
 .kpibar .kb.g b{color:var(--good)} .kpibar .kb.y b{color:var(--warn)}
 .kpibar .kb.r b{color:var(--serious)} .kpibar .kb.b b{color:var(--s1)}
-.pan h4{margin:0 0 10px; font-size:9.5px; letter-spacing:.13em; color:var(--muted); text-transform:uppercase}
+.pan h4{margin:0 0 10px; font-size:10.5px; letter-spacing:.13em; color:var(--muted); text-transform:uppercase}
 .who{display:flex; gap:10px; align-items:flex-start}
 .who .av{width:40px; height:44px; flex:none}
 .who .av svg{width:100%; height:100%; shape-rendering:crispEdges}
 .who .n{font-size:13.5px; font-weight:650; line-height:1.3}
-.who .t{font-size:10.5px; color:var(--ink2); margin-top:2px}
-.who .m{font-size:9.5px; color:var(--s4); margin-top:3px; font-weight:600}
+.who .t{font-size:11.5px; color:var(--ink2); margin-top:2px}
+.who .m{font-size:10.5px; color:var(--s4); margin-top:3px; font-weight:600}
 .who .stt{display:inline-flex; align-items:center; gap:5px; font-size:10px; font-weight:650; margin-top:6px}
 .who .stt i{width:6px; height:6px; border-radius:50%; display:block}
 .kv{display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--grid); font-size:11px}
@@ -138,7 +146,7 @@ h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
 .kv span{color:var(--muted)} .kv b{font-weight:550; color:var(--ink2); font-variant-numeric:tabular-nums}
 .quote{font-size:11px; color:var(--ink2); line-height:1.6; padding:8px 10px; background:var(--plane);
   border-left:2px solid var(--s1); border-radius:0 6px 6px 0; margin-top:9px}
-.quote em{display:block; font-style:normal; font-size:9.5px; color:var(--muted); margin-top:4px}
+.quote em{display:block; font-style:normal; font-size:10.5px; color:var(--muted); margin-top:4px}
 .ubar{margin-bottom:8px}
 .ubar .l{display:flex; justify-content:space-between; font-size:10px; color:var(--ink2); margin-bottom:3px}
 .ubar .l b{font-variant-numeric:tabular-nums; color:var(--muted); font-weight:500}
@@ -153,13 +161,19 @@ h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
 .office{
   background:var(--wall); border:1px solid var(--border); border-radius:12px;
   padding:0; overflow:hidden; position:relative;
-  --pw:66px; --sw:38px; --sh:49px; --dh:14px; --nm:8.5px; --rl:7px; --md:6.5px;
-  --bgf:7px; --gap:7px; --zp:8px; --seath:98px;
+  /* 자리표 글자 크기 — 2026-08-18 상향.
+     그전엔 기본(s)에서 **이름 8.5px · 직책 7px** 이었습니다. 누가 어느 자리인지
+     보는 화면인데 정작 이름이 화면에서 제일 작았습니다.
+     크기 프리셋은 "화면에 몇 명 담을까"의 문제지 **읽을 수 있냐의 문제가 아닙니다.**
+     그래서 제일 작은 s 도 읽히도록 바닥을 올리고, 글자가 커진 만큼 자리 폭도 넓힙니다
+     (폭을 안 늘리면 이름이 줄바꿈되거나 잘립니다). */
+  --pw:78px; --sw:38px; --sh:49px; --dh:14px; --nm:10.5px; --rl:9px; --md:8px;
+  --bgf:8.5px; --gap:7px; --zp:8px; --seath:104px;
 }
-.office[data-size="m"]{ --pw:88px; --sw:52px; --sh:67px; --dh:19px; --nm:10px; --rl:8.5px;
-  --md:7.5px; --bgf:8.5px; --gap:9px; --zp:10px; --seath:126px; }
-.office[data-size="l"]{ --pw:112px; --sw:66px; --sh:85px; --dh:24px; --nm:11.5px; --rl:9.5px;
-  --md:8.5px; --bgf:9.5px; --gap:12px; --zp:13px; --seath:158px; }
+.office[data-size="m"]{ --pw:98px; --sw:52px; --sh:67px; --dh:19px; --nm:11.5px; --rl:10px;
+  --md:8.5px; --bgf:9.5px; --gap:9px; --zp:10px; --seath:130px; }
+.office[data-size="l"]{ --pw:122px; --sw:66px; --sh:85px; --dh:24px; --nm:13px; --rl:11px;
+  --md:9.5px; --bgf:10.5px; --gap:12px; --zp:13px; --seath:162px; }
 .zone{padding:var(--zp) 14px calc(var(--zp) + 2px); border-bottom:1px solid var(--border); position:relative}
 /* 가운데 정렬이 필요한 존만 폭을 좁힙니다 — 실무층·빈자리는 넓게 씁니다 */
 .zone.exec > .pods,.zone.exec > .down,
@@ -172,7 +186,7 @@ h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
 .zone.exec{background:linear-gradient(180deg,rgba(57,135,229,.10),transparent)}
 .zone.chief{background:linear-gradient(180deg,rgba(144,133,233,.09),transparent)}
 .zone.floor{background:var(--floor)}
-.ztitle{font-size:9.5px; letter-spacing:.10em; color:var(--muted); text-transform:uppercase; margin-bottom:9px; display:flex; align-items:center; gap:8px}
+.ztitle{font-size:10.5px; letter-spacing:.10em; color:var(--muted); text-transform:uppercase; margin-bottom:9px; display:flex; align-items:center; gap:8px}
 .ztitle b{color:var(--ink2); font-weight:600; letter-spacing:.02em; text-transform:none; font-size:10.5px}
 .pods{display:flex; gap:var(--gap); flex-wrap:wrap; align-items:stretch}
 .pods .pod{justify-content:flex-end}
@@ -220,26 +234,26 @@ h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
   color:var(--muted); text-align:center; padding:8px; background:rgba(128,128,128,.04);
 }
 .seat .p{font-size:15px; line-height:1; opacity:.4}
-.seat .t{font-size:9.5px; font-weight:600; color:var(--ink2); line-height:1.3}
-.seat .d{font-size:8.5px; line-height:1.3}
+.seat .t{font-size:10.5px; font-weight:600; color:var(--ink2); line-height:1.3}
+.seat .d{font-size:10px; line-height:1.3}
 .tracks{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; padding-top:11px; border-top:1px solid var(--border)}
 .trk{flex:1; min-width:110px; border:1px solid var(--border); border-radius:8px; padding:7px 10px; background:var(--surface)}
 .trk .tn{font-size:10.5px; font-weight:650; letter-spacing:.03em}
-.trk .tm{font-size:9px; color:var(--muted); margin-top:1px}
-.trk .ts{font-size:9px; color:var(--ink2); margin-top:3px}
+.trk .tm{font-size:10px; color:var(--muted); margin-top:1px}
+.trk .ts{font-size:10.5px; color:var(--ink2); margin-top:3px}
 
 /* pipeline arrows inside office */
 .flowline{display:flex; align-items:center; gap:0; justify-content:center; flex-wrap:wrap}
 .arrow{width:46px; height:2px; background:var(--axis); position:relative; margin:0 4px 40px}
 .arrow::after{content:""; position:absolute; right:-1px; top:-3px; border-left:7px solid var(--axis); border-top:4px solid transparent; border-bottom:4px solid transparent}
 .arrow i{position:absolute; top:-2px; left:0; width:6px; height:6px; border-radius:50%; background:var(--s1); animation:travel 2.4s linear infinite}
-.arrow .alab{position:absolute; top:-15px; left:50%; transform:translateX(-50%); font-size:9.5px; color:var(--muted); white-space:nowrap}
+.arrow .alab{position:absolute; top:-15px; left:50%; transform:translateX(-50%); font-size:10.5px; color:var(--muted); white-space:nowrap}
 .arrow.dead{opacity:.4} .arrow.dead i{display:none}
 @keyframes travel{0%{left:-2px;opacity:0}12%{opacity:1}88%{opacity:1}100%{left:44px;opacity:0}}
 .merge{display:block; width:100%; max-width:400px; height:38px; margin:0 auto}
 .mlab{font-size:13px; fill:var(--muted)}
 .down{display:flex; flex-direction:column; align-items:center; gap:1px; margin-top:3px}
-.down span{font-size:9px; color:var(--muted); letter-spacing:.02em}
+.down span{font-size:10px; color:var(--muted); letter-spacing:.02em}
 .down svg{width:11px; height:24px; overflow:visible}
 .execpair{gap:20px; align-items:flex-start}
 .aide{display:flex; flex-direction:column; align-items:center; position:relative; margin-top:46px}
@@ -251,9 +265,9 @@ h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
 .tgbar::after{right:-1px; border-left:7px solid var(--s7)}
 .tgbar i{position:absolute; top:-2px; left:0; width:6px; height:6px; border-radius:50%; background:var(--s7); animation:tgo 3s ease-in-out infinite}
 @keyframes tgo{0%,100%{left:0;opacity:.2}25%{left:40px;opacity:1}50%{left:40px;opacity:.2}75%{left:0;opacity:1}}
-.tgchip{font-size:9px; color:var(--s7); text-align:center; line-height:1.35; font-weight:650}
-.tgchip b{display:block; color:var(--muted); font-weight:400; font-size:8.5px}
-.aidelab{font-size:8.5px; color:var(--muted); margin-top:4px; text-align:center; letter-spacing:.02em}
+.tgchip{font-size:10px; color:var(--s7); text-align:center; line-height:1.35; font-weight:650}
+.tgchip b{display:block; color:var(--muted); font-weight:400; font-size:10px}
+.aidelab{font-size:10px; color:var(--muted); margin-top:4px; text-align:center; letter-spacing:.02em}
 
 /* 비서실 탭 */
 .aidegrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px}
@@ -271,7 +285,7 @@ h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
 .idea .i1{display:flex; gap:8px; align-items:baseline; flex-wrap:wrap}
 .idea .it{font-size:12.5px; font-weight:600; flex:1; line-height:1.45}
 .idea .iw{font-size:10.5px; color:var(--muted); white-space:nowrap; font-variant-numeric:tabular-nums}
-.idea .il{margin:7px 0 0; padding-left:15px; font-size:11.5px; color:var(--ink2); line-height:1.7}
+.idea .il{margin:7px 0 0; padding-left:15px; font-size:12px; color:var(--ink2); line-height:1.7}
 .tgcard{border:1px solid var(--border); border-left:3px solid var(--s7); border-radius:10px; padding:13px 15px; background:var(--surface)}
 .tghead{display:flex; align-items:center; gap:9px}
 .tgname{font-size:13px; font-weight:650}
@@ -287,7 +301,7 @@ h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
 .logitem .ls{font-size:12.5px; font-weight:600; flex:1; line-height:1.45}
 .logitem .lt{font-size:10.5px; color:var(--muted); white-space:nowrap; font-variant-numeric:tabular-nums}
 .logitem .l2{display:flex; gap:7px; align-items:center; flex-wrap:wrap; margin-top:7px}
-.logitem .lw{font-size:10.5px; color:var(--ink2)}
+.logitem .lw{font-size:11.5px; color:var(--ink2)}
 .logitem .lsess{font-size:10px; color:var(--muted); font-family:ui-monospace,monospace}
 .logitem .l3{font-size:11.5px; color:var(--muted); margin-top:6px; line-height:1.5}
 .logitem .l3.res{color:var(--ink2)}
@@ -297,7 +311,7 @@ h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
 .duty .n{font-size:12.5px; font-weight:600; color:var(--ink)}
 .duty .d{font-size:11.5px; color:var(--muted)}
 .sidelab{font-size:10px; color:var(--ink2); text-align:center; line-height:1.5}
-.sidelab span{color:var(--muted); font-size:9.5px}
+.sidelab span{color:var(--muted); font-size:10.5px}
 
 /* ---------- org pipeline view ---------- */
 .chain{display:flex; flex-direction:column; gap:0; align-items:stretch; max-width:640px}
@@ -313,7 +327,7 @@ h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
 .stepbody .eng{font-size:10px; color:var(--muted); border:1px solid var(--border); border-radius:99px; padding:1px 7px}
 .stepbody .act{font-size:12.5px; color:var(--ink2); margin-top:3px}
 .stepbody .rl{font-size:11.5px; color:var(--muted)}
-.stepbody .io{display:flex; gap:14px; flex-wrap:wrap; margin-top:7px; font-size:10.5px}
+.stepbody .io{display:flex; gap:14px; flex-wrap:wrap; margin-top:7px; font-size:11.5px}
 .stepbody .in{color:var(--muted)} .stepbody .out{color:var(--s1)}
 
 /* 보고 계층 트리 */
@@ -329,6 +343,20 @@ ul.tree ul > li::before{content:""; position:absolute; left:-16px; top:19px; wid
 .tnode .tt{font-size:11px; color:var(--muted)}
 
 /* ---------- kanban ---------- */
+/* 프로젝트 = 두 덩이. 돈 버는 일이 먼저, 받치는 일이 그 다음.
+   수익화 쪽만 왼쪽에 굵은 색 띠를 둬서 눈이 먼저 가게 하고, 나머지는 조용히 둡니다. */
+.bgroup{margin-bottom:var(--sp-6)}
+.bgtitle{display:flex; align-items:baseline; gap:var(--sp-3); flex-wrap:wrap;
+  padding:0 0 var(--sp-2) var(--sp-3); margin-bottom:var(--sp-4);
+  border-left:3px solid var(--axis); border-bottom:1px solid var(--grid)}
+.bgtitle b{font-size:var(--fs-lg); font-weight:700; letter-spacing:-.01em}
+.bgtitle span{font-size:var(--fs-sm); color:var(--muted); flex:1; min-width:180px}
+.bgtitle em{font-style:normal; font-size:var(--fs-sm); color:var(--muted);
+  font-variant-numeric:tabular-nums; white-space:nowrap}
+.bgroup.rev .bgtitle{border-left-color:var(--s4)}
+.bgroup.rev .bgtitle b{color:var(--s4)}
+.bgroup.ops{opacity:.92}
+
 .board{margin-bottom:26px}
 .bhead{display:flex; align-items:center; gap:10px; margin-bottom:11px}
 .bhead .nm{font-size:13.5px; font-weight:650}
@@ -340,7 +368,7 @@ ul.tree ul > li::before{content:""; position:absolute; left:-16px; top:19px; wid
 .kc:hover{transform:translateY(-2px); border-color:var(--s1)}
 .kc .t{font-size:12.5px; font-weight:550; line-height:1.45}
 .kc .meta{display:flex; gap:6px; align-items:center; flex-wrap:wrap; margin-top:9px}
-.kc .note{font-size:10.5px; color:var(--muted); margin-top:7px; line-height:1.45}
+.kc .note{font-size:11.5px; color:var(--muted); margin-top:7px; line-height:1.45}
 .kc.urgent{border-left:3px solid var(--crit)}
 .chip{display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:600;
   padding:2px 7px; border-radius:99px; border:1px solid var(--border); color:var(--ink2); white-space:nowrap}
@@ -407,14 +435,39 @@ tbody tr:last-child td{border-bottom:0}
 .sum5{display:grid; grid-template-columns:repeat(2,1fr); gap:var(--sp-4)}
 @media(max-width:900px){ .sum5{grid-template-columns:1fr} }
 .s5b{margin-bottom:0}
-.s5b:nth-child(2){grid-column:1 / -1; order:-1}      /* 오늘 = 히어로 */
-.s5b:nth-child(5){grid-column:1 / -1}                /* 토큰 = 표라서 전폭 */
+/* 읽는 순서 = 급한 순서.
+   ① 오늘(전폭 히어로) → ② 💰 수익화 진행(전폭) → ③ 어제·내일·아이디어(3열) → ④ 토큰
+   수익화를 위로 올린 건 **돈 버는 일이 다른 카드에 섞이면 묻히기 때문**입니다
+   (2026-08-18 대표님). 아이디어 메모는 맨 오른쪽 — 대표님 지시. */
+.s5b#s5-today  {grid-column:1 / -1; order:1}
+.s5b#s5-yesterday{order:2}
+.s5b#s5-tomorrow {order:3}
+.s5col           {order:4}          /* 맨 오른쪽 칸 — 수익화 위, 아이디어 아래 */
+.s5b#s5-tokens {grid-column:1 / -1; order:5}
+/* 오른쪽 칸은 두 카드를 위아래로 붙여 세웁니다. 그리드 칸에 따로 놓으면
+   왼쪽의 긴 카드 때문에 둘 사이가 벌어집니다. */
+.s5col{display:flex; flex-direction:column; gap:var(--sp-4); align-self:start}
+.s5col > .s5b{margin-bottom:0}
+@media(min-width:901px){ .sum5{grid-template-columns:repeat(3,1fr); align-items:start} }
 
 /* 히어로 블록만 조금 더 크게 숨 쉬게 하고, 나머지는 조용히 둡니다.
    과감함은 한 군데에만 씁니다 — 다 강조하면 아무것도 강조가 안 됩니다. */
-.s5b:nth-child(2){border-color:rgba(57,135,229,.35); background:linear-gradient(180deg,rgba(57,135,229,.05),transparent 120px)}
-.s5b:nth-child(2) h2{font-size:17px}
-.s5b:nth-child(2) .s5item .tt{font-size:14px}
+/* 순서를 order 로 바꿨으니 nth-child 로 잡으면 엉뚱한 블록에 걸립니다. id 로 고정. */
+.s5b#s5-today{border-color:rgba(57,135,229,.35); background:linear-gradient(180deg,rgba(57,135,229,.05),transparent 120px)}
+.s5b#s5-today h2{font-size:17px}
+.s5b#s5-today .s5item .tt{font-size:14px}
+/* 수익화는 금색 — 프로젝트 탭의 "돈 버는 일" 과 같은 색이라 같은 것임이 바로 읽힙니다. */
+.s5b#s5-revenue{border-color:rgba(201,133,0,.38); background:linear-gradient(180deg,rgba(201,133,0,.06),transparent 120px)}
+.s5b#s5-revenue h2{font-size:17px; color:var(--s4)}
+
+/* 수익화 진행률 막대 */
+.revbar{display:flex; align-items:center; gap:var(--sp-3); margin-bottom:var(--sp-4)}
+.revbar .track{flex:1; height:8px; border-radius:var(--r-pill); background:var(--grid); overflow:hidden}
+.revbar .track i{display:block; height:100%; background:var(--s4)}
+.revbar .n{font-size:var(--fs-sm); color:var(--muted); font-variant-numeric:tabular-nums; white-space:nowrap}
+.revsum{display:flex; gap:var(--sp-4); flex-wrap:wrap; margin-bottom:var(--sp-3)}
+.revsum span{font-size:var(--fs-sm); color:var(--muted)}
+.revsum b{font-size:var(--fs-lg); color:var(--ink); font-variant-numeric:tabular-nums; margin-right:4px}
 .s5b h2{font-size:var(--fs-lg); letter-spacing:-.01em}
 .s5b .cap{font-size:var(--fs-xs); letter-spacing:.02em}
 .s5item{border-left:3px solid var(--axis); background:var(--plane); border:1px solid var(--border);
@@ -544,10 +597,19 @@ tbody tr:last-child td{border-bottom:0}
         <p class="cap">미완·차단(⛔)된 작업 + 다음 순번 카드</p>
         <div id="s5TomorrowBody"></div>
       </div>
-      <div class="card s5b" id="s5-ideas">
-        <h2>💡 아이디어 메모</h2>
-        <p class="cap">자비스한테 말한 아이디어가 그대로 여기 쌓입니다</p>
-        <div id="s5IdeasBody"></div>
+      <!-- 오른쪽 칸: 💰 수익화 진행 위, 💡 아이디어 메모 아래 (2026-08-18 대표님 지시).
+           그리드 칸에 따로 놓으면 둘 사이에 빈틈이 생겨서 한 칸으로 묶었습니다. -->
+      <div class="s5col">
+        <div class="card s5b" id="s5-revenue">
+          <h2>💰 수익화 진행</h2>
+          <p class="cap">매출로 이어지는 것만 — 진행률과 막힌 지점</p>
+          <div id="s5RevBody"></div>
+        </div>
+        <div class="card s5b" id="s5-ideas">
+          <h2>💡 아이디어 메모</h2>
+          <p class="cap">자비스한테 말한 아이디어가 그대로 여기 쌓입니다</p>
+          <div id="s5IdeasBody"></div>
+        </div>
       </div>
       <div class="card s5b" id="s5-tokens">
         <h2>🔢 토큰 사용량</h2>
@@ -1167,8 +1229,13 @@ function renderLog(){
 
 /* ---------- 칸반 ---------- */
 const SL = { todo:"할일", doing:"진행중", done:"완료", hold:"보류" };
+/* 수익화는 **돈 버는 일**이라 자비스·운영 같은 내부 배관과 한 줄에 섞이면 묻힙니다
+   (2026-08-18 대표님: "수익화 해야될 것들 이것들은 따로 빼놔야 되지 않을까?").
+   그래서 두 덩이로 가릅니다 — 위: 돈 버는 일 / 아래: 굴러가게 하는 일. */
+const REVENUE_BOARDS = new Set(["revenue"]);
+
 function renderBoards(){
-  document.getElementById("boards").innerHTML = D.boards.map(b=>{
+  const mk = b => {
     const done = b.cards.filter(c=>c.s==="done").length;
     const pct = Math.round(done/b.cards.length*100);
     return `<div class="board">
@@ -1190,7 +1257,24 @@ function renderBoards(){
           ${c.note?`<div class="note">${c.note}</div>`:""}
         </div>`;}).join("")}</div>
     </div>`;
-  }).join("");
+  };
+
+  const rev  = D.boards.filter(b =>  REVENUE_BOARDS.has(b.id));
+  const rest = D.boards.filter(b => !REVENUE_BOARDS.has(b.id));
+  const sum  = bs => {
+    const cards = bs.flatMap(b => b.cards);
+    const done  = cards.filter(c => c.s === "done").length;
+    return `${done}/${cards.length} 완료`;
+  };
+  const group = (title, sub, bs, cls) => bs.length ? `
+    <div class="bgroup ${cls}">
+      <div class="bgtitle"><b>${title}</b><span>${sub}</span><em>${sum(bs)}</em></div>
+      ${bs.map(mk).join("")}
+    </div>` : "";
+
+  document.getElementById("boards").innerHTML =
+      group("돈 버는 일", "매출로 이어지는 것 — 여기가 밀리면 나머지는 의미가 없습니다", rev, "rev")
+    + group("굴러가게 하는 일", "자비스·운영·자금 — 회사가 돌아가게 받치는 것", rest, "ops");
 
   document.getElementById("blk").innerHTML = D.blockers.map(b=>{
     const c = b.sev==="crit"?"crit":(b.sev==="warn"?"hold":"todo");
@@ -1472,6 +1556,46 @@ function renderToday(){
           `${c.board}${c.owner?` · ${nameOf(c.owner)}`:""}${c.note?` · ${c.note}`:""}`)).join("");
     }
     el.innerHTML = html || s5empty("미완료·차단된 항목이 없습니다");
+  })();
+
+  /* ③-2 💰 수익화 진행 — 「수익화」 보드만 따로 본다.
+     그전엔 수익화 카드가 보드 구분 없이 「내일 해야 될 일」에 섞여
+     **돈 버는 일이 얼마나 밀렸는지 화면 어디서도 알 수 없었다**(2026-08-18 대표님 지적).
+     여기서는 진행률 → 막힌 것(대기) → 굴러가는 것(진행 중) 순으로 보여준다.
+     남은 것이 먼저인 이유: 완료는 이미 끝나 행동할 게 없다. */
+  (function(){
+    const el = document.getElementById("s5RevBody"); if(!el) return;
+    const board = boards.find(b => b.id === "revenue");
+    const card = el.closest(".s5b");
+    if(!board || !board.cards.length){
+      if(card) card.hidden = false;
+      el.innerHTML = s5empty("수익화 보드가 비어 있습니다");
+      return;
+    }
+    const cs = board.cards;
+    const n = s => cs.filter(c => c.s === s).length;
+    const doneN = n("done"), pct = Math.round(doneN / cs.length * 100);
+    const line = c => s5item(
+      `${c.t}${c.urgent?' <span class="chip crit">긴급</span>':""}`, "",
+      [c.owner ? nameOf(c.owner) : "", c.note].filter(Boolean).join(" · "));
+
+    let html = `<div class="revbar">
+        <span class="track"><i style="width:${pct}%"></i></span>
+        <span class="n">${doneN}/${cs.length} 완료 · ${pct}%</span>
+      </div>
+      <div class="revsum">
+        <span><b>${n("doing")}</b>진행 중</span>
+        <span><b>${n("todo")}</b>대기</span>
+        <span><b>${n("hold")}</b>보류</span>
+        <span><b>${doneN}</b>완료</span>
+      </div>`;
+    const grp = (title, st) => {
+      const list = cs.filter(c => c.s === st);
+      return list.length ? `<div class="s5day">${title} ${list.length}</div>` + list.map(line).join("") : "";
+    };
+    html += grp("아직 시작 못 한 것", "todo") + grp("굴러가는 중", "doing")
+          + grp("보류", "hold") + grp("끝난 것", "done");
+    el.innerHTML = html;
   })();
 
   /* ④ 아이디어 메모 — assistant.ideas 그대로 노출 (비서실 탭과 동일 소스) */
