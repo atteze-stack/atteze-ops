@@ -725,7 +725,8 @@ def merge(base, s, extra_memos=None):
             p.pop("work", None)
             continue
         age_min = (now_ts - ev["ts"]) / 60
-        dt = datetime.fromtimestamp(ev["ts"], KST).strftime("%H:%M")
+        sig_kst = datetime.fromtimestamp(ev["ts"], KST)
+        dt = sig_kst.strftime("%H:%M")
         if ev["mark"] in ("▶", "⏳"):
             state = ("working" if age_min <= WARN_MIN else
                      "quiet"   if age_min <= STALL_MIN else "stalled")
@@ -733,8 +734,12 @@ def merge(base, s, extra_memos=None):
             state = "done"
         else:
             state = "stopped"
+        # day/ts 는 화면이 "어제/오늘"을 KST 기준으로 가르기 위한 값입니다.
+        # last("HH:MM")만으로는 어느 날 신호인지 알 수 없어, 오늘 완료한 일이
+        # "어제 한 일"에 섞여 나오던 문제가 있었습니다(2026-08-17).
         p["work"] = {"state": state, "task": ev["task"], "note": ev["note"],
-                     "last": dt, "age_min": int(age_min)}
+                     "last": dt, "age_min": int(age_min),
+                     "day": sig_kst.strftime("%Y-%m-%d"), "ts": ev["ts"]}
 
     # 파이프라인 마지막 단계 — '부서'는 슬랙 앱을 가진 실무층만 셉니다
     floor_live = [p for p in people

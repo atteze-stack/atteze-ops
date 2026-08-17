@@ -440,12 +440,12 @@ tbody tr:last-child td{border-bottom:0}
     <div class="sum5">
       <div class="card s5b" id="s5-yesterday">
         <h2>📌 어제 한 일</h2>
-        <p class="cap">완료 신호(✅)·작업 로그·머지 커밋을 날짜별로 모았습니다</p>
+        <p class="cap">어제(한국시간) 완료된 신호·작업 로그 + 완료 카드 누적</p>
         <div id="s5YestBody"></div>
       </div>
       <div class="card s5b" id="s5-today">
         <h2>▶️⏳ 오늘 할 일 / 진행 중</h2>
-        <p class="cap">진행 신호가 살아있는 작업 + 오늘 발급된 카드</p>
+        <p class="cap">진행 신호가 살아있는 작업 + 진행 중 카드 + 오늘(한국시간) 완료</p>
         <div id="s5TodayBody"></div>
       </div>
       <div class="card s5b" id="s5-tomorrow">
@@ -599,6 +599,38 @@ tbody tr:last-child td{border-bottom:0}
    ============================================================ */
 const REFRESH_MS = 30000;
 let D = null;
+
+/* ---------- 시간·날짜는 무조건 한국(KST) 기준 ----------
+   대표님도 회사도 한국에 있습니다. 브라우저 로컬 시간대로 그리면 해외에서
+   열거나 기기 시계가 다른 시간대일 때 "갱신 시각"과 "어제/오늘"이 통째로
+   어긋납니다. 그래서 화면에 찍는 모든 날짜·시간은 여기를 거칩니다.
+   (서버 refresh.py 는 이미 전부 KST 로 계산해서 내려줍니다.) */
+const KST_TZ = "Asia/Seoul";
+/* KST 기준 "YYYY-MM-DD". en-CA 로케일이 정확히 이 형식을 줍니다. */
+function kstDayKey(d){
+  return new Intl.DateTimeFormat("en-CA", {timeZone:KST_TZ,
+    year:"numeric", month:"2-digit", day:"2-digit"}).format(d);
+}
+/* 지금 이 순간의 KST 날짜. 페이지는 30초마다 다시 그리므로 자정도 알아서 넘어갑니다. */
+function kstToday(){ return kstDayKey(new Date()); }
+function kstDayOffset(days){ return kstDayKey(new Date(Date.now() + days*86400000)); }
+/* KST 기준 "MM. DD. 오후 07:51" */
+function kstStamp(d){
+  return d.toLocaleString("ko-KR", {timeZone:KST_TZ,
+    month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit"});
+}
+/* KST 자정(오늘 0시)의 epoch(초). 로컬 setHours(0,0,0,0) 대신 씁니다. */
+function kstMidnightTs(){
+  const k = kstToday().split("-").map(Number);
+  return Date.UTC(k[0], k[1]-1, k[2], 0, 0, 0)/1000 - 9*3600;
+}
+/* 256분 같은 날것 대신 "4시간 16분 전"으로 읽히게 */
+function agoText(min){
+  if(min==null || isNaN(min)) return "";
+  if(min < 60) return `${min}분 전`;
+  const h = Math.floor(min/60), m = min%60;
+  return m ? `${h}시간 ${m}분 전` : `${h}시간 전`;
+}
 
 /* ---------- 픽셀 캐릭터 ---------- */
 const SPRITES = {
@@ -875,7 +907,7 @@ function renderDetail(){
       ${p.work?`<div class="kv" style="margin-top:10px"><span>지금</span>
          <b style="color:${WORKBADGE[p.work.state][1]}">${WORKBADGE[p.work.state][0]}</b></div>
        <div class="kv"><span>작업</span><b>${p.work.task||"—"}${p.work.note?` · ${p.work.note}`:""}</b></div>
-       <div class="kv"><span>마지막 신호</span><b>${p.work.last} (${p.work.age_min}분 전)</b></div>`:""}
+       <div class="kv"><span>마지막 신호</span><b>${p.work.day?`${p.work.day} `:""}${p.work.last} (${agoText(p.work.age_min)})</b></div>`:""}
       <div style="margin-top:11px">
         <div class="kv"><span>마지막 활동</span><b>${p.last_seen_note||"—"}</b></div>
         <div class="kv"><span>발언</span><b>${msg?msg.v:0}건</b></div>
@@ -1151,7 +1183,7 @@ function renderSide(){
     }else if(as.last_attempt_at==null){
       line.innerHTML=`발송 이력 없음`;
     }else{
-      const dt=new Date(as.last_attempt_at), when=dt.toLocaleString("ko-KR",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"});
+      const dt=new Date(as.last_attempt_at), when=kstStamp(dt);
       line.innerHTML = as.last_attempt_ok
         ? `<b style="color:var(--good)">✅ 성공</b> · ${when}`
         : `<b style="color:var(--crit)">❌ 실패</b> · ${when}${as.last_error?`<br><span style="font-size:10px;color:var(--ink2)">${as.last_error}</span>`:""}`;
@@ -1162,7 +1194,7 @@ function renderSide(){
 
   const d=new Date(D.meta.generated_at);
   document.getElementById("stamp").textContent =
-    isNaN(d) ? D.meta.generated_at : `${D.meta.company} · 갱신 ${d.toLocaleString("ko-KR",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"})}`;
+    isNaN(d) ? D.meta.generated_at : `${D.meta.company} · 갱신 ${kstStamp(d)} KST`;
 }
 
 /* ---------- 오늘의 요약 (5블록) ---------- */
@@ -1174,43 +1206,68 @@ function renderToday(){
   const P = D.people||[], W = D.worklog||[], boards = D.boards||[];
   const nameOf = id => (P.find(p=>p.id===id)||{}).name || id;
 
-  /* ① 어제 한 일 — 완료 신호(✅) + 작업 로그 + 완료 카드(머지 커밋 포함) */
+  /* 어제/오늘은 전부 KST 날짜로 가릅니다. 신호는 work.day, 작업 로그는 w.day
+     (둘 다 refresh.py 가 KST 로 찍어줍니다). 날짜가 없는 옛 데이터는 어제로
+     넘기지 않고 "날짜 미기록"으로 따로 뺍니다 — 없는 날짜를 지어내지 않기 위함. */
+  const TODAY = kstToday(), YEST = kstDayOffset(-1);
+  const dayOf   = x => (x && x.day) || "";
+  const doneSig = day => P.filter(p=>p.work && p.work.state==="done" && dayOf(p.work)===day);
+  const logsOf  = day => W.filter(w=>dayOf(w)===day);
+  const sigItem = p => s5item(`${p.name}${p.work.task?` · ${p.work.task}`:""}`,
+        `${p.work.last} · ${agoText(p.work.age_min)}`, p.work.note||"");
+  const logItem = w => s5item(w.summary, w.when,
+        [w.tool, w.where].filter(Boolean).join(" · ") + (w.result?` — ${w.result}`:""));
+  /* 완료 카드는 완료일이 구조화 필드가 아니라 자유 텍스트 note("07-05")뿐이라
+     어느 날 끝났는지 알 수 없습니다. 시각 자리(tm)에 그 note 를 찍으면 "어제
+     07-05에 한 일"처럼 읽혀서, 아래에서는 부제로 내리고 누적임을 명시합니다. */
+  const CARD_DATE = /^\d{2}-\d{2}$/;
+  const doneCards = boards.flatMap(b=>b.cards.filter(c=>c.s==="done").map(c=>({...c, board:b.name})));
+  const cardItem = c => s5item(c.t, "",
+        `${c.board}${c.owner?` · ${nameOf(c.owner)}`:""}${c.note?` · ${CARD_DATE.test(c.note)?`기록 ${c.note}`:c.note}`:""}`);
+
+  /* ① 어제 한 일 — 어제(KST) 완료 신호(✅) + 어제 작업 로그 */
   (function(){
     const el = document.getElementById("s5YestBody");
-    const doneP = P.filter(p=>p.work && p.work.state==="done");
-    const doneCards = boards.flatMap(b=>b.cards.filter(c=>c.s==="done").map(c=>({...c, board:b.name})));
+    const sigs = doneSig(YEST), logs = logsOf(YEST);
+    /* 날짜를 알 수 없는 완료 신호·로그(옛 형식)는 어제라고 우기지 않습니다. */
+    const undatedSig = P.filter(p=>p.work && p.work.state==="done" && !dayOf(p.work));
+    const undatedLog = W.filter(w=>!dayOf(w));
     let html = "";
-    if(doneP.length){
-      html += `<div class="s5day">완료 신호</div>` + doneP.map(p=>
-        s5item(`${p.name}${p.work.task?` · ${p.work.task}`:""}`, `${p.work.last} · ${p.work.age_min}분 전`,
-          p.work.note||"", "")).join("");
-    }
-    if(W.length){
-      html += `<div class="s5day">작업 로그</div>` + W.slice(0,8).map(w=>
-        s5item(w.summary, w.when, [w.tool, w.where].filter(Boolean).join(" · ") + (w.result?` — ${w.result}`:""))).join("");
+    if(sigs.length) html += `<div class="s5day">완료 신호 · ${YEST}</div>` + sigs.map(sigItem).join("");
+    if(logs.length) html += `<div class="s5day">작업 로그 · ${YEST}</div>` + logs.slice(0,8).map(logItem).join("");
+    if(undatedSig.length || undatedLog.length){
+      html += `<div class="s5day">날짜 미기록 (완료일 불명)</div>`
+            + undatedSig.map(sigItem).join("") + undatedLog.slice(0,8).map(logItem).join("");
     }
     if(doneCards.length){
-      html += `<div class="s5day">완료 카드</div>` + doneCards.map(c=>
-        s5item(c.t, c.note&&/^\d{2}-\d{2}$/.test(c.note)?c.note:"", `${c.board}${c.owner?` · ${nameOf(c.owner)}`:""}${c.note&&!/^\d{2}-\d{2}$/.test(c.note)?` · ${c.note}`:""}`)).join("");
+      html += `<div class="s5day">완료 카드 · 누적 (완료일 미기록 — 어제만 아님)</div>`
+            + doneCards.map(cardItem).join("");
     }
-    el.innerHTML = html || s5empty("어제 완료된 항목이 아직 없습니다");
+    el.innerHTML = html || s5empty(`어제(${YEST}) 완료된 항목이 없습니다`);
   })();
 
-  /* ② 오늘 할 일 / 진행 중 — 진행 신호(▶⏳) + doing 카드 */
+  /* ② 오늘 할 일 / 진행 중 — 진행 신호(▶⏳) + doing 카드 + 오늘(KST) 완료된 것 */
   (function(){
     const el = document.getElementById("s5TodayBody");
     const liveP = P.filter(p=>p.work && (p.work.state==="working"||p.work.state==="quiet"));
     const doingCards = boards.flatMap(b=>b.cards.filter(c=>c.s==="doing").map(c=>({...c, board:b.name})));
+    const todaySig = doneSig(TODAY), todayLog = logsOf(TODAY);
     let html = "";
     if(liveP.length){
       html += `<div class="s5day">진행 신호</div>` + liveP.map(p=>{
         const tag = p.work.state==="working" ? '<span class="chip doing">진행중</span>' : '<span class="chip hold">신호 지연</span>';
-        return s5item(`${p.name}${p.work.task?` · ${p.work.task}`:""} ${tag}`, `${p.work.last} · ${p.work.age_min}분 전`, p.work.note||"");
+        return s5item(`${p.name}${p.work.task?` · ${p.work.task}`:""} ${tag}`,
+          `${p.work.last} · ${agoText(p.work.age_min)}`, p.work.note||"");
       }).join("");
     }
     if(doingCards.length){
-      html += `<div class="s5day">오늘 발급된 카드</div>` + doingCards.map(c=>
+      /* 카드에는 발급일이 없습니다. "오늘 발급된"이라고 쓰면 거짓이라 사실대로 씁니다. */
+      html += `<div class="s5day">진행 중 카드</div>` + doingCards.map(c=>
         s5item(c.t, "", `${c.board}${c.owner?` · ${nameOf(c.owner)}`:""}${c.note?` · ${c.note}`:""}`)).join("");
+    }
+    if(todaySig.length || todayLog.length){
+      html += `<div class="s5day">오늘 완료 · ${TODAY}</div>`
+            + todaySig.map(sigItem).join("") + todayLog.slice(0,8).map(logItem).join("");
     }
     el.innerHTML = html || s5empty("지금 진행 중인 신호가 없습니다");
   })();
@@ -1224,7 +1281,7 @@ function renderToday(){
     if(stoppedP.length){
       html += `<div class="s5day">중단 신호</div>` + stoppedP.map(p=>
         s5item(`${p.name}${p.work.task?` · ${p.work.task}`:""} <span class="chip crit">중단</span>`,
-          `${p.work.last} · ${p.work.age_min}분 전`, p.work.note||"")).join("");
+          `${p.work.last} · ${agoText(p.work.age_min)}`, p.work.note||"")).join("");
     }
     if(todoCards.length){
       html += `<div class="s5day">다음 순번 카드 (미완료 ${todoCards.length}건)</div>` + todoCards.map(c=>
@@ -1303,10 +1360,10 @@ function mergeInbox(box){
   const have = new Set([...(a.ideas||[]), ...(a.schedule||[])].map(x=>x.ts));
   const fresh = items.filter(i => i && i.ts && !have.has(i.ts));
   if(!fresh.length) return;
-  const t0 = new Date(); t0.setHours(0,0,0,0);
+  const t0 = kstMidnightTs();          // 로컬 자정이 아니라 KST 자정 기준
   a.ideas = [...fresh.filter(i=>i.kind==="idea"), ...(a.ideas||[])]
               .sort((x,y)=>y.ts-x.ts).slice(0,30);
-  a.schedule = [...(a.schedule||[]), ...fresh.filter(i=>i.kind==="plan" && i.ts*1000 >= t0.getTime())]
+  a.schedule = [...(a.schedule||[]), ...fresh.filter(i=>i.kind==="plan" && i.ts >= t0)]
               .sort((x,y)=>x.ts-y.ts).slice(0,30);
 }
 
