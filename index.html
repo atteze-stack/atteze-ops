@@ -907,7 +907,7 @@ function renderDetail(){
       ${p.work?`<div class="kv" style="margin-top:10px"><span>지금</span>
          <b style="color:${WORKBADGE[p.work.state][1]}">${WORKBADGE[p.work.state][0]}</b></div>
        <div class="kv"><span>작업</span><b>${p.work.task||"—"}${p.work.note?` · ${p.work.note}`:""}</b></div>
-       <div class="kv"><span>마지막 신호</span><b>${p.work.day?`${p.work.day} `:""}${p.work.last} (${agoText(p.work.age_min)})</b></div>`:""}
+       <div class="kv"><span>마지막 신호</span><b>${p.work.day?`${p.work.day} `:""}${p.work.last}${p.work.state==="done"?"":` (${agoText(p.work.age_min)})`}</b></div>`:""}
       <div style="margin-top:11px">
         <div class="kv"><span>마지막 활동</span><b>${p.last_seen_note||"—"}</b></div>
         <div class="kv"><span>발언</span><b>${msg?msg.v:0}건</b></div>
@@ -1213,8 +1213,12 @@ function renderToday(){
   const dayOf   = x => (x && x.day) || "";
   const doneSig = day => P.filter(p=>p.work && p.work.state==="done" && dayOf(p.work)===day);
   const logsOf  = day => W.filter(w=>dayOf(w)===day);
+  /* 완료 신호에는 경과 시간을 붙이지 않습니다. 경과 시간은 refresh.py 가
+     working/quiet/stalled 를 가르는 **멈춤 감지용** 값이라, 이미 끝난 일에는
+     의미가 없고 시간이 갈수록 "310분 전 → 1400분 전"으로 커지기만 합니다.
+     끝난 일에 필요한 정보는 "언제 끝났나" 하나뿐입니다. */
   const sigItem = p => s5item(`${p.name}${p.work.task?` · ${p.work.task}`:""}`,
-        `${p.work.last} · ${agoText(p.work.age_min)}`, p.work.note||"");
+        `${p.work.last} 완료`, p.work.note||"");
   const logItem = w => s5item(w.summary, w.when,
         [w.tool, w.where].filter(Boolean).join(" · ") + (w.result?` — ${w.result}`:""));
   /* 완료 카드는 완료일이 구조화 필드가 아니라 자유 텍스트 note("07-05")뿐이라
