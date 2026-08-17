@@ -365,7 +365,7 @@ def load_vault_worklog():
         if not isinstance(w, dict) or not w.get("summary"):
             continue
         # 공개 배포본에도 나가므로 여기서도 한 번 더 비밀값을 지웁니다(밀어넣는 쪽에서도 하지만).
-        for k in ("summary", "detail", "where", "result"):
+        for k in ("summary", "detail", "where", "result", "brief"):
             if w.get(k):
                 w[k] = SECRET_RE.sub("[비밀값 제거됨]", str(w[k]))
         w.setdefault("ts", 0)
@@ -881,7 +881,7 @@ def redact(d):
         bl.pop("public_t", None); bl.pop("public_d", None)
     # 작업 로그는 공개 모드에서도 보여줍니다 (이게 이 기능의 목적) — 비밀값만 제거
     for w in d.get("worklog", []):
-        for k in ("summary", "detail", "where", "result"):
+        for k in ("summary", "detail", "where", "result", "brief"):
             if w.get(k):
                 w[k] = SECRET_RE.sub("[비밀값 제거됨]", w[k])
     if d.get("feed"):

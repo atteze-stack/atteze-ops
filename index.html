@@ -12,9 +12,31 @@
   --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
   --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
   --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s7:#9085e9;
-  --good:#0ca30c; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
+  /* 상태색 — #1a1a19(카드) 위 대비를 실측해서 정했습니다(WCAG AA 4.5:1).
+     ⚠️ 옛 --crit(#d03b3b)은 3.62:1 로 **기준 미달**이었습니다. 하필 긴급·중단처럼
+     제일 놓치면 안 되는 것에 쓰이는 색이라 6.30:1 로 올렸습니다.
+     good 5.19 · warn 9.49 · s1 4.79 는 통과라 익숙함을 위해 그대로 둡니다. */
+  --good:#0ca30c; --warn:#fab219; --serious:#ec835a; --crit:#f87171;
   --wash:rgba(57,135,229,0.14);
   --floor:#15161c; --wall:#191b23; --deskw:#2a2d38;
+
+  /* ── 디자인 토큰 (2026-08-18 정리) ─────────────────────────────────
+     그전까진 여백·모서리·글자크기를 자리마다 직접 적어서 화면마다 조금씩
+     달랐습니다. 새 UI는 아래 값만 씁니다. 운영 대시보드라 밀도를 높게 잡습니다. */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
+  --r-1:6px;  --r-2:10px; --r-3:14px;  --r-pill:999px;
+  --fs-xs:10.5px; --fs-sm:11.5px; --fs-md:12.5px; --fs-lg:14px; --fs-xl:17px;
+  --lh-tight:1.35; --lh-body:1.55;
+  --focus:#7cc4ff;                 /* 키보드 포커스 링 — 어떤 상태색과도 안 겹치게 */
+  --dur:180ms; --ease:cubic-bezier(.2,.6,.3,1);
+}
+
+/* 키보드로 쓰는 사람이 지금 어디 있는지 보이게. 그전엔 포커스 표시가 아예 없었습니다. */
+:where(a,button,[tabindex],summary):focus-visible{
+  outline:2px solid var(--focus); outline-offset:2px; border-radius:var(--r-1);
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{ animation-duration:.01ms !important; transition-duration:.01ms !important }
 }
 :root[data-theme="light"]{
   color-scheme: light;
@@ -345,6 +367,30 @@ tbody tr:last-child td{border-bottom:0}
 .foot{font-size:11px; color:var(--muted); line-height:1.7}
 
 /* ---------- 오늘의 요약 (5블록) ---------- */
+/* ── 상단 상태 바 (2026-08-18 대표님 요청: "진행중·완료·보류를 효율적으로 보고 싶다") ──
+   화면 맨 위에서 "지금 회사가 어떤 상태인가"를 한 줄로 먼저 답합니다.
+   누르면 그 상태의 항목만 남기고 걸러줍니다(다시 누르면 해제). */
+.statbar{display:grid; grid-template-columns:repeat(5,1fr); gap:var(--sp-2); margin-bottom:var(--sp-4)}
+@media(max-width:900px){ .statbar{grid-template-columns:repeat(2,1fr)} }
+@media(max-width:520px){ .statbar{grid-template-columns:1fr} }
+.stat{display:flex; align-items:center; gap:var(--sp-3); min-height:56px;   /* 44px 이상 — 손가락으로 눌러도 안 빗나가게 */
+  padding:var(--sp-3) var(--sp-4); background:var(--surface); color:inherit;
+  border:1px solid var(--border); border-left:3px solid var(--tone,var(--axis));
+  border-radius:var(--r-2); cursor:pointer; text-align:left; font:inherit;
+  transition:background var(--dur) var(--ease), border-color var(--dur) var(--ease)}
+.stat:hover{background:var(--raise)}
+.stat[aria-pressed="true"]{background:var(--raise); border-color:var(--tone,var(--axis))}
+.stat .ico{flex:none; width:18px; height:18px; color:var(--tone,var(--muted))}
+.stat .num{font-size:var(--fs-xl); font-weight:700; line-height:1; font-variant-numeric:tabular-nums}
+.stat .lab{font-size:var(--fs-xs); color:var(--muted); letter-spacing:.04em; margin-top:3px}
+.stat .txt{display:flex; flex-direction:column; min-width:0}
+.stat.is-empty{opacity:.5}
+.statbar .stat:disabled{cursor:default}
+.filternote{font-size:var(--fs-sm); color:var(--ink2); margin:calc(var(--sp-3) * -1) 0 var(--sp-4);
+  display:flex; align-items:center; gap:var(--sp-2)}
+.filternote button{font:inherit; font-size:var(--fs-sm); color:var(--focus); background:none;
+  border:none; cursor:pointer; text-decoration:underline; padding:var(--sp-1) var(--sp-2)}
+
 .sum5{display:grid; grid-template-columns:repeat(2,1fr); gap:16px}
 @media(max-width:900px){ .sum5{grid-template-columns:1fr} }
 .s5b{margin-bottom:0}
@@ -356,6 +402,23 @@ tbody tr:last-child td{border-bottom:0}
 .s5item .tt{font-size:12.5px; font-weight:600; flex:1; line-height:1.4}
 .s5item .tm{font-size:10px; color:var(--muted); white-space:nowrap}
 .s5item .sub{font-size:11px; color:var(--ink2); margin-top:4px; line-height:1.5}
+
+/* ── 눌러서 펼치는 요약 (2026-08-18 대표님: "도대체 뭘 했는지 모르겠어") ──
+   제목만 보여선 "PR #113 머지 + Actions 첫 실행 검증 완료"가 무슨 일인지 알 수 없었습니다.
+   작업일지의 `한 일 · 왜` 첫 대목을 vault-export 가 실어보내고(brief), 여기서 펼쳐 보여줍니다. */
+.s5item.expandable{padding:0; background:none; border:none; border-left:none}
+.s5item.expandable > details{background:var(--plane); border:1px solid var(--border);
+  border-left:3px solid var(--tone,var(--axis)); border-radius:var(--r-1)}
+.s5item.expandable > details > summary{list-style:none; cursor:pointer; padding:9px 12px;
+  transition:background var(--dur) var(--ease)}
+.s5item.expandable > details > summary::-webkit-details-marker{display:none}
+.s5item.expandable > details > summary:hover{background:var(--raise)}
+.s5item .caret{flex:none; width:13px; height:13px; color:var(--muted); margin-top:2px;
+  transition:transform var(--dur) var(--ease)}
+.s5item.expandable > details[open] .caret{transform:rotate(90deg)}
+.s5brief{padding:0 12px 11px 12px; font-size:var(--fs-sm); color:var(--ink2);
+  line-height:var(--lh-body); border-top:1px dashed var(--grid); margin:0 12px; padding-left:0; padding-right:0}
+.s5brief .src{display:block; margin-top:var(--sp-2); font-size:var(--fs-xs); color:var(--muted)}
 .s5day{font-size:10.5px; color:var(--muted); letter-spacing:.04em; margin:12px 0 6px; text-transform:uppercase}
 .s5day:first-child{margin-top:0}
 .s5b.done .s5item{border-left-color:var(--good)}
@@ -437,6 +500,9 @@ tbody tr:last-child td{border-bottom:0}
 
   <!-- ============ TODAY (5-block summary) ============ -->
   <section class="view on" id="v-today">
+    <!-- 지금 회사 상태 한 줄 요약. 누르면 아래 목록이 그 상태만 남습니다. -->
+    <div class="statbar" id="statBar" role="group" aria-label="상태별 건수 — 누르면 그 상태만 봅니다"></div>
+    <p class="filternote" id="filterNote" hidden></p>
     <div class="sum5">
       <div class="card s5b" id="s5-yesterday">
         <h2>📌 어제 한 일</h2>
@@ -1199,12 +1265,87 @@ function renderSide(){
 
 /* ---------- 오늘의 요약 (5블록) ---------- */
 function s5empty(msg){ return `<div class="empty">${msg}</div>`; }
-function s5item(title, tm, sub, extraCls){
-  return `<div class="s5item${extraCls?` ${extraCls}`:""}"><div class="h1"><span class="tt">${title}</span>${tm?`<span class="tm">${tm}</span>`:""}</div>${sub?`<div class="sub">${sub}</div>`:""}</div>`;
+
+/* HTML 로 들어가면 안 되는 글자 막기. brief 는 작업일지에서 온 자유 텍스트라 반드시 통과시킵니다. */
+function esc(s){ return String(s??"").replace(/[&<>"']/g, c => (
+  {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+/* 아이콘은 이모지 대신 SVG. 이모지는 기기·폰트마다 모양과 크기가 달라 정렬이 틀어집니다. */
+const ICON = {
+  doing:'<path d="M8 5v14l11-7z"/>',
+  done :'<path d="M20 6 9 17l-5-5"/>',
+  hold :'<path d="M10 5v14M14 5v14"/>',
+  stall:'<path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/>',
+  todo :'<path d="M4 6h16M4 12h16M4 18h10"/>',
+  caret:'<path d="m9 6 6 6-6 6"/>',
+};
+const svg = (k, cls) => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
+
+/* 상태 바에서 고른 필터. null 이면 전부 봅니다. */
+let S5FILTER = null;
+
+/* brief 가 있으면 눌러서 펼치는 카드로, 없으면 그냥 카드로 그립니다.
+   ⚠️ 없는데 펼치기 화살표를 달면 눌러도 아무것도 안 나와서 고장으로 보입니다. */
+function s5item(title, tm, sub, extraCls, brief, where){
+  const head = `<div class="h1">${brief?svg("caret","caret"):""}<span class="tt">${title}</span>${tm?`<span class="tm">${tm}</span>`:""}</div>${sub?`<div class="sub">${sub}</div>`:""}`;
+  if(!brief) return `<div class="s5item${extraCls?` ${extraCls}`:""}">${head}</div>`;
+  return `<div class="s5item expandable${extraCls?` ${extraCls}`:""}"><details>
+      <summary>${head}</summary>
+      <div class="s5brief">${esc(brief)}${where?`<span class="src">출처 · ${esc(where)}</span>`:""}</div>
+    </details></div>`;
 }
+/* ── 상단 상태 바 ─────────────────────────────────────────────────────────
+   "지금 회사가 어떤 상태인가"를 화면 맨 위에서 먼저 답합니다.
+   숫자만 두지 않고 **아이콘 + 글자 + 색**을 같이 씁니다 — 색만으로 뜻을 전하면
+   색을 구분 못 하는 사람에게는 아무 정보가 없습니다. */
+function statCounts(){
+  const P = D.people||[], boards = D.boards||[];
+  const cards = boards.flatMap(b => b.cards||[]);
+  const n = s => cards.filter(c => c.s === s).length;
+  const sig = (...st) => P.filter(p => p.work && st.includes(p.work.state)).length;
+  return [
+    { key:"doing", icon:"doing", label:"진행 중", tone:"var(--s1)",   n:n("doing") + sig("working","quiet") },
+    { key:"todo",  icon:"todo",  label:"대기",    tone:"var(--muted)",n:n("todo") },
+    { key:"done",  icon:"done",  label:"완료",    tone:"var(--good)", n:n("done") + sig("done") },
+    { key:"hold",  icon:"hold",  label:"보류",    tone:"var(--warn)", n:n("hold") },
+    { key:"stall", icon:"stall", label:"멈춤 의심",tone:"var(--crit)", n:sig("stalled","stopped") },
+  ];
+}
+
+function renderStatBar(){
+  const el = document.getElementById("statBar"); if(!el) return;
+  el.innerHTML = statCounts().map(s => `
+    <button type="button" class="stat${s.n?"":" is-empty"}" data-k="${s.key}"
+      style="--tone:${s.tone}" aria-pressed="${S5FILTER===s.key}"
+      ${s.n?"":"disabled"}>
+      ${svg(s.icon,"ico")}
+      <span class="txt"><span class="num">${s.n}</span><span class="lab">${s.label}</span></span>
+    </button>`).join("");
+  el.querySelectorAll("button[data-k]").forEach(b =>
+    b.addEventListener("click", () => {
+      S5FILTER = (S5FILTER === b.dataset.k) ? null : b.dataset.k;   // 같은 걸 또 누르면 해제
+      renderToday();
+    }));
+
+  const note = document.getElementById("filterNote");
+  const cur = statCounts().find(s => s.key === S5FILTER);
+  if(cur){
+    note.hidden = false;
+    note.innerHTML = `<span role="status">‘${cur.label}’만 보고 있습니다 · ${cur.n}건</span>
+      <button type="button" id="clearFilter">전체 보기</button>`;
+    note.querySelector("#clearFilter").addEventListener("click", () => { S5FILTER=null; renderToday(); });
+  } else { note.hidden = true; note.innerHTML = ""; }
+}
+
+/* 필터가 걸렸을 때 그 블록을 통째로 감출지 판단. 블록↔상태 대응표. */
+const BLOCK_OF = { yesterday:["done"], today:["doing","done"], tomorrow:["todo","hold","stall"] };
+const blockOn = b => !S5FILTER || BLOCK_OF[b].includes(S5FILTER);
+
 function renderToday(){
   const P = D.people||[], W = D.worklog||[], boards = D.boards||[];
   const nameOf = id => (P.find(p=>p.id===id)||{}).name || id;
+  renderStatBar();
 
   /* 어제/오늘은 전부 KST 날짜로 가릅니다. 신호는 work.day, 작업 로그는 w.day
      (둘 다 refresh.py 가 KST 로 찍어줍니다). 날짜가 없는 옛 데이터는 어제로
@@ -1219,7 +1360,8 @@ function renderToday(){
   const sigItem = p => s5item(`${p.name}${p.work.task?` · ${p.work.task}`:""}`,
         `${p.work.last} · ${agoText(p.work.age_min)}`, p.work.note||"");
   const logItem = w => s5item(w.summary, w.when,
-        [w.tool, w.where].filter(Boolean).join(" · ") + (w.result?` — ${w.result}`:""));
+        [w.tool, w.where].filter(Boolean).join(" · ") + (w.result?` — ${w.result}`:""),
+        "", w.brief, w.where);   // brief 가 있으면 눌러서 펼쳐집니다
   /* 완료 카드는 완료일이 구조화 필드가 아니라 자유 텍스트 note("07-05")뿐이라
      어느 날 끝났는지 알 수 없습니다. 시각 자리(tm)에 그 note 를 찍으면 "어제
      07-05에 한 일"처럼 읽혀서, 아래에서는 부제로 내리고 누적임을 명시합니다. */
@@ -1231,6 +1373,8 @@ function renderToday(){
   /* ① 어제 한 일 — 어제(KST) 완료 신호(✅) + 어제 작업 로그 */
   (function(){
     const el = document.getElementById("s5YestBody");
+    const card = el.closest(".s5b"); if(card) card.hidden = !blockOn("yesterday");
+    if(!blockOn("yesterday")) return;
     const sigs = doneSig(YEST), logs = logsOf(YEST);
     /* 날짜를 알 수 없는 완료 신호·로그(옛 형식)는 어제라고 우기지 않습니다. */
     const undatedSig = P.filter(p=>p.work && p.work.state==="done" && !dayOf(p.work));
@@ -1252,6 +1396,8 @@ function renderToday(){
   /* ② 오늘 할 일 / 진행 중 — 진행 신호(▶⏳) + doing 카드 + 오늘(KST) 완료된 것 */
   (function(){
     const el = document.getElementById("s5TodayBody");
+    const card = el.closest(".s5b"); if(card) card.hidden = !blockOn("today");
+    if(!blockOn("today")) return;
     /* stalled(20분 무신호) 를 반드시 포함시킵니다. 예전에는 ①이 done, ②가
        working/quiet, ③이 stopped 만 봐서 **stalled 인 사람이 세 블록 어디에도
        안 떠 화면에서 통째로 사라졌습니다.** 하필 제일 봐야 할 상태였습니다. */
@@ -1285,6 +1431,8 @@ function renderToday(){
   /* ③ 내일 해야 될 일 — 중단(⛔) 신호 + 미완료(todo) 카드 */
   (function(){
     const el = document.getElementById("s5TomorrowBody");
+    const card = el.closest(".s5b"); if(card) card.hidden = !blockOn("tomorrow");
+    if(!blockOn("tomorrow")) return;
     const stoppedP = P.filter(p=>p.work && p.work.state==="stopped");
     const todoCards = boards.flatMap(b=>b.cards.filter(c=>c.s==="todo").map(c=>({...c, board:b.name})));
     let html = "";
