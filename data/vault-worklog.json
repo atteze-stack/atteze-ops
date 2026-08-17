@@ -1,5 +1,18 @@
 [
  {
+  "tool": "claude",
+  "summary": "아이디어 상자 +1건 (총 1건)",
+  "detail": "대표님",
+  "brief": "",
+  "where": "Clippings",
+  "result": "",
+  "tag": "",
+  "session": "",
+  "when": "08-18 01:18",
+  "day": "2026-08-18",
+  "ts": 1786983480
+ },
+ {
   "tool": "claude-code",
   "summary": "대시보드 배포 완결 + 기록 정정 — KST·표기·비서실·stalled·미수금",
   "detail": "Claude-Web",
