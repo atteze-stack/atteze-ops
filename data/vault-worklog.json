@@ -1,6 +1,30 @@
 [
  {
   "tool": "claude-code",
+  "summary": "대시보드 연동 완성 — 밀어넣기(B) 양쪽 구현",
+  "detail": "Claude-Web",
+  "where": "2026-08-17.md",
+  "result": "",
+  "tag": "ATTEZE-OS",
+  "session": "",
+  "when": "08-17 20:30",
+  "day": "2026-08-17",
+  "ts": 1786966200
+ },
+ {
+  "tool": "claude-code",
+  "summary": "PR #113 머지 + Actions 첫 실행 검증 완료",
+  "detail": "Claude-Web",
+  "where": "2026-08-17.md",
+  "result": "",
+  "tag": "ATTEZE-OS",
+  "session": "",
+  "when": "08-17 20:15",
+  "day": "2026-08-17",
+  "ts": 1786965300
+ },
+ {
+  "tool": "claude-code",
   "summary": "PC 상시가동 불필요 확정 — 옵시디언 웹·NAS 설치 판단",
   "detail": "Claude-Web",
   "where": "2026-08-17.md",
