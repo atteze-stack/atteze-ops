@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-17T23:39:15+09:00",
+    "generated_at": "2026-08-17T23:47:48+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -212,7 +212,7 @@
         "task": "",
         "note": "*자비스 브리핑 슬랙→대시보드 대체 — 완료*",
         "last": "15:35",
-        "age_min": 484,
+        "age_min": 492,
         "day": "2026-08-17",
         "ts": 1786948507.950739
       }
@@ -928,10 +928,10 @@
       "hermes": false,
       "slack": false
     },
-    "updated_at": "2026-08-17T23:39:15+09:00"
+    "updated_at": "2026-08-17T23:47:48+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-17T23:39:15+09:00",
+    "checked_at": "2026-08-17T23:47:48+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
