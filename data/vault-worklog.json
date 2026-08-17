@@ -1,0 +1,50 @@
+[
+ {
+  "tool": "claude-code",
+  "summary": "PC 상시가동 불필요 확정 — 옵시디언 웹·NAS 설치 판단",
+  "detail": "Claude-Web",
+  "where": "2026-08-17.md",
+  "result": "",
+  "tag": "ATTEZE-OS",
+  "session": "",
+  "when": "08-17 20:05",
+  "day": "2026-08-17",
+  "ts": 1786964700
+ },
+ {
+  "tool": "claude-code",
+  "summary": "2차 참고자료 인제스트 — 컴파일 비유 · Terminal 플러그인 · 맥락 부트스트랩",
+  "detail": "Claude-Web",
+  "where": "2026-08-17.md",
+  "result": "",
+  "tag": "ATTEZE-OS",
+  "session": "",
+  "when": "08-17 19:53",
+  "day": "2026-08-17",
+  "ts": 1786963980
+ },
+ {
+  "tool": "claude-code",
+  "summary": "옵시디언 LLM Wiki 1단계 구축 (카파시 3층)",
+  "detail": "Claude-Web",
+  "where": "2026-08-17.md",
+  "result": "",
+  "tag": "ATTEZE-OS",
+  "session": "",
+  "when": "08-17 13:42",
+  "day": "2026-08-17",
+  "ts": 1786941720
+ },
+ {
+  "tool": "claude-code",
+  "summary": "lint 스모크 테스트",
+  "detail": "Claude-Web",
+  "where": "2026-08-17.md",
+  "result": "",
+  "tag": "ATTEZE-OS",
+  "session": "",
+  "when": "08-17 13:35",
+  "day": "2026-08-17",
+  "ts": 1786941300
+ }
+]
