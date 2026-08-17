@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-18T01:00:16+09:00",
+    "generated_at": "2026-08-18T01:38:11+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -212,7 +212,7 @@
         "task": "",
         "note": "*자비스 브리핑 슬랙→대시보드 대체 — 완료*",
         "last": "15:35",
-        "age_min": 565,
+        "age_min": 603,
         "day": "2026-08-17",
         "ts": 1786948507.950739
       }
@@ -608,6 +608,7 @@
         "OpenAI PR 교차검증 파일럿 — 리뷰 품질 관찰 · 개발팀 이준호 과장",
         "NAS + MeTube 내부망 구축 · 개발팀 이준호 과장",
         "Ponytail 플러그인 설치 (과설계 방지 도구) · 개발팀 이준호 과장",
+        "아이디어 상자 +1건 (총 1건)",
         "대시보드 배포 완결 + 기록 정정 — KST·표기·비서실·stalled·미수금",
         "UI/UX 스킬 11개 도입 — 계정 업로드 + 세 레포 커밋 + 대표님 PC"
       ],
@@ -680,6 +681,19 @@
     }
   ],
   "worklog": [
+    {
+      "tool": "claude",
+      "summary": "아이디어 상자 +1건 (총 1건)",
+      "detail": "대표님",
+      "brief": "",
+      "where": "Clippings",
+      "result": "",
+      "tag": "",
+      "session": "",
+      "when": "08-18 01:18",
+      "day": "2026-08-18",
+      "ts": 1786983480
+    },
     {
       "tool": "claude-code",
       "summary": "대시보드 배포 완결 + 기록 정정 — KST·표기·비서실·stalled·미수금",
@@ -999,10 +1013,10 @@
       "hermes": false,
       "slack": false
     },
-    "updated_at": "2026-08-18T01:00:16+09:00"
+    "updated_at": "2026-08-18T01:38:11+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-18T01:00:16+09:00",
+    "checked_at": "2026-08-18T01:38:11+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
