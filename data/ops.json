@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-17T14:31:25+09:00",
+    "generated_at": "2026-08-17T15:03:34+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -138,7 +138,7 @@
         "task": "",
         "note": "대표 할 일 3가지 전부 완료했다.",
         "last": "15:06",
-        "age_min": 1405
+        "age_min": 1437
       }
     },
     {
@@ -219,7 +219,7 @@
         "task": "",
         "note": "*처리 완료 — 동일 우회 경로로 새 카드 생성*",
         "last": "14:06",
-        "age_min": 24
+        "age_min": 56
       }
     },
     {
@@ -353,7 +353,7 @@
         "task": "",
         "note": "확인 결과 회신드립니다.",
         "last": "15:37",
-        "age_min": 1374
+        "age_min": 1406
       }
     }
   ],
@@ -802,10 +802,10 @@
       "hermes": false,
       "slack": false
     },
-    "updated_at": "2026-08-17T14:31:25+09:00"
+    "updated_at": "2026-08-17T15:03:34+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-17T14:31:25+09:00",
+    "checked_at": "2026-08-17T15:03:34+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
