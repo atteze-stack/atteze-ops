@@ -1010,13 +1010,15 @@ function renderAide(){
 }
 
 /* ---------- 작업 로그 ---------- */
-const TOOLC = {"claude-code":"var(--s2)","cowork":"var(--s1)","claude":"var(--s7)"};
+const TOOLC = {"claude-code":"var(--s2)","cowork":"var(--s1)","claude":"var(--s7)","codex":"var(--s4)"};
 function renderLog(){
   const W = D.worklog || [];
   const cap = document.getElementById("logCap"), body = document.getElementById("logBody");
   if(!W.length){
-    cap.textContent = "Claude Code · Cowork 에서 한 작업이 슬랙을 거쳐 여기에 쌓입니다.";
-    body.innerHTML = `<div class="empty">아직 기록이 없습니다 · atteze_log.py 를 연결하면 채워집니다</div>`;
+    // 2026-08-17: atteze-agents 의 vault-sync 가 data/vault-worklog.json 을 직접 밀어넣습니다.
+    // (옛 경로였던 atteze_log.py → 슬랙 → parse_worklog 도 그대로 살아 있고, 둘을 합쳐 보여줍니다)
+    cap.textContent = "Claude Code · Codex 세션이 /log 로 남긴 작업이 여기에 쌓입니다.";
+    body.innerHTML = `<div class="empty">아직 기록이 없습니다 · atteze-agents 의 Vault Sync 가 3시간마다 밀어넣습니다</div>`;
     return;
   }
   const days = [...new Set(W.map(w=>w.day))];

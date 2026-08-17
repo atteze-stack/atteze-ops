@@ -33,6 +33,10 @@ DATA_DIR   = os.environ.get("DATA_DIR", os.path.join(HERE, "site", "data"))
 BASE_PATH  = os.path.join(DATA_DIR, "ops.base.json")
 OUT_PATH   = os.path.join(DATA_DIR, "ops.json")
 INBOX_PATH = os.path.join(DATA_DIR, "inbox.json")   # 텔레그램 메모 누적 보관함
+# atteze-agents 의 vault-sync 가 직접 밀어넣는 작업 로그 (슬랙을 거치지 않음).
+# 원래 설계는 atteze_log.py → 슬랙 → parse_worklog 였는데, 다리를 하나 줄인 경로다.
+# 형식은 parse_worklog() 반환값과 동일 — renderLog() 를 그대로 쓴다.
+VAULT_WORKLOG_PATH = os.path.join(DATA_DIR, "vault-worklog.json")
 USAGE_DIR         = os.path.join(DATA_DIR, "usage")
 HERMES_USAGE_PATH = os.path.join(USAGE_DIR, "hermes.json")   # Hermes 프로필별 토큰·비용 (컨테이너가 밀어줌)
 SLACK_USAGE_PATH  = os.path.join(USAGE_DIR, "slack.json")    # 슬랙 페르소나(성재경 등) 토큰 (비용은 여기서 계산)
@@ -336,6 +340,38 @@ def fetch_calendar():
 #  ※ 자비스 봇이 아니라 '메모 전용' 봇이어야 합니다. 텔레그램은 한 봇의
 #     메시지를 한 곳에서만 받아가기 때문입니다.
 # ══════════════════════════════════════════════════════════════════════
+
+def load_vault_worklog():
+    """atteze-agents 의 vault-sync 가 밀어넣은 작업 로그를 읽습니다.
+
+    Claude Code 웹·터미널·Codex 세션이 `/log` 로 남긴 것이 여기로 들어옵니다.
+    슬랙을 거치지 않으므로 슬랙 토큰과 무관하게 동작합니다.
+
+    ⚠️ 파일이 없거나 깨져도 **절대 예외를 올리지 않습니다** — 이게 없다고 대시보드 갱신
+       전체가 죽으면 안 됩니다. 못 읽으면 빈 목록이고, 슬랙 쪽 worklog 는 그대로 나옵니다.
+    """
+    try:
+        items = json.load(open(VAULT_WORKLOG_PATH, encoding="utf-8"))
+    except FileNotFoundError:
+        return []
+    except Exception as e:
+        log(f"⚠️ vault-worklog.json 을 못 읽었습니다 (무시하고 계속): {e}")
+        return []
+    if not isinstance(items, list):
+        log("⚠️ vault-worklog.json 이 배열이 아닙니다 — 무시합니다.")
+        return []
+    out = []
+    for w in items:
+        if not isinstance(w, dict) or not w.get("summary"):
+            continue
+        # 공개 배포본에도 나가므로 여기서도 한 번 더 비밀값을 지웁니다(밀어넣는 쪽에서도 하지만).
+        for k in ("summary", "detail", "where", "result"):
+            if w.get(k):
+                w[k] = SECRET_RE.sub("[비밀값 제거됨]", str(w[k]))
+        w.setdefault("ts", 0)
+        out.append(w)
+    return out
+
 
 def _inbox_load():
     try:
@@ -730,7 +766,12 @@ def merge(base, s, extra_memos=None):
         "range": rng, "total": s["total"], "sampled": False,
         "channels": s["channels"], "by_person": by_person, "daily": days,
     }
-    base["worklog"] = s.get("worklog", [])
+    # 슬랙에서 파싱한 것 + vault 가 직접 밀어넣은 것을 합쳐 최신순.
+    # 어느 한쪽이 비어도 나머지는 그대로 보인다.
+    base["worklog"] = sorted(
+        list(s.get("worklog", [])) + load_vault_worklog(),
+        key=lambda w: -w.get("ts", 0),
+    )[:60]
     memos = list(s.get("memos", [])) + list(extra_memos or [])
     today0 = datetime.now(KST).replace(hour=0, minute=0, second=0,
                                        microsecond=0).timestamp()
