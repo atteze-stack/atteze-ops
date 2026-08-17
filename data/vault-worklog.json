@@ -1,6 +1,54 @@
 [
  {
   "tool": "claude-code",
+  "summary": "대시보드 배포 완결 + 기록 정정 — KST·표기·비서실·stalled·미수금",
+  "detail": "Claude-Web",
+  "where": "2026-08-18.md",
+  "result": "",
+  "tag": "atteze-ops",
+  "session": "",
+  "when": "08-18 00:15",
+  "day": "2026-08-18",
+  "ts": 1786979700
+ },
+ {
+  "tool": "claude-code",
+  "summary": "UI/UX 스킬 11개 도입 — 계정 업로드 + 세 레포 커밋 + 대표님 PC",
+  "detail": "Claude-Web",
+  "where": "2026-08-18.md",
+  "result": "",
+  "tag": "atteze-agents",
+  "session": "",
+  "when": "08-18 00:11",
+  "day": "2026-08-18",
+  "ts": 1786979460
+ },
+ {
+  "tool": "claude-code",
+  "summary": "옵시디언 연결 완료 + 대표님 PC stash 유실기억 복구 + CI 403 수정",
+  "detail": "Claude-Web",
+  "where": "2026-08-17.md",
+  "result": "",
+  "tag": "ATTEZE-OS",
+  "session": "",
+  "when": "08-17 23:40",
+  "day": "2026-08-17",
+  "ts": 1786977600
+ },
+ {
+  "tool": "claude-code",
+  "summary": "옵시디언 pull 충돌 근본원인 수정 — frontmatter 형식 통일",
+  "detail": "Claude-Web",
+  "where": "2026-08-17.md",
+  "result": "",
+  "tag": "ATTEZE-OS",
+  "session": "",
+  "when": "08-17 22:08",
+  "day": "2026-08-17",
+  "ts": 1786972080
+ },
+ {
+  "tool": "claude-code",
   "summary": "대시보드 후속 수리 — 완료신호 경과시간·비서실 agenda·stalled",
   "detail": "Claude-Web",
   "where": "2026-08-17.md",
