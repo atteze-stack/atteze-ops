@@ -1,6 +1,66 @@
 [
  {
   "tool": "claude-code",
+  "summary": "대시보드 후속 수리 — 완료신호 경과시간·비서실 agenda·stalled",
+  "detail": "Claude-Web",
+  "where": "2026-08-17.md",
+  "result": "",
+  "tag": "atteze-ops",
+  "session": "",
+  "when": "08-17 21:12",
+  "day": "2026-08-17",
+  "ts": 1786968720
+ },
+ {
+  "tool": "claude-code",
+  "summary": "안내서 오류 정정 — git은 빈 폴더를 저장하지 않는다",
+  "detail": "Claude-Web",
+  "where": "2026-08-17.md",
+  "result": "",
+  "tag": "ATTEZE-OS",
+  "session": "",
+  "when": "08-17 21:10",
+  "day": "2026-08-17",
+  "ts": 1786968600
+ },
+ {
+  "tool": "claude-code",
+  "summary": "옵시디언 연결 안내서 재작성 — 설치가 아니라 확인부터",
+  "detail": "Claude-Web",
+  "where": "2026-08-17.md",
+  "result": "",
+  "tag": "ATTEZE-OS",
+  "session": "",
+  "when": "08-17 20:41",
+  "day": "2026-08-17",
+  "ts": 1786966860
+ },
+ {
+  "tool": "claude-code",
+  "summary": "대시보드 오늘의 요약 — 날짜·시간을 한국(KST) 기준으로 고정",
+  "detail": "Claude-Web",
+  "where": "2026-08-17.md",
+  "result": "",
+  "tag": "atteze-ops",
+  "session": "",
+  "when": "08-17 20:39",
+  "day": "2026-08-17",
+  "ts": 1786966740
+ },
+ {
+  "tool": "claude-code",
+  "summary": "전체 회로 검증 — 클로드 기록이 대시보드 화면까지 도달",
+  "detail": "Claude-Web",
+  "where": "2026-08-17.md",
+  "result": "",
+  "tag": "ATTEZE-OS",
+  "session": "",
+  "when": "08-17 20:35",
+  "day": "2026-08-17",
+  "ts": 1786966500
+ },
+ {
+  "tool": "claude-code",
   "summary": "대시보드 연동 완성 — 밀어넣기(B) 양쪽 구현",
   "detail": "Claude-Web",
   "where": "2026-08-17.md",
