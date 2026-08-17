@@ -401,6 +401,13 @@
       "name": "운영",
       "cards": [
         {
+          "t": "슬랙 AI 비용 절감 — 계측 켜기 → 1주 뒤 B안 판단",
+          "s": "doing",
+          "owner": "ceo",
+          "note": "📖 지침: atteze-agents/인수인계_슬랙_비용절감.md — 새 세션은 이 문서만 읽고 이어받을 것. 최우선 = Railway slack-agents Variables 에 GH_DEPLOY_TOKEN 추가(계측). 전용 OpenAI 키 발급은 08-17 철회됨, 재제안 금지",
+          "urgent": true
+        },
+        {
           "t": "A층/B층 혼동 차단 — 실행 지시를 잡담 페르소나가 수락해버리는 구멍",
           "s": "todo",
           "owner": "dev",
