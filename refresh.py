@@ -681,6 +681,57 @@ def merge_usage(base):
         + (f" · 단가 미등록 모델: {', '.join(sorted(unpriced_models))}" if unpriced_models else ""))
 
 
+def build_agenda(base, people):
+    """비서실 탭의 '어제 한 일 / 오늘 할 일 / 내일 할 일' 세 칸을 채웁니다.
+
+    2026-08-17 대표님 지적("비서실 카테고리에는 왜 한 게 없어")으로 신설.
+    그때까지 `assistant.agenda` 는 ops.base.json 의 빈 배열 그대로였고 **채우는
+    코드가 아예 없었습니다.** 김서연이 일을 안 한 게 아니라 배관이 없었던 것.
+
+    새로 수집하는 데이터는 없습니다 — 이미 있는 재료(작업 로그·완료 신호·칸반
+    카드)를 KST 날짜 기준으로 세 칸에 나눠 담을 뿐이라, 화면의 '오늘의 요약'
+    5블록과 **같은 기준**이 됩니다(두 화면이 서로 다른 말을 하지 않게).
+    """
+    now_kst = datetime.now(KST)
+    today = now_kst.strftime("%Y-%m-%d")
+    yesterday = (now_kst - timedelta(days=1)).strftime("%Y-%m-%d")
+
+    worklog = base.get("worklog") or []
+    cards = [dict(c, board=b.get("name", ""))
+             for b in (base.get("boards") or []) for c in (b.get("cards") or [])]
+    name_of = {p["id"]: p["name"] for p in people}
+
+    def logs_on(day):
+        return [w["summary"] for w in worklog if w.get("day") == day and w.get("summary")]
+
+    def signals_on(day, state):
+        out = []
+        for p in people:
+            w = p.get("work") or {}
+            if w.get("state") == state and w.get("day") == day:
+                out.append(f"{p['name']} · {w.get('task') or w.get('note') or '완료'}")
+        return out
+
+    def card_lines(status, urgent_first=False):
+        sel = [c for c in cards if c.get("s") == status]
+        if urgent_first:
+            sel.sort(key=lambda c: not c.get("urgent"))
+        return [f"{c['t']}"
+                + (f" · {name_of.get(c.get('owner'), c.get('owner'))}" if c.get("owner") else "")
+                + (" · 긴급" if c.get("urgent") else "")
+                for c in sel]
+
+    # 어제 = 어제 실제로 끝난 것만. 카드는 완료일 필드가 없어(자유 텍스트 note뿐)
+    # 여기에 넣지 않습니다 — 6주 전 카드가 "어제"로 둔갑하던 문제와 같은 원인.
+    yest = signals_on(yesterday, "done") + logs_on(yesterday)
+    # 오늘 = 진행 중 카드 + 오늘 끝낸 것
+    todo_today = card_lines("doing") + signals_on(today, "done") + logs_on(today)
+    # 내일 = 아직 시작 안 한 카드(긴급 먼저)
+    tomorrow = card_lines("todo", urgent_first=True)
+
+    return {"yesterday": yest[:12], "today": todo_today[:12], "tomorrow": tomorrow[:12]}
+
+
 def merge(base, s, extra_memos=None):
     people = base["people"]
     now = time.time()
@@ -725,7 +776,8 @@ def merge(base, s, extra_memos=None):
             p.pop("work", None)
             continue
         age_min = (now_ts - ev["ts"]) / 60
-        dt = datetime.fromtimestamp(ev["ts"], KST).strftime("%H:%M")
+        sig_kst = datetime.fromtimestamp(ev["ts"], KST)
+        dt = sig_kst.strftime("%H:%M")
         if ev["mark"] in ("▶", "⏳"):
             state = ("working" if age_min <= WARN_MIN else
                      "quiet"   if age_min <= STALL_MIN else "stalled")
@@ -733,8 +785,12 @@ def merge(base, s, extra_memos=None):
             state = "done"
         else:
             state = "stopped"
+        # day/ts 는 화면이 "어제/오늘"을 KST 기준으로 가르기 위한 값입니다.
+        # last("HH:MM")만으로는 어느 날 신호인지 알 수 없어, 오늘 완료한 일이
+        # "어제 한 일"에 섞여 나오던 문제가 있었습니다(2026-08-17).
         p["work"] = {"state": state, "task": ev["task"], "note": ev["note"],
-                     "last": dt, "age_min": int(age_min)}
+                     "last": dt, "age_min": int(age_min),
+                     "day": sig_kst.strftime("%Y-%m-%d"), "ts": ev["ts"]}
 
     # 파이프라인 마지막 단계 — '부서'는 슬랙 앱을 가진 실무층만 셉니다
     floor_live = [p for p in people
@@ -782,6 +838,7 @@ def merge(base, s, extra_memos=None):
                             and m["ts"] >= today0], key=lambda m: m["ts"])[:30]
     srcs = sorted({m.get("from", "") for m in memos} - {""})
     a["sources"] = srcs
+    a["agenda"] = build_agenda(base, people)
     base["feed"] = [{
         "who": (by_slack.get(f["uid"]) or {}).get("id") or s["uname"].get(f["uid"], f["uid"]),
         "text": f["text"], "when": f["when"],
