@@ -2,17 +2,19 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-18T19:04:02+09:00",
+    "generated_at": "2026-08-18T19:25:12+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
   "tokens": {
-    "today": null,
-    "cost_usd": null,
+    "today": 3334,
+    "cost_usd": 0.0284,
     "fx_krw": 1400,
     "sessions": null,
-    "spark7": [],
-    "note": "토큰 집계 소스 미연결 — refresh.py 의 TOKEN_LOG_PATH 를 지정하면 채워집니다."
+    "spark7": [
+      3334
+    ],
+    "note": ""
   },
   "model_prices": {
     "_note": "1M(백만) 토큰당 USD. data/usage/slack.json(토큰 수치만 있음)의 비용을 여기서 계산합니다. hermes.json 은 이미 계산된 cost_usd 를 그대로 씁니다(재계산 안 함). 여기 없는 모델은 0원이 아니라 '단가 미등록'으로 표시됩니다 — 실제 지출을 0으로 보이게 하는 왜곡을 막기 위함(2026-08-16).",
@@ -206,7 +208,16 @@
       "channel": "slack+telegram",
       "model": "GPT-5.6 Luna",
       "last_seen_note": "2026-08-15 20:25",
-      "aide": true
+      "aide": true,
+      "work": {
+        "state": "done",
+        "task": "",
+        "note": "*완료 — t_a7f53e18 (출근일 비례지급 — 데이터 연동 기술 조사)​*",
+        "last": "19:22",
+        "age_min": 2,
+        "day": "2026-08-18",
+        "ts": 1787048541.294509
+      }
     },
     {
       "id": "mkt",
@@ -431,10 +442,10 @@
       "name": "운영",
       "cards": [
         {
-          "t": "슬랙 AI 비용 절감 — 계측 켜기 → 1주 뒤 B안 판단",
+          "t": "슬랙 AI 비용 절감 — 계측 켜짐 ✅ → 1주 뒤 B안 판단(08-25)",
           "s": "doing",
           "owner": "ceo",
-          "note": "📖 지침: atteze-agents/인수인계_슬랙_비용절감.md — 새 세션은 이 문서만 읽고 이어받을 것. 최우선 = Railway slack-agents Variables 에 GH_DEPLOY_TOKEN 추가(계측). 전용 OpenAI 키 발급은 08-17 철회됨, 재제안 금지",
+          "note": "📖 지침: atteze-agents/인수인계_슬랙_비용절감.md — 새 세션은 이 문서만 읽고 이어받을 것. 08-18 A1~A4 실동작 확인 + 계측 ON 완료(⑤토큰 블록에 직원별 실사용량 뜸). 남은 것 = 08-25경 1주치 보고 B안 판단 · 공유 OpenAI 키 월 한도. 전용 OpenAI 키 발급은 08-17 철회됨, 재제안 금지",
           "urgent": true
         },
         {
@@ -604,15 +615,15 @@
         "사주 콘텐츠 파이프라인 — Day 0 착수 (영상→3플랫폼→사주사이트 유입) · 백준우",
         "인스타 정리함 온디맨드 INGEST 운영 검증 · 검수팀 박지민 대리",
         "OpenAI PR 교차검증 파일럿 — 리뷰 품질 관찰 · 개발팀 이준호 과장",
-        "슬랙 AI 비용 절감 — 계측 켜기 → 1주 뒤 B안 판단 · 백준우 · 긴급",
+        "슬랙 AI 비용 절감 — 계측 켜짐 ✅ → 1주 뒤 B안 판단(08-25) · 백준우 · 긴급",
         "NAS + MeTube 내부망 구축 · 개발팀 이준호 과장",
         "Ponytail 플러그인 설치 (과설계 방지 도구) · 개발팀 이준호 과장",
+        "김서연 비서실장 · *완료 — t_a7f53e18 (출근일 비례지급 — 데이터 연동 기술 조사)​*",
         "아이디어 상자 +12건 (총 29건)",
         "아이디어 메모·수익화 진행을 화면 맨 오른쪽 레일로",
         "아이디어 상자 +18건 (총 19건)",
         "대시보드 전 탭 시각 정리 — 라이트 테마 상태색 결함 · 잔글씨 · 수익화 분리",
-        "대시보드 작업 종결 — 요약 펼침·상태 바·시각 위계·홈.md 429 수리",
-        "아이디어 상자 +1건 (총 1건)"
+        "대시보드 작업 종결 — 요약 펼침·상태 바·시각 위계·홈.md 429 수리"
       ],
       "tomorrow": [
         "A층/B층 혼동 차단 — 실행 지시를 잡담 페르소나가 수락해버리는 구멍 · 개발팀 이준호 과장 · 긴급",
@@ -958,13 +969,13 @@
     }
   ],
   "activity": {
-    "range": "08-14 ~ 08-17",
-    "total": 406,
+    "range": "08-14 ~ 08-18",
+    "total": 427,
     "sampled": false,
     "channels": [
       {
         "n": "#아테즈-신규",
-        "v": 406,
+        "v": 427,
         "sub": ""
       },
       {
@@ -982,27 +993,27 @@
       {
         "id": "rt",
         "n": "김서연 비서실장",
-        "v": 146
+        "v": 156
       },
       {
         "id": "ceo",
         "n": "백준우",
-        "v": 77
+        "v": 82
       },
       {
         "id": "plan",
         "n": "성재경 실장",
-        "v": 72
+        "v": 76
       },
       {
         "id": "chk",
         "n": "차소희 실장",
-        "v": 50
+        "v": 51
       },
       {
         "id": "dev",
         "n": "개발팀 이준호 과장",
-        "v": 28
+        "v": 29
       },
       {
         "id": "ops",
@@ -1051,39 +1062,80 @@
       {
         "d": "08-17",
         "v": 89
+      },
+      {
+        "d": "08-18",
+        "v": 21
       }
     ]
   },
   "feed": [],
   "usage": {
-    "people": {},
+    "people": {
+      "plan": {
+        "today": {
+          "in": 721,
+          "out": 330,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cost_usd": 0.013505,
+          "unpriced": false
+        },
+        "d7": {
+          "in": 721,
+          "out": 330,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cost_usd": 0.013505,
+          "unpriced": false
+        }
+      },
+      "chk": {
+        "today": {
+          "in": 988,
+          "out": 1295,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cost_usd": 0.014926,
+          "unpriced": false
+        },
+        "d7": {
+          "in": 988,
+          "out": 1295,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cost_usd": 0.014926,
+          "unpriced": false
+        }
+      }
+    },
     "total": {
       "today": {
-        "in": 0,
-        "out": 0,
+        "in": 1709,
+        "out": 1625,
         "cache_read": 0,
         "cache_write": 0,
-        "cost_usd": 0.0,
+        "cost_usd": 0.028430999999999998,
         "unpriced": false
       },
       "d7": {
-        "in": 0,
-        "out": 0,
+        "in": 1709,
+        "out": 1625,
         "cache_read": 0,
         "cache_write": 0,
-        "cost_usd": 0.0,
+        "cost_usd": 0.028430999999999998,
         "unpriced": false
       }
     },
     "unpriced_models": [],
     "sources": {
       "hermes": false,
-      "slack": false
+      "slack": true
     },
-    "updated_at": "2026-08-18T19:04:02+09:00"
+    "updated_at": "2026-08-18T19:25:12+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-18T19:04:02+09:00",
+    "checked_at": "2026-08-18T19:25:12+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
