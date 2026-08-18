@@ -30,7 +30,10 @@
      제목과 본문 차이가 6.5px뿐이라 눈이 중요도를 구분하지 못했습니다.
      지금은 10 → 34px 로 3.4배 폭. 화면이 답해야 할 질문("지금 뭐가 돌아가나")의
      답인 **숫자를 제일 크게** 둡니다. */
-  --fs-xs:10px; --fs-sm:11.5px; --fs-md:13px; --fs-lg:15px; --fs-xl:22px; --fs-hero:34px;
+  /* ⚠️ 2026-08-18 2차 상향 (대표님: "글씨 좀 키우자 … '굴러가는 중' 이런 글자 크기가 너무 작아").
+     1차 재설계는 스케일 **폭**을 넓혔지만 **바닥이 10px 그대로**라, 정작 제일 자주 읽는
+     그룹 제목·보조설명이 여전히 안 읽혔습니다. 폭(3.1배)은 유지한 채 바닥을 11.5px 로 올립니다. */
+  --fs-xs:11.5px; --fs-sm:13px; --fs-md:14.5px; --fs-lg:17px; --fs-xl:24px; --fs-hero:36px;
   --lh-tight:1.35; --lh-body:1.55;
   --focus:#7cc4ff;                 /* 키보드 포커스 링 — 어떤 상태색과도 안 겹치게 */
   --dur:180ms; --ease:cubic-bezier(.2,.6,.3,1);
@@ -67,7 +70,9 @@ body{
   font-family:system-ui,-apple-system,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
   font-size:14px; line-height:1.55; -webkit-font-smoothing:antialiased;
 }
-.app{display:grid; grid-template-columns:236px minmax(0,1fr) 340px; min-height:100vh}
+/* ⚠️ 2026-08-18: 오른쪽 레일 340px → 420px (대표님: "오른쪽 수익화 진행 칸이 너무 좁다").
+   수익화 카드는 제목 + 담당 + 메모가 한 줄에 들어가야 읽히는데 340px 에선 계속 줄바꿈됐습니다. */
+.app{display:grid; grid-template-columns:236px minmax(0,1fr) 420px; min-height:100vh}
 /* 오른쪽 레일 — 화면 맨 오른쪽에 붙는 세로 칸.
    본문(가운데)이 길어서 남는 폭이 있으니 거기에 아이디어·수익화를 세웁니다.
    본문과 같이 스크롤되지 않고 따라오도록 sticky 로 두되, 내용이 길면 레일 안에서만 스크롤합니다. */
@@ -130,13 +135,17 @@ nav button .k{font-size:13px; width:16px; text-align:center}
 .szbtn.on{background:var(--wash); color:var(--ink); border-color:var(--s1)}
 
 /* ---------- main ---------- */
-main{padding:22px 26px 60px; max-width:1500px}
+/* ⚠️ max-width 를 뺐습니다 (대표님: "대시보드 중간 간격이 너무 넓어").
+   본문은 3열 그리드의 가운데(1fr)인데 max-width:1500px 이 걸려 있어서, 넓은 화면에서
+   본문이 1500px 에서 멈추고 **오른쪽 레일과의 사이에 죽은 공백**이 생겼습니다.
+   간격이 넓어 보인 건 여백 설정이 아니라 이 상한선 때문이었습니다. */
+main{padding:22px 26px 60px}
 .head{display:flex; align-items:baseline; gap:var(--sp-3); flex-wrap:wrap; margin-bottom:var(--sp-5)}
 h1{font-size:var(--fs-xl); font-weight:650; margin:0; letter-spacing:-.02em}
-.stamp{font-size:11.5px; color:var(--muted)}
+.stamp{font-size:var(--fs-sm); color:var(--muted)}
 .card{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px 20px; margin-bottom:16px}
-h2{font-size:14.5px; font-weight:650; margin:0 0 3px}
-.cap{color:var(--muted); font-size:11.5px; margin:0 0 16px}
+h2{font-size:16px; font-weight:650; margin:0 0 3px}
+.cap{color:var(--muted); font-size:var(--fs-sm); margin:0 0 16px}
 .view{display:none} .view.on{display:block}
 
 /* ---------- 오피스 2열 + KPI 띠 ---------- */
@@ -511,9 +520,11 @@ tbody tr:last-child td{border-bottom:0}
 .s5brief{padding:0 12px 11px 12px; font-size:var(--fs-sm); color:var(--ink2);
   line-height:var(--lh-body); border-top:1px dashed var(--grid); margin:0 12px; padding-left:0; padding-right:0}
 .s5brief .src{display:block; margin-top:var(--sp-2); font-size:var(--fs-xs); color:var(--muted)}
-/* 그룹 라벨은 항목이 아니라 **칸막이**입니다. 글자를 키우는 대신 위 여백과 밑줄로
-   "여기서 묶음이 바뀐다"를 알립니다 — 크기로 싸우면 항목과 경쟁하게 됩니다. */
-.s5day{font-size:var(--fs-xs); color:var(--muted); letter-spacing:.08em; margin:var(--sp-5) 0 var(--sp-2);
+/* 그룹 라벨은 항목이 아니라 **칸막이**입니다. 위 여백과 밑줄로 "여기서 묶음이 바뀐다"를 알립니다.
+   ⚠️ 2026-08-18: 그래도 --fs-xs(10px) + muted 회색 + 넓은 자간이 겹쳐 **"굴러가는 중"이 안 읽혔습니다**
+   (대표님 지적). 칸막이 역할은 유지하되 한 단 키우고(--fs-sm) 색을 ink2 로 올려 읽히게 합니다.
+   항목과 경쟁하지 않는 건 크기가 아니라 **대문자·자간·밑줄**이 맡습니다. */
+.s5day{font-size:var(--fs-sm); font-weight:650; color:var(--ink2); letter-spacing:.08em; margin:var(--sp-5) 0 var(--sp-2);
   text-transform:uppercase; padding-bottom:var(--sp-1); border-bottom:1px solid var(--grid)}
 .s5day:first-child{margin-top:0}
 .s5b.done .s5item{border-left-color:var(--good)}
@@ -1582,8 +1593,10 @@ function renderToday(){
   /* ③-2 💰 수익화 진행 — 「수익화」 보드만 따로 본다.
      그전엔 수익화 카드가 보드 구분 없이 「내일 해야 될 일」에 섞여
      **돈 버는 일이 얼마나 밀렸는지 화면 어디서도 알 수 없었다**(2026-08-18 대표님 지적).
-     여기서는 진행률 → 막힌 것(대기) → 굴러가는 것(진행 중) 순으로 보여준다.
-     남은 것이 먼저인 이유: 완료는 이미 끝나 행동할 게 없다. */
+     ⚠️ 2026-08-18 순서 뒤집음 (대표님: "진행중인 게 위로 가고 아직 시작 못한 게 아래로 가야지").
+     그전엔 대기가 맨 위라 **"안 한 일"이 화면 첫 줄을 차지**했고 지금 굴러가는 게 아래로 밀렸다.
+     이 화면이 답해야 할 첫 질문은 "지금 뭐가 돌아가나"다.
+     지금 순서: 진행률 → 굴러가는 중 → 아직 시작 못 함 → 보류 → 끝난 것. */
   (function(){
     const el = document.getElementById("s5RevBody"); if(!el) return;
     const board = boards.find(b => b.id === "revenue");
@@ -1614,7 +1627,7 @@ function renderToday(){
       const list = cs.filter(c => c.s === st);
       return list.length ? `<div class="s5day">${title} ${list.length}</div>` + list.map(line).join("") : "";
     };
-    html += grp("아직 시작 못 한 것", "todo") + grp("굴러가는 중", "doing")
+    html += grp("굴러가는 중", "doing") + grp("아직 시작 못 한 것", "todo")
           + grp("보류", "hold") + grp("끝난 것", "done");
     el.innerHTML = html;
   })();
