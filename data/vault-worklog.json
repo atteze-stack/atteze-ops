@@ -1,5 +1,18 @@
 [
  {
+  "tool": "claude",
+  "summary": "아이디어 상자 +18건 (총 19건)",
+  "detail": "대표님",
+  "brief": "",
+  "where": "Clippings",
+  "result": "",
+  "tag": "",
+  "session": "",
+  "when": "08-18 13:21",
+  "day": "2026-08-18",
+  "ts": 1787026860
+ },
+ {
   "tool": "claude-code",
   "summary": "대시보드 전 탭 시각 정리 — 라이트 테마 상태색 결함 · 잔글씨 · 수익화 분리",
   "detail": "Claude-Web",
