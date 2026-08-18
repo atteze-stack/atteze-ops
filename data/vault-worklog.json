@@ -1,5 +1,18 @@
 [
  {
+  "tool": "claude",
+  "summary": "아이디어 상자 +1건 (총 32건)",
+  "detail": "대표님",
+  "brief": "",
+  "where": "Clippings",
+  "result": "",
+  "tag": "",
+  "session": "",
+  "when": "08-19 03:47",
+  "day": "2026-08-19",
+  "ts": 1787078820
+ },
+ {
   "tool": "claude-code",
   "summary": "슬랙 비용절감 A1~A4 실동작 검증 + 계측 ON + HTML 지침 정정",
   "detail": "Claude-Web",
