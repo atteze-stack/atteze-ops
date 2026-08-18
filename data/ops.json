@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-18T15:02:13+09:00",
+    "generated_at": "2026-08-18T15:59:45+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -206,16 +206,7 @@
       "channel": "slack+telegram",
       "model": "GPT-5.6 Luna",
       "last_seen_note": "2026-08-15 20:25",
-      "aide": true,
-      "work": {
-        "state": "done",
-        "task": "",
-        "note": "*자비스 브리핑 슬랙→대시보드 대체 — 완료*",
-        "last": "15:35",
-        "age_min": 1407,
-        "day": "2026-08-17",
-        "ts": 1786948507.950739
-      }
+      "aide": true
     },
     {
       "id": "mkt",
@@ -596,7 +587,6 @@
     ],
     "agenda": {
       "yesterday": [
-        "김서연 비서실장 · *자비스 브리핑 슬랙→대시보드 대체 — 완료*",
         "옵시디언 연결 완료 + 대표님 PC stash 유실기억 복구 + CI 403 수정",
         "옵시디언 pull 충돌 근본원인 수정 — frontmatter 형식 통일",
         "대시보드 후속 수리 — 완료신호 경과시간·비서실 agenda·stalled",
@@ -607,7 +597,8 @@
         "대시보드 연동 완성 — 밀어넣기(B) 양쪽 구현",
         "PR #113 머지 + Actions 첫 실행 검증 완료",
         "PC 상시가동 불필요 확정 — 옵시디언 웹·NAS 설치 판단",
-        "2차 참고자료 인제스트 — 컴파일 비유 · Terminal 플러그인 · 맥락 부트스트랩"
+        "2차 참고자료 인제스트 — 컴파일 비유 · Terminal 플러그인 · 맥락 부트스트랩",
+        "옵시디언 LLM Wiki 1단계 구축 (카파시 3층)"
       ],
       "today": [
         "사주 콘텐츠 파이프라인 — Day 0 착수 (영상→3플랫폼→사주사이트 유입) · 백준우",
@@ -1063,10 +1054,10 @@
       "hermes": false,
       "slack": false
     },
-    "updated_at": "2026-08-18T15:02:13+09:00"
+    "updated_at": "2026-08-18T15:59:45+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-18T15:02:13+09:00",
+    "checked_at": "2026-08-18T15:59:45+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
