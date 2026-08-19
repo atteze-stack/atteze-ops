@@ -1,6 +1,19 @@
 [
  {
   "tool": "claude-code",
+  "summary": "유튜브 대본 자동화: script-pd·channel-setup·storyboard 스킬 3종 구축 (autoworker-script 웹 이식)",
+  "detail": "Claude",
+  "brief": "대표님이 업로드한 autoworker-script(로컬 VS Code+yt-dlp 전제 유료 강의용 대본 제작 도구 zip)를 분석 → \"웹으로 진행 가능하게 스킬로\" → \"claude.ai 계정 스킬로도 등록 가능하게\" 요구 확장에 따라 이식. 이 환경은 네트워크 egress 정책상 유튜브 · 일반 웹 · TTS 3사 API 전부 차단(실측)이라 ①레퍼런스 수집을 자막 직접 붙여넣기로 ②팩트체크를 WebSearch만으로…",
+  "where": "2026-08-20.md",
+  "result": "",
+  "tag": "유튜브_대본_자동화",
+  "session": "",
+  "when": "08-20 02:04",
+  "day": "2026-08-20",
+  "ts": 1787159040
+ },
+ {
+  "tool": "claude-code",
   "summary": "텔레 자비스 브리핑 결함 C1~C5 수리 + 운동 일지 AI 방법론 조사",
   "detail": "Claude-Web",
   "brief": "대표님이 실사용 07:00 브리핑에서 지적한 결함 6건을 app.js(1,563줄) · atteze-ops(refresh.py · index.html · ops.json) 실물로 원인까지 확정하고 5건을 수리했다(⑥ 오늘 일정은 정상이라 건드리지 않음). 진단을 코드 위치까지 특정한 이유는, 08-15 \"코드에 있다 ≠ 돌고 있다\" 교훈대로 추측 수정이 반복되는 걸 막기 위해서다. - C1 기억 소실: journal.md가…",
