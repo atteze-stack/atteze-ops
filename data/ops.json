@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-20T13:18:54+09:00",
+    "generated_at": "2026-08-20T13:56:37+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -442,10 +442,10 @@
         },
         {
           "id": "jarvis-mail-integration",
-          "t": "메일 통합함 — 회사·JW기획·개인 3계정",
+          "t": "JW 통합 메일비서 — 자비스와 분리된 전용 봇",
           "s": "doing",
           "owner": "ceo",
-          "note": "코드완료(08-20), 대표님 OAuth 인증 대기 — atteze-agents/03_Wiki/Projects/이메일_통합.md"
+          "note": "코드완료(08-20), 대표님 봇토큰+OAuth 인증 대기 — atteze-agents/03_Wiki/Projects/이메일_통합.md"
         }
       ]
     },
@@ -640,7 +640,7 @@
         "이별한 개발자의 작업실 — 대표 Voice로 〈떠나기로 한 날짜〉 제작 · 백준우",
         "인스타 정리함 온디맨드 INGEST 운영 검증 · 검수팀 박지민 대리",
         "OpenAI PR 교차검증 파일럿 — 리뷰 품질 관찰 · 개발팀 이준호 과장",
-        "메일 통합함 — 회사·JW기획·개인 3계정 · 백준우",
+        "JW 통합 메일비서 — 자비스와 분리된 전용 봇 · 백준우",
         "슬랙 AI 비용 절감 — 계측 켜짐 ✅ → 1주 뒤 B안 판단(08-25) · 백준우 · 긴급",
         "NAS + MeTube 내부망 구축 · 개발팀 이준호 과장",
         "Ponytail 플러그인 설치 (과설계 방지 도구) · 개발팀 이준호 과장",
@@ -1236,10 +1236,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-08-20T13:18:54+09:00"
+    "updated_at": "2026-08-20T13:56:37+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-20T13:18:54+09:00",
+    "checked_at": "2026-08-20T13:56:37+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
