@@ -432,6 +432,13 @@
           "s": "done",
           "owner": "dev",
           "note": "07-05"
+        },
+        {
+          "id": "jarvis-mail-integration",
+          "t": "메일 통합함 — 회사·JW기획·개인 3계정",
+          "s": "doing",
+          "owner": "ceo",
+          "note": "코드완료(08-20), 대표님 OAuth 인증 대기 — atteze-agents/03_Wiki/Projects/이메일_통합.md"
         }
       ]
     },
