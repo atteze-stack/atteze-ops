@@ -1,6 +1,19 @@
 [
  {
   "tool": "claude-code",
+  "summary": "메일 통합함(회사·JW기획·개인 3계정) 신설",
+  "detail": "Claude",
+  "brief": "대표님 요청 — 회사메일 · JW기획 메일 · 개인메일 3개를 한꺼번에 관리해 텔레그램에 나타내고, 정리 · 중요메일 알림 · 쓸데없는 건 삭제까지. 시작 전 AskUserQuestion으로 3가지 확정: ① 3계정 전부 Gmail/워크스페이스(IMAP 불필요) ② 삭제는 휴지통 이동만 자동, 완전삭제는 안 함(오탐으로 실수 삭제되면 되돌리기 어려운 작업이라 되돌릴 수 있는 방식으로 좁힘) ③ 아침/저녁 브리핑 포함 +…",
+  "where": "2026-08-20.md",
+  "result": "",
+  "tag": "이메일_통합",
+  "session": "",
+  "when": "08-20 12:19",
+  "day": "2026-08-20",
+  "ts": 1787195940
+ },
+ {
+  "tool": "claude-code",
   "summary": "유튜브 대본 자동화: script-pd·channel-setup·storyboard 스킬 3종 구축 (autoworker-script 웹 이식)",
   "detail": "Claude",
   "brief": "대표님이 업로드한 autoworker-script(로컬 VS Code+yt-dlp 전제 유료 강의용 대본 제작 도구 zip)를 분석 → \"웹으로 진행 가능하게 스킬로\" → \"claude.ai 계정 스킬로도 등록 가능하게\" 요구 확장에 따라 이식. 이 환경은 네트워크 egress 정책상 유튜브 · 일반 웹 · TTS 3사 API 전부 차단(실측)이라 ①레퍼런스 수집을 자막 직접 붙여넣기로 ②팩트체크를 WebSearch만으로…",
