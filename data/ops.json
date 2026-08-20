@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-20T09:51:24+09:00",
+    "generated_at": "2026-08-20T10:11:18+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -20,32 +20,32 @@
     "_note": "1M(백만) 토큰당 USD. data/usage/slack.json(토큰 수치만 있음)의 비용을 여기서 계산합니다. hermes.json 은 이미 계산된 cost_usd 를 그대로 씁니다(재계산 안 함). 여기 없는 모델은 0원이 아니라 '단가 미등록'으로 표시됩니다 — 실제 지출을 0으로 보이게 하는 왜곡을 막기 위함(2026-08-16).",
     "_source": "hermes-agent agent/usage_pricing.py 의 official_docs_snapshot 값과 동일 (developer 프로필이 실행 중인 코드베이스 기준)",
     "claude-sonnet-5": {
-      "in": 2.0,
-      "out": 10.0,
+      "in": 2,
+      "out": 10,
       "cache_read": 0.2,
       "cache_write": 2.5
     },
     "gpt-5.6-sol": {
-      "in": 5.0,
-      "out": 30.0,
+      "in": 5,
+      "out": 30,
       "cache_read": 0.5,
       "cache_write": 6.25
     },
     "gpt-5.6-terra": {
       "in": 2.5,
-      "out": 15.0,
+      "out": 15,
       "cache_read": 0.25,
       "cache_write": 3.125
     },
     "gpt-5.6-luna": {
-      "in": 1.0,
-      "out": 6.0,
+      "in": 1,
+      "out": 6,
       "cache_read": 0.1,
       "cache_write": 1.25
     },
     "gpt-4o": {
       "in": 2.5,
-      "out": 10.0,
+      "out": 10,
       "cache_read": 1.25,
       "cache_write": null
     }
@@ -372,10 +372,10 @@
       "cards": [
         {
           "id": "saju-content-pipeline",
-          "t": "사주 콘텐츠 파이프라인 — Day 0 착수 (영상→3플랫폼→사주사이트 유입)",
+          "t": "운연(사주) — 해석엔진 V2 Phase 1~8 완료 / Phase 9 승인 대기",
           "s": "doing",
           "owner": "ceo",
-          "note": "2026-08-17 대표님 확정. 클로드 웹세션(사주 전용)이 직접 진행 — 쇼핑쇼츠는 별도 세션 병행. 로드맵 고정: atteze-agents/사주_콘텐츠_로드맵.md, 이 문서 밖 작업 금지"
+          "note": "08-20 현재. 완료: 홈 리디자인 · Supabase 데이터계층(6테이블+퍼널9칸+결과복원) · 법적페이지 3장 · 명리분석엔진 V2(지장간·월령·십성위치·합충형파해·오행가중·세운·월운·Evidence). 🔴 대표님 막힘 2개: ①Supabase 프로젝트 생성+시크릿 2개(없으면 저장·퍼널이 안 돈다) ②사업자정보 6칸(없으면 결제를 못 연다). 다음: Phase 9 V2해석 → 토스결제. 상세는 03_Wiki/Projects/운연.md §5 + atteze-saju/docs/V2-인수인계.md"
         },
         {
           "id": "sns-nanobanana",
@@ -400,10 +400,10 @@
         },
         {
           "id": "suno-channel",
-          "t": "Suno 채널 개설 + 구독 상태 확인",
-          "s": "todo",
-          "owner": "mkt",
-          "note": "가사 10곡 완료 · 음원 0곡"
+          "t": "이별한 개발자의 작업실 — 대표 Voice로 〈떠나기로 한 날짜〉 제작",
+          "s": "doing",
+          "owner": "ceo",
+          "note": "1차 Voice 테스트: 1절 음색 유지·2절 AI 보컬 이탈. 다음: 차 안에서 저음 랩+고음 후렴 재녹음. 상세: atteze-agents/03_Wiki/Projects/이별한_개발자의_작업실.md"
         },
         {
           "id": "insta-inbox-ingest",
@@ -621,7 +621,8 @@
         "아이디어 상자 +1건 (총 32건)"
       ],
       "today": [
-        "사주 콘텐츠 파이프라인 — Day 0 착수 (영상→3플랫폼→사주사이트 유입) · 백준우",
+        "운연(사주) — 해석엔진 V2 Phase 1~8 완료 / Phase 9 승인 대기 · 백준우",
+        "이별한 개발자의 작업실 — 대표 Voice로 〈떠나기로 한 날짜〉 제작 · 백준우",
         "인스타 정리함 온디맨드 INGEST 운영 검증 · 검수팀 박지민 대리",
         "OpenAI PR 교차검증 파일럿 — 리뷰 품질 관찰 · 개발팀 이준호 과장",
         "슬랙 AI 비용 절감 — 계측 켜짐 ✅ → 1주 뒤 B안 판단(08-25) · 백준우 · 긴급",
@@ -637,7 +638,6 @@
         "뽀용베베·뽀용스푼 SNS 자동화 — 나노바나나 API 연동 · 마케팅 최유나 주임",
         "신통방통 도도네 이야기 — 캐릭터 생성 + 채널 개설 · 디자인 정수아 과장",
         "AI 인플루언서 페르소나 최종 확정 (하린·현우) · 영상 한도윤 과장",
-        "Suno 채널 개설 + 구독 상태 확인 · 마케팅 최유나 주임",
         "아테즈 홈페이지 배포 · 개발팀 이준호 과장",
         "정리함 구글시트 웹훅 세팅 · 검수팀 박지민 대리"
       ]
@@ -1206,10 +1206,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-08-20T09:51:24+09:00"
+    "updated_at": "2026-08-20T10:11:18+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-20T09:51:24+09:00",
+    "checked_at": "2026-08-20T10:11:18+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
