@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-20T09:00:27+09:00",
+    "generated_at": "2026-08-20T09:51:24+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -520,6 +520,13 @@
           "s": "doing",
           "owner": "dev",
           "note": "marketplace add·install 완료, /reload-plugins 필요"
+        },
+        {
+          "id": "eunji-daily-nas-migration",
+          "t": "은지 데일리 콘텐츠 — Cowork 예약작업 → NAS Claude Code 이관",
+          "s": "doing",
+          "owner": "ceo",
+          "note": "NAS 계정·Claude Code·Higgsfield CLI·Slack Bot Token 완료, Google Drive OAuth 진행 중. 상세: atteze-agents/03_Wiki/Projects/은지데일리.md"
         }
       ]
     },
@@ -620,6 +627,7 @@
         "슬랙 AI 비용 절감 — 계측 켜짐 ✅ → 1주 뒤 B안 판단(08-25) · 백준우 · 긴급",
         "NAS + MeTube 내부망 구축 · 개발팀 이준호 과장",
         "Ponytail 플러그인 설치 (과설계 방지 도구) · 개발팀 이준호 과장",
+        "은지 데일리 콘텐츠 — Cowork 예약작업 → NAS Claude Code 이관 · 백준우",
         "유튜브 대본 자동화: script-pd·channel-setup·storyboard 스킬 3종 구축 (autoworker-script 웹 이식)"
       ],
       "tomorrow": [
@@ -1198,10 +1206,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-08-20T09:00:27+09:00"
+    "updated_at": "2026-08-20T09:51:24+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-20T09:00:27+09:00",
+    "checked_at": "2026-08-20T09:51:24+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
