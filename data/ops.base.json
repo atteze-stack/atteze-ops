@@ -435,10 +435,10 @@
         },
         {
           "id": "jarvis-mail-integration",
-          "t": "JW 통합 메일비서 — 자비스와 분리된 전용 봇",
+          "t": "JW 통합 메일비서 — 자비스 안에 통합",
           "s": "doing",
           "owner": "ceo",
-          "note": "코드완료(08-20), 대표님 봇토큰+OAuth 인증 대기 — atteze-agents/03_Wiki/Projects/이메일_통합.md"
+          "note": "코드완료(08-20), 대표님 Gmail OAuth 인증만 남음(새 봇 불필요) — atteze-agents/03_Wiki/Projects/이메일_통합.md"
         }
       ]
     },
