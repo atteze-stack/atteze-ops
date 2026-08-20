@@ -488,6 +488,13 @@
           "s": "doing",
           "owner": "dev",
           "note": "marketplace add·install 완료, /reload-plugins 필요"
+        },
+        {
+          "id": "eunji-daily-nas-migration",
+          "t": "은지 데일리 콘텐츠 — Cowork 예약작업 → NAS Claude Code 이관",
+          "s": "doing",
+          "owner": "ceo",
+          "note": "NAS 계정·Claude Code·Higgsfield CLI·Slack Bot Token 완료, Google Drive OAuth 진행 중. 상세: atteze-agents/03_Wiki/Projects/은지데일리.md"
         }
       ]
     },
