@@ -17,11 +17,36 @@
   "model_prices": {
     "_note": "1M(백만) 토큰당 USD. data/usage/slack.json(토큰 수치만 있음)의 비용을 여기서 계산합니다. hermes.json 은 이미 계산된 cost_usd 를 그대로 씁니다(재계산 안 함). 여기 없는 모델은 0원이 아니라 '단가 미등록'으로 표시됩니다 — 실제 지출을 0으로 보이게 하는 왜곡을 막기 위함(2026-08-16).",
     "_source": "hermes-agent agent/usage_pricing.py 의 official_docs_snapshot 값과 동일 (developer 프로필이 실행 중인 코드베이스 기준)",
-    "claude-sonnet-5":  {"in": 2.00, "out": 10.00, "cache_read": 0.20, "cache_write": 2.50},
-    "gpt-5.6-sol":      {"in": 5.00, "out": 30.00, "cache_read": 0.50, "cache_write": 6.25},
-    "gpt-5.6-terra":    {"in": 2.50, "out": 15.00, "cache_read": 0.25, "cache_write": 3.125},
-    "gpt-5.6-luna":     {"in": 1.00, "out": 6.00,  "cache_read": 0.10, "cache_write": 1.25},
-    "gpt-4o":           {"in": 2.50, "out": 10.00, "cache_read": 1.25, "cache_write": null}
+    "claude-sonnet-5": {
+      "in": 2,
+      "out": 10,
+      "cache_read": 0.2,
+      "cache_write": 2.5
+    },
+    "gpt-5.6-sol": {
+      "in": 5,
+      "out": 30,
+      "cache_read": 0.5,
+      "cache_write": 6.25
+    },
+    "gpt-5.6-terra": {
+      "in": 2.5,
+      "out": 15,
+      "cache_read": 0.25,
+      "cache_write": 3.125
+    },
+    "gpt-5.6-luna": {
+      "in": 1,
+      "out": 6,
+      "cache_read": 0.1,
+      "cache_write": 1.25
+    },
+    "gpt-4o": {
+      "in": 2.5,
+      "out": 10,
+      "cache_read": 1.25,
+      "cache_write": null
+    }
   },
   "pipeline": {
     "title": "업무 처리 파이프라인",
@@ -368,10 +393,10 @@
         },
         {
           "id": "suno-channel",
-          "t": "Suno 채널 개설 + 구독 상태 확인",
-          "s": "todo",
-          "owner": "mkt",
-          "note": "가사 10곡 완료 · 음원 0곡"
+          "t": "이별한 개발자의 작업실 — 대표 Voice로 〈떠나기로 한 날짜〉 제작",
+          "s": "doing",
+          "owner": "ceo",
+          "note": "1차 Voice 테스트: 1절 음색 유지·2절 AI 보컬 이탈. 다음: 차 안에서 저음 랩+고음 후렴 재녹음. 상세: atteze-agents/03_Wiki/Projects/이별한_개발자의_작업실.md"
         },
         {
           "id": "insta-inbox-ingest",
