@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-21T23:33:26+09:00",
+    "generated_at": "2026-08-22T00:06:53+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -638,11 +638,7 @@
     ],
     "agenda": {
       "yesterday": [
-        "메일비서에 반박검증(PR #218) 적용 — 실버그 6건 발견·수정",
-        "메일비서 별도봇→자비스 통합 재전환",
-        "JW 통합 메일비서 재구축 — 자비스와 분리된 별도 봇",
-        "메일 통합함(회사·JW기획·개인 3계정) 신설",
-        "유튜브 대본 자동화: script-pd·channel-setup·storyboard 스킬 3종 구축 (autoworker-script 웹 이식)"
+        "메일 OAuth: dispatch-app 권한 문제 실측 → 새 프로젝트로 전환"
       ],
       "today": [
         "운연(사주) — 해석엔진 V2 Phase 1~8 완료 / Phase 9 승인 대기 · 백준우",
@@ -655,8 +651,7 @@
         "슬랙 AI 비용 절감 — 계측 켜짐 ✅ → 1주 뒤 B안 판단(08-25) · 백준우 · 긴급",
         "NAS + MeTube 내부망 구축 · 개발팀 이준호 과장",
         "Ponytail 플러그인 설치 (과설계 방지 도구) · 개발팀 이준호 과장",
-        "은지 데일리 콘텐츠 — Cowork 예약작업 → NAS Claude Code 이관 · 백준우",
-        "메일 OAuth: dispatch-app 권한 문제 실측 → 새 프로젝트로 전환"
+        "은지 데일리 콘텐츠 — Cowork 예약작업 → NAS Claude Code 이관 · 백준우"
       ],
       "tomorrow": [
         "A층/B층 혼동 차단 — 실행 지시를 잡담 페르소나가 수락해버리는 구멍 · 개발팀 이준호 과장 · 긴급",
@@ -1298,10 +1293,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-08-21T23:33:26+09:00"
+    "updated_at": "2026-08-22T00:06:53+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-21T23:33:26+09:00",
+    "checked_at": "2026-08-22T00:06:53+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
