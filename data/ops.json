@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-21T19:01:44+09:00",
+    "generated_at": "2026-08-21T19:40:23+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -111,7 +111,7 @@
           "rt"
         ],
         "out": "결과 보고",
-        "state": "live"
+        "state": "idle"
       }
     ]
   },
@@ -145,8 +145,8 @@
       "slack_id": "U0BQ2GK7DE1",
       "app_id": null,
       "reports_to": "ceo",
-      "state": "live",
-      "status": "기획중",
+      "state": "idle",
+      "status": "대기",
       "desk": "chief",
       "hair": "#5a3f2c",
       "skin": "#f2cfae",
@@ -158,7 +158,7 @@
       ],
       "channel": "slack",
       "model": "GPT-5.6 Sol",
-      "last_seen_note": "2026-08-15 20:05"
+      "last_seen_note": "2026-08-18"
     },
     {
       "id": "chk",
@@ -169,8 +169,8 @@
       "slack_id": "U0BQ1H85BM1",
       "app_id": null,
       "reports_to": "ceo",
-      "state": "live",
-      "status": "검증중",
+      "state": "idle",
+      "status": "대기",
       "desk": "chief",
       "hair": "#3a2f45",
       "skin": "#f5d3b4",
@@ -182,7 +182,7 @@
       ],
       "channel": "slack",
       "model": "Claude Opus 5",
-      "last_seen_note": "2026-08-15 20:06"
+      "last_seen_note": "2026-08-18"
     },
     {
       "id": "rt",
@@ -320,8 +320,8 @@
       "slack_id": "U0BA2HH2LBV",
       "app_id": "A0BAAML3RL1",
       "reports_to": "rt",
-      "state": "live",
-      "status": "활동중",
+      "state": "idle",
+      "status": "대기",
       "desk": "floor",
       "hair": "#343440",
       "skin": "#eec9a6",
@@ -334,7 +334,7 @@
       "channel": "slack",
       "model": "Claude Sonnet 5",
       "track": "Engineering",
-      "last_seen_note": "2026-08-15 20:06",
+      "last_seen_note": "2026-08-18",
       "name_was": "이준호 과장"
     }
   ],
@@ -1298,10 +1298,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-08-21T19:01:44+09:00"
+    "updated_at": "2026-08-21T19:40:23+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-21T19:01:44+09:00",
+    "checked_at": "2026-08-21T19:40:23+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
