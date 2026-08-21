@@ -439,6 +439,13 @@
           "s": "doing",
           "owner": "ceo",
           "note": "코드완료(08-20), 대표님 Gmail OAuth 인증만 남음(새 봇 불필요) — atteze-agents/03_Wiki/Projects/이메일_통합.md"
+        },
+        {
+          "id": "jw-personal-trainer-app",
+          "t": "JW 개인트레이너 앱화 — 74종 머신·헬스장별 기록 MVP",
+          "s": "doing",
+          "owner": "ceo",
+          "note": "08-21 기능 브랜치 구현 중. 헬스장·이용권·내 머신·74종 카탈로그 구조 완료, 기본 머신 이미지 제작 시작. 운영 배포 전. 상세: atteze-agents/03_Wiki/Projects/JW_개인트레이너.md"
         }
       ]
     },
