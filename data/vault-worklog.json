@@ -1,6 +1,19 @@
 [
  {
   "tool": "claude-code",
+  "summary": "메일 OAuth: dispatch-app 권한 문제 실측 → 새 프로젝트로 전환",
+  "detail": "Claude",
+  "brief": "대표님이 실제로 Gmail API 사용 설정 → OAuth 동의화면 편집을 진행하다가 dispatch-app 프로젝트에서 \"추가 액세스 권한 필요\" 화면에 막힘. IAM 페이지 확인 결과 atteze@atteze.com 계정에 \"Firebase 관리자\" role만 있고 가 없었음 — 캘린더 OAuth 성공(동의 클릭)과 콘솔에서 프로젝트 설정 편집은 서로 다른 권한 체계라는 걸 실측으로 확인. AskUserQuestion으로…",
+  "where": "2026-08-21.md",
+  "result": "",
+  "tag": "이메일_통합",
+  "session": "",
+  "when": "08-21 14:41",
+  "day": "2026-08-21",
+  "ts": 1787290860
+ },
+ {
+  "tool": "claude-code",
   "summary": "메일비서에 반박검증(PR #218) 적용 — 실버그 6건 발견·수정",
   "detail": "Claude",
   "brief": "대표님이 \"PR #218 머지 확인, 반박검증 규칙이 CLAUDE.md에 적용 완료됐다. 이걸 토대로 규칙을 적용해서 일을 진행하자\"고 지시. 주장을 그대로 믿지 않고 로 §8 규칙의 실제 문구를 직접 확인(추측/가설 금지 원칙)한 뒤, 가장 최근에 완료 보고했던 의미있는 작업(mail-assistant 자비스 통합 재구성)에 소급 적용.",
