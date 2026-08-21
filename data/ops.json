@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-21T11:49:01+09:00",
+    "generated_at": "2026-08-21T12:38:23+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -446,6 +446,13 @@
           "s": "doing",
           "owner": "ceo",
           "note": "코드완료(08-20), 대표님 Gmail OAuth 인증만 남음(새 봇 불필요) — atteze-agents/03_Wiki/Projects/이메일_통합.md"
+        },
+        {
+          "id": "jw-personal-trainer-app",
+          "t": "JW 개인트레이너 앱화 — 74종 머신·헬스장별 기록 MVP",
+          "s": "doing",
+          "owner": "ceo",
+          "note": "08-21 기능 브랜치 구현 중. 헬스장·이용권·내 머신·74종 카탈로그 구조 완료, 기본 머신 이미지 제작 시작. 운영 배포 전. 상세: atteze-agents/03_Wiki/Projects/JW_개인트레이너.md"
         }
       ]
     },
@@ -644,6 +651,7 @@
         "인스타 정리함 온디맨드 INGEST 운영 검증 · 검수팀 박지민 대리",
         "OpenAI PR 교차검증 파일럿 — 리뷰 품질 관찰 · 개발팀 이준호 과장",
         "JW 통합 메일비서 — 자비스 안에 통합 · 백준우",
+        "JW 개인트레이너 앱화 — 74종 머신·헬스장별 기록 MVP · 백준우",
         "슬랙 AI 비용 절감 — 계측 켜짐 ✅ → 1주 뒤 B안 판단(08-25) · 백준우 · 긴급",
         "NAS + MeTube 내부망 구축 · 개발팀 이준호 과장",
         "Ponytail 플러그인 설치 (과설계 방지 도구) · 개발팀 이준호 과장",
@@ -1276,10 +1284,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-08-21T11:49:01+09:00"
+    "updated_at": "2026-08-21T12:38:23+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-21T11:49:01+09:00",
+    "checked_at": "2026-08-21T12:38:23+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
