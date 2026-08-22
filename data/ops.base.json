@@ -425,6 +425,13 @@
           "s": "todo",
           "owner": "ceo",
           "note": "Suno Pro 매월 US$11 자동결제 유지 중(07-10 가입, Gmail 영수증 2건 실측). 🔴 실제 곡 제작 진행도가 세 출처에서 서로 다름 — 홈.md \"가사 10곡·음원 0곡\" / tasks.json \"⓪→①\" / 실제 폴더 01_가사초안 파일 2개. 대표님이 실제 완성 곡 수를 확인해주면 세 곳을 동시에 정정. ⚠️ Suno는 공식 API가 없어 생성 자동화 불가(항상 사람이 웹에서 클릭). 상세: atteze-agents/03_Wiki/Projects/Suno_AI_유튜브_플레이리스트.md §5"
+        },
+        {
+          "id": "saju-domain-purchase",
+          "t": "운연 — unyeon.com 구매·Vercel 연결",
+          "s": "todo",
+          "owner": "ceo",
+          "note": "2026-08-23 착수. Vercel Domains에서 unyeon.com 구매 화면까지 진입. 확인가 첫해 US$11.25, 갱신 US$11.25/년. 회사 카드가 없어 결제 중단. 2026-08-24 결제 후 atteze-saju 프로젝트 연결, 대표 도메인·HTTPS 확인. 상세: atteze-agents/03_Wiki/Projects/운연.md"
         }
       ]
     },
