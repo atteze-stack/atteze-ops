@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-23T01:35:17+09:00",
+    "generated_at": "2026-08-23T01:56:49+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -442,10 +442,10 @@
       "cards": [
         {
           "id": "openai-pr-review",
-          "t": "OpenAI PR 교차검증 파일럿 — 리뷰 품질 관찰",
-          "s": "doing",
+          "t": "Claude ↔ Codex PR 자동 교차검증 — 실전 왕복 검증 완료",
+          "s": "done",
           "owner": "dev",
-          "note": "관찰중"
+          "note": "2026-08-23 완료. atteze-agents#265(0da6b49) 전역 규칙 머지. atteze-saju PR #25에서 Claude가 @codex review 직접 호출 → Codex가 1bdc014c81 PASS(BLOCKER/MAJOR/MINOR 0) 응답. 대표 중계 불필요 흐름 확인. 상세: atteze-agents/03_Wiki/Projects/Claude_Codex_자동협업.md"
         },
         {
           "id": "jarvis-phase123",
@@ -664,7 +664,6 @@
         "유튜브 대본 자동화 — 스킬 3종 구축 완료 / 실전 1회 대기 · 백준우",
         "이별한 개발자의 작업실 — 대표 Voice로 〈떠나기로 한 날짜〉 제작 · 백준우",
         "인스타 정리함 온디맨드 INGEST 운영 검증 · 검수팀 박지민 대리",
-        "OpenAI PR 교차검증 파일럿 — 리뷰 품질 관찰 · 개발팀 이준호 과장",
         "JW 통합 메일비서 — 자비스 안에 통합 · 백준우",
         "JW 개인트레이너 앱화 — 74종 머신·헬스장별 기록 MVP · 백준우",
         "흔들기(폰 흔들어 자비스) — Tasker→/shake 도달 진단, 대표님 실행 한 단계 남음 · 백준우",
@@ -1315,10 +1314,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-08-23T01:35:17+09:00"
+    "updated_at": "2026-08-23T01:56:49+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-23T01:35:17+09:00",
+    "checked_at": "2026-08-23T01:56:49+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
