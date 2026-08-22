@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-23T01:56:49+09:00",
+    "generated_at": "2026-08-23T02:24:54+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -193,8 +193,8 @@
       "slack_id": "U0BA8MJQEHG",
       "app_id": "A0BAAE7T76D",
       "reports_to": "ceo",
-      "state": "live",
-      "status": "대기중",
+      "state": "idle",
+      "status": "대기",
       "desk": "router",
       "hair": "#33363f",
       "skin": "#f3cdaa",
@@ -207,7 +207,7 @@
       ],
       "channel": "slack+telegram",
       "model": "GPT-5.6 Luna",
-      "last_seen_note": "2026-08-15 20:25",
+      "last_seen_note": "2026-08-20",
       "aide": true
     },
     {
@@ -1314,10 +1314,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-08-23T01:56:49+09:00"
+    "updated_at": "2026-08-23T02:24:54+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-23T01:56:49+09:00",
+    "checked_at": "2026-08-23T02:24:54+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
