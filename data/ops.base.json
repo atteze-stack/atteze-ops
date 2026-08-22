@@ -435,10 +435,10 @@
       "cards": [
         {
           "id": "openai-pr-review",
-          "t": "OpenAI PR 교차검증 파일럿 — 리뷰 품질 관찰",
-          "s": "doing",
+          "t": "Claude ↔ Codex PR 자동 교차검증 — 실전 왕복 검증 완료",
+          "s": "done",
           "owner": "dev",
-          "note": "관찰중"
+          "note": "2026-08-23 완료. atteze-agents#265(0da6b49) 전역 규칙 머지. atteze-saju PR #25에서 Claude가 @codex review 직접 호출 → Codex가 1bdc014c81 PASS(BLOCKER/MAJOR/MINOR 0) 응답. 대표 중계 불필요 흐름 확인. 상세: atteze-agents/03_Wiki/Projects/Claude_Codex_자동협업.md"
         },
         {
           "id": "jarvis-phase123",
