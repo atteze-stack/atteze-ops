@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-23T04:52:26+09:00",
+    "generated_at": "2026-08-23T05:13:42+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -432,6 +432,13 @@
           "s": "todo",
           "owner": "ceo",
           "note": "Suno Pro 매월 US$11 자동결제 유지 중(07-10 가입, Gmail 영수증 2건 실측). 🔴 실제 곡 제작 진행도가 세 출처에서 서로 다름 — 홈.md \"가사 10곡·음원 0곡\" / tasks.json \"⓪→①\" / 실제 폴더 01_가사초안 파일 2개. 대표님이 실제 완성 곡 수를 확인해주면 세 곳을 동시에 정정. ⚠️ Suno는 공식 API가 없어 생성 자동화 불가(항상 사람이 웹에서 클릭). 상세: atteze-agents/03_Wiki/Projects/Suno_AI_유튜브_플레이리스트.md §5"
+        },
+        {
+          "id": "saju-domain-purchase",
+          "t": "운연 — unyeon.com 구매·Vercel 연결",
+          "s": "todo",
+          "owner": "ceo",
+          "note": "2026-08-23 착수. Vercel Domains에서 unyeon.com 구매 화면까지 진입. 확인가 첫해 US$11.25, 갱신 US$11.25/년. 회사 카드가 없어 결제 중단. 2026-08-24 결제 후 atteze-saju 프로젝트 연결, 대표 도메인·HTTPS 확인. 상세: atteze-agents/03_Wiki/Projects/운연.md"
         }
       ]
     },
@@ -681,6 +688,7 @@
         "AI 인플루언서 페르소나 최종 확정 (하린·현우) · 영상 한도윤 과장",
         "REDLINE MODE — 16곡 영어 EDM/Trap 앨범, 기획 완료 / Suno 생성 0곡 · 백준우",
         "Suno AI 유튜브 플레이리스트 — 진행도 3개 출처 상충, 실측 확인 필요 · 백준우",
+        "운연 — unyeon.com 구매·Vercel 연결 · 백준우",
         "정리함 구글시트 웹훅 세팅 · 검수팀 박지민 대리"
       ]
     },
@@ -1313,10 +1321,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-08-23T04:52:26+09:00"
+    "updated_at": "2026-08-23T05:13:42+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-23T04:52:26+09:00",
+    "checked_at": "2026-08-23T05:13:42+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
