@@ -428,10 +428,10 @@
         },
         {
           "id": "saju-domain-purchase",
-          "t": "운연 — unyeon.com 구매·Vercel 연결",
-          "s": "todo",
+          "t": "운연 — unyeon.com 구매·Vercel 연결 완료",
+          "s": "done",
           "owner": "ceo",
-          "note": "2026-08-23 착수. Vercel Domains에서 unyeon.com 구매 화면까지 진입. 확인가 첫해 US$11.25, 갱신 US$11.25/년. 회사 카드가 없어 결제 중단. 2026-08-24 결제 후 atteze-saju 프로젝트 연결, 대표 도메인·HTTPS 확인. 상세: atteze-agents/03_Wiki/Projects/운연.md"
+          "note": "2026-08-23 완료. Vercel에서 unyeon.com 구매 후 atteze-saju Production 프로젝트 연결. 대표 주소 https://unyeon.com. Vercel Registrar/Nameservers/CDN Active, 자동 갱신 On, 만료 2027-08-23, 갱신 US$11.25/년. 다음: 통신판매업 변경신고·토스페이먼츠 신청에 새 URL 사용. 상세: atteze-agents/03_Wiki/Projects/운연.md"
         }
       ]
     },
