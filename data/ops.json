@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-23T21:57:35+09:00",
+    "generated_at": "2026-08-23T22:37:05+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -372,10 +372,10 @@
       "cards": [
         {
           "id": "saju-content-pipeline",
-          "t": "운연(사주) — 해석엔진 V2 production 배포 완료 / 대표님 막힘 2건",
+          "t": "운연 — 서윤 무료 상담 UX·쉬운 해설·유료 심화 전환 구현",
           "s": "doing",
-          "owner": "ceo",
-          "note": "08-22 🚀 **production 배포 완료**(대표님 동결·배포 승인) — PR #25 머지 3a88b69 → vercel-deploy.yml run #19 성공 → https://atteze-saju.vercel.app . 비교 서술 A안(코드가 문장 변형을 만들고 LLM은 인덱스만 고름) 구현·동결, Claude↔Codex 교차검증 7라운드 + 골든 3회(run #31·#32·#33) 끝에 양측 BLOCKER/MAJOR/MINOR 0. 되돌리려면 Vercel 대시보드 Rollback 또는 git revert 후 main 재배포. 🔴 대표님 막힘 2개: ①Supabase 프로젝트 생성+시크릿 2개(없으면 결과저장·퍼널이 안 돈다) ②통신판매업 신고번호(없으면 결제를 못 연다). 다음: 배포 후 실측(폴백률·지연·비용) → 토스결제. 상세는 atteze-agents/03_Wiki/Projects/운연.md"
+          "owner": "dev",
+          "note": "2026-08-23 로드맵 Phase 1.5 확정, Claude 구현 담당. 무료 운세 진입을 서윤의 책·필기·관계 분석 장면(5~7초)으로 전환하고, 결과는 ①일반인용 쉬운 결론 ②실제 여성 상담가 같은 자연스러운 존댓말 ③접힌 명리 근거의 3단 구조로 재설계. 무료에서 핵심 인물상·강점·주의점까지 제공한 뒤 재물/일/관계/시기 심화를 잠금 미리보기와 '서윤의 자세한 풀이 계속 보기' CTA로 연결. production A안 유지: LLM 자유문자 금지, Evidence 값별 코드 소유 표현+인덱스 선택. PDF 대조 결과 원국 丁亥 乙未 甲寅 戊辰·월지 겁재·인해육합은 운연과 일치, '지지 4곳 통근' 표현은 뿌리 강도 차이를 반영해 정밀화. Claude 구현→Codex 독립검수 BLOCKER/MAJOR 0→대표님 승인 후 배포. 상세: atteze-agents/사주_콘텐츠_로드맵.md Phase 1.5 및 03_Wiki/Projects/운연.md"
         },
         {
           "id": "yt-script-skills",
@@ -667,7 +667,7 @@
     "agenda": {
       "yesterday": [],
       "today": [
-        "운연(사주) — 해석엔진 V2 production 배포 완료 / 대표님 막힘 2건 · 백준우",
+        "운연 — 서윤 무료 상담 UX·쉬운 해설·유료 심화 전환 구현 · 개발팀 이준호 과장",
         "유튜브 대본 자동화 — 스킬 3종 구축 완료 / 실전 1회 대기 · 백준우",
         "이별한 개발자의 작업실 — 대표 Voice로 〈떠나기로 한 날짜〉 제작 · 백준우",
         "인스타 정리함 온디맨드 INGEST 운영 검증 · 검수팀 박지민 대리",
@@ -1321,10 +1321,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-08-23T21:57:35+09:00"
+    "updated_at": "2026-08-23T22:37:05+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-23T21:57:35+09:00",
+    "checked_at": "2026-08-23T22:37:05+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
