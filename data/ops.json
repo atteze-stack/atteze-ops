@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-23T12:14:39+09:00",
+    "generated_at": "2026-08-23T12:37:58+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -449,10 +449,10 @@
       "cards": [
         {
           "id": "openai-pr-review",
-          "t": "Claude ↔ Codex PR 자동 교차검증 — 실전 왕복 검증 완료",
-          "s": "done",
-          "owner": "dev",
-          "note": "2026-08-23 완료. atteze-agents#265(0da6b49) 전역 규칙 머지. atteze-saju PR #25에서 Claude가 @codex review 직접 호출 → Codex가 1bdc014c81 PASS(BLOCKER/MAJOR/MINOR 0) 응답. 대표 중계 불필요 흐름 확인. 상세: atteze-agents/03_Wiki/Projects/Claude_Codex_자동협업.md"
+          "t": "AI 교차리뷰 — 작성 회사의 반대편만 검토 (가동 중) / 대표님 브랜치 보호 1건",
+          "s": "doing",
+          "owner": "ceo",
+          "note": "2026-08-23 **2국면 완료 — 양방향 실측**. atteze-agents#269(c6e14aa) 머지. 같은 회사 AI가 자기 코드를 검토하지 못하게 코드로 강제한다: Claude 작성 PR(#269) → Claude 리뷰 skipped·OpenAI 코멘트 등록 / Codex 작성 PR(#266) → Claude 리뷰 코멘트 등록·OpenAI 실행 0건. 판정은 .github/actions/detect-implementer 단일 출처(사람 라벨 → 본문 마지막줄 Implemented-by → 브랜치 접두사 → 커밋 트레일러 → unknown은 빨간불). Codex 교차검증 6라운드(P1 5→2→1→1→0). 대표님이 CLAUDE_CODE_OAUTH_TOKEN 등록 + Codex 자동검토 OFF 완료. 🔴 대표님 남은 1건: Settings→Branches에서 master에 'Require review from Code Owners' 켜기 — 안 켜면 PR이 자기 심판(.github/)을 고칠 수 있는 경로가 열려 있다(YAML로는 못 막음). ⚠️ 실무: Codex PR에 Claude 검토가 필요하면 @claude review 코멘트를 단다(라벨만으론 안 깨어남). 1국면(왕복 규칙, #265)은 그대로 유효. 상세: atteze-agents/03_Wiki/Projects/Claude_Codex_자동협업.md"
         },
         {
           "id": "jarvis-phase123",
@@ -671,6 +671,7 @@
         "유튜브 대본 자동화 — 스킬 3종 구축 완료 / 실전 1회 대기 · 백준우",
         "이별한 개발자의 작업실 — 대표 Voice로 〈떠나기로 한 날짜〉 제작 · 백준우",
         "인스타 정리함 온디맨드 INGEST 운영 검증 · 검수팀 박지민 대리",
+        "AI 교차리뷰 — 작성 회사의 반대편만 검토 (가동 중) / 대표님 브랜치 보호 1건 · 백준우",
         "JW 통합 메일비서 — 자비스 안에 통합 · 백준우",
         "JW 개인트레이너 앱화 — 74종 머신·헬스장별 기록 MVP · 백준우",
         "흔들기(폰 흔들어 자비스) — Tasker→/shake 도달 진단, 대표님 실행 한 단계 남음 · 백준우",
@@ -1321,10 +1322,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-08-23T12:14:39+09:00"
+    "updated_at": "2026-08-23T12:37:58+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-23T12:14:39+09:00",
+    "checked_at": "2026-08-23T12:37:58+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
