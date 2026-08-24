@@ -1,6 +1,19 @@
 [
  {
   "tool": "claude-code",
+  "summary": "운연 — 유료 API 전면 차단 실행 · Phase 10 설계·mock · 핫픽스 계획",
+  "detail": "Claude",
+  "brief": "대표님이 「너랑 GPT 사이에서 또 api 짓거리 하고 있다」고 중단시키신 뒤, ①유료 API 자동호출 차단 ②차단 검증 ③문서 PR 머지 ④대시보드 ⑤Phase 10 설계 · mock ⑥production 핫픽스 계획을 순서대로 했다. 근거: 내가 코드로 판단할 수 있는 문제를 대표님께 되던져서 대표님이 Claude↔GPT 복사 · 붙여넣기 전달자가 됐고(CLAUDE.md 「대표가 Claude 와 Codex 사이의 내용을…",
+  "where": "2026-08-24.md",
+  "result": "",
+  "tag": "운연",
+  "session": "",
+  "when": "08-24 10:01",
+  "day": "2026-08-24",
+  "ts": 1787533260
+ },
+ {
+  "tool": "claude-code",
   "summary": "메일 OAuth: dispatch-app 권한 문제 실측 → 새 프로젝트로 전환",
   "detail": "Claude",
   "brief": "대표님이 실제로 Gmail API 사용 설정 → OAuth 동의화면 편집을 진행하다가 dispatch-app 프로젝트에서 \"추가 액세스 권한 필요\" 화면에 막힘. IAM 페이지 확인 결과 atteze@atteze.com 계정에 \"Firebase 관리자\" role만 있고 가 없었음 — 캘린더 OAuth 성공(동의 클릭)과 콘솔에서 프로젝트 설정 편집은 서로 다른 권한 체계라는 걸 실측으로 확인. AskUserQuestion으로…",
