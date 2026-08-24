@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-24T23:10:17+09:00",
+    "generated_at": "2026-08-25T00:00:25+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -673,7 +673,9 @@
       }
     ],
     "agenda": {
-      "yesterday": [],
+      "yesterday": [
+        "운연 — 유료 API 전면 차단 실행 · Phase 10 설계·mock · 핫픽스 계획"
+      ],
       "today": [
         "운연 — Phase 10: 3인 상담·무료→유료 개편 (화면 연결 완료 / 검수 중 · 배포 전) · 개발팀 이준호 과장 · 긴급",
         "유튜브 대본 자동화 — 스킬 3종 구축 완료 / 실전 1회 대기 · 백준우",
@@ -1293,11 +1295,11 @@
           "unpriced": false
         },
         "d7": {
-          "in": 721,
-          "out": 330,
+          "in": 0,
+          "out": 0,
           "cache_read": 0,
           "cache_write": 0,
-          "cost_usd": 0.013505,
+          "cost_usd": 0.0,
           "unpriced": false
         }
       },
@@ -1311,11 +1313,11 @@
           "unpriced": false
         },
         "d7": {
-          "in": 988,
-          "out": 1295,
+          "in": 0,
+          "out": 0,
           "cache_read": 0,
           "cache_write": 0,
-          "cost_usd": 0.014926,
+          "cost_usd": 0.0,
           "unpriced": false
         }
       }
@@ -1330,11 +1332,11 @@
         "unpriced": false
       },
       "d7": {
-        "in": 1709,
-        "out": 1625,
+        "in": 0,
+        "out": 0,
         "cache_read": 0,
         "cache_write": 0,
-        "cost_usd": 0.028430999999999998,
+        "cost_usd": 0.0,
         "unpriced": false
       }
     },
@@ -1343,10 +1345,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-08-24T23:10:17+09:00"
+    "updated_at": "2026-08-25T00:00:25+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-24T23:10:17+09:00",
+    "checked_at": "2026-08-25T00:00:25+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
