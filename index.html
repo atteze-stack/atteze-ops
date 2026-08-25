@@ -1228,34 +1228,45 @@ function renderAide(){
 
 /* ---------- 작업 로그 ---------- */
 const TOOLC = {"claude-code":"var(--s2)","cowork":"var(--s1)","claude":"var(--s7)","codex":"var(--s4)"};
+const KIND_LABEL = {
+  work:"업무", decision:"결정", idea:"아이디어", project:"프로젝트",
+  next_action:"다음 할 일", blocked:"막힘", done:"완료"
+};
+const KIND_ORDER = ["decision","project","next_action","blocked","idea","work","done"];
 function renderLog(){
   const W = D.worklog || [];
   const cap = document.getElementById("logCap"), body = document.getElementById("logBody");
   if(!W.length){
-    // 2026-08-17: atteze-agents 의 vault-sync 가 data/vault-worklog.json 을 직접 밀어넣습니다.
-    // (옛 경로였던 atteze_log.py → 슬랙 → parse_worklog 도 그대로 살아 있고, 둘을 합쳐 보여줍니다)
     cap.textContent = "Claude Code · Codex 세션이 /log 로 남긴 작업이 여기에 쌓입니다.";
     body.innerHTML = `<div class="empty">아직 기록이 없습니다 · atteze-agents 의 Vault Sync 가 3시간마다 밀어넣습니다</div>`;
     return;
   }
   const days = [...new Set(W.map(w=>w.day))];
   const tools = [...new Set(W.map(w=>w.tool))];
-  cap.textContent = `${W.length}건 · ${days.length}일 · ${tools.join(" · ")}`;
+  const kinds = [...new Set(W.map(w=>w.item_kind || "work"))];
+  cap.textContent = `${W.length}건 · ${days.length}일 · ${tools.join(" · ")} · ${kinds.map(k=>KIND_LABEL[k]||k).join(" · ")}`;
+  const card = w => `<div class="logitem" style="border-left-color:${TOOLC[w.tool]||"var(--axis)"}">
+    <div class="l1"><span class="ls">${w.summary}</span><span class="lt">${w.when}</span></div>
+    <div class="l2">
+      <span class="chip who">${w.tool}</span>
+      <span class="chip doing">${KIND_LABEL[w.item_kind||"work"]||w.item_kind||"업무"}</span>
+      ${w.status?`<span class="chip ${w.status==="blocked"?"crit":w.status==="done"?"done":"todo"}">${w.status}</span>`:""}
+      ${w.next_owner?`<span class="lw">다음: ${w.next_owner}</span>`:""}
+      ${w.where?`<span class="lw">${w.where}</span>`:""}
+      ${w.tag?`<span class="chip doing">${w.tag}</span>`:""}
+      ${w.session?`<span class="lsess">${w.session}</span>`:""}
+    </div>
+    ${w.detail?`<div class="l3">${w.detail}</div>`:""}
+    ${w.result?`<div class="l3 res">${w.result}</div>`:""}
+  </div>`;
   body.innerHTML = days.map(day=>{
     const items = W.filter(w=>w.day===day);
+    const groups = KIND_ORDER.filter(k=>items.some(w=>(w.item_kind||"work")===k));
     return `<div class="logday"><div class="logdate">${day}<span>${items.length}건</span></div>
-      ${items.map(w=>`<div class="logitem" style="border-left-color:${TOOLC[w.tool]||"var(--axis)"}">
-        <div class="l1"><span class="ls">${w.summary}</span>
-          <span class="lt">${w.when}</span></div>
-        <div class="l2">
-          <span class="chip who">${w.tool}</span>
-          ${w.where?`<span class="lw">${w.where}</span>`:""}
-          ${w.tag?`<span class="chip doing">${w.tag}</span>`:""}
-          ${w.session?`<span class="lsess">${w.session}</span>`:""}
-        </div>
-        ${w.detail?`<div class="l3">${w.detail}</div>`:""}
-        ${w.result?`<div class="l3 res">${w.result}</div>`:""}
-      </div>`).join("")}</div>`;
+      ${groups.map(k=>`<div class="logkind"><div class="logkindtitle">${KIND_LABEL[k]||k}<span>${items.filter(w=>(w.item_kind||"work")===k).length}건</span></div>
+        ${items.filter(w=>(w.item_kind||"work")===k).map(card).join("")}
+      </div>`).join("")}
+    </div>`;
   }).join("");
 }
 
