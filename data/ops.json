@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-25T23:49:09+09:00",
+    "generated_at": "2026-08-26T00:22:35+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -687,9 +687,7 @@
       }
     ],
     "agenda": {
-      "yesterday": [
-        "운연 — 유료 API 전면 차단 실행 · Phase 10 설계·mock · 핫픽스 계획"
-      ],
+      "yesterday": [],
       "today": [
         "운연 — Phase 10 + 몰입형 유료 리더 (main 머지 완료 / 배포 1회만 남음) · 개발팀 이준호 과장 · 긴급",
         "유튜브 대본 자동화 — 스킬 3종 구축 완료 / 실전 1회 대기 · 백준우",
@@ -1357,10 +1355,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-08-25T23:49:09+09:00"
+    "updated_at": "2026-08-26T00:22:35+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-25T23:49:09+09:00",
+    "checked_at": "2026-08-26T00:22:35+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
