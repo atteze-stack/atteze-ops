@@ -373,10 +373,10 @@
         },
         {
           "id": "saju-ceo-gates",
-          "t": "운연 — 대표님만 할 수 있는 것 2건 (Phase 10 배포 전)",
+          "t": "운연 — 대표님 대기 항목 (가격은 결제 연동 때)",
           "s": "todo",
           "owner": "ceo",
-          "note": "세션이 대신 못 하는 것만 남겼다. 나머지는 전부 진행 중이다. 【① 가격 4종 숫자】 서윤의 나 풀이 / 금옥 선생의 재물 풀이 / 태하의 인연 풀이 / 세 사람의 종합 풀이. 지금 전부 0 = 「가격 준비 중」으로 표시되고 결제가 잠긴다(fail-closed). 정하시면 Vercel 환경변수에 SAJU_PRICE_SEOYOON / _GEUMOK / _TAEHA / _ALL3 를 넣으면 되고 코드 수정·재배포가 필요 없다. ⚠️ 결제(토스) 연동 자체가 아직 없으므로 지금 당장 막고 있는 것은 아니다. 【② 브랜치 보호 체크박스】 atteze-saju · atteze-agents 두 저장소 Settings → Branches → 기본 브랜치 규칙에 「Require review from Code Owners」. CODEOWNERS 파일은 양쪽 다 이미 깔아뒀다 — 체크만 하면 바로 동작한다. 안 켜면 .github/ 를 고치는 PR 이 고친 로직으로 자기를 판정할 수 있다. 【참고 · 나중에 한 번】 PHASE10_THREE_VOICES 를 켜는 시점에 Supabase SQL 편집기에서 supabase/schema.sql 을 한 번 다시 실행해야 한다(fortune_results.kind 에 love 추가). 두 번 돌려도 안전하다. 지금은 아니고 플래그 켤 때. 상세: atteze-agents/03_Wiki/Projects/운연_Phase10_설계.md"
+          "note": "【① 가격 4종 — 2026-08-25 대표님: **나중에**】 결제(토스) 연동이 아직 없어 지금 막고 있는 것이 아니다. 가격 0 = 「가격 준비 중」 + 결제 잠김(fail-closed) 상태로 두고 연동할 때 정한다. **세션이 먼저 재촉하지 않는다.** 정할 때는 Vercel 환경변수 SAJU_PRICE_SEOYOON/_GEUMOK/_TAEHA/_ALL3 에 넣으면 되고 코드 수정·재배포가 필요 없다. 📌 대표님이 Codex 에 시켜두신 경쟁사 가격 조사는 GitHub 어디에도 없다(이슈·PR·브랜치·products.ts 전수 확인). 세션이 대신 조사하는 길은 막혀 있다 — 한국 사주 사이트 전부 이그레스 차단(08-24 기록된 ❌ 실패한 경로 재확인). 네이버 검색 API 파편: 청월아씨 전통사주 3,900원 · 젠디 사주 9,900원. 코드의 브리프 참고범위: 단건 2,900~4,900 · 정통사주 9,900~19,900. 【② 브랜치 보호 — 대표님 「진행해」(08-25)】 atteze-saju · atteze-agents 두 저장소 Settings → Branches 에서 「Require review from Code Owners」 체크. CODEOWNERS 는 양쪽 다 이미 깔려 있다. ⚠️ 이게 안 켜지면 .github/ 를 고치는 PR 이 고친 로직으로 자기를 판정할 수 있다(YAML 로는 못 막는다). 【③ 플래그 켤 때 한 번】 PHASE10_THREE_VOICES ON 시점에 Supabase SQL 편집기에서 supabase/schema.sql 재실행(fortune_results.kind 에 love 추가). 두 번 돌려도 안전하다."
         },
         {
           "id": "yt-script-skills",
