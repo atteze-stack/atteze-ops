@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-26T00:22:35+09:00",
+    "generated_at": "2026-08-26T01:02:42+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -372,18 +372,18 @@
       "cards": [
         {
           "id": "saju-content-pipeline",
-          "t": "운연 — Phase 10 + 몰입형 유료 리더 (main 머지 완료 / 배포 1회만 남음)",
+          "t": "운연 — production 배포 완료 (플래그 OFF / 켜는 건 대표님 몫)",
           "s": "doing",
           "owner": "dev",
-          "note": "【현재 상태 2026-08-25】 🚨 **08-25 03:24 에 main 으로 머지됐다** — PR #39 → #35 순서. Phase 10(무료 3인 결과 + 유료 4상품) + 몰입형 유료 결과 리더 + production 핫픽스 3건이 전부 main(0ab89d0) 에 있다. ⚠️ **머지 ≠ 배포다** — atteze-saju 는 main push 로 도는 워크플로가 없고 배포는 vercel-deploy.yml 수동 실행 1회다. 그래서 **지금 unyeon.com 에 나가 있는 것은 여전히 옛 코드이고, 핫픽스 3건도 아직 사용자에게 안 갔다.** 【골든 동결 완료】 run #37·#39 두 번 실행(둘 다 승인분). run #39 가 현재 head 기준이라 문장이 동결됐다 — **배포 전에 골든을 또 돌릴 이유가 없다.** 첫 호출 성공 15/15 · 자동검사 실패 0 · 템플릿 폴백 0. 【검증】 vitest 2803/2803 · tsc 0 · next build 성공 · 초기 전송 792KB · 비결제 응답에 유료 문장·리더 마크업·근거 id 0건. Codex 교차검증 지적 전건 수용, 기각 0. 【다음】 🔓 배포 게이트가 머지 후엔 원천적으로 못 열리는 구조였다 — 옛 판정이 reviewed_sha 를 HEAD 의 접두사로 요구해서, 머지가 문장을 안 바꿔도 커밋 번호가 달라져 통과가 불가능했다. 내용(트리 해시) 비교로 고치는 중(PR #40, Codex 검토 대기). 그게 머지되면 vercel-deploy.yml 수동 실행 1회로 배포된다(target=production · human_review=검수완료 · reviewed_sha=c10f793). 그 뒤 대표님 몫: 가격 4종(나중에) · 플래그 ON · 플래그 켤 때 Supabase schema.sql 재실행. ⚠️ 플래그 전부 OFF · 가격 전부 0(결제 잠김)이라 **배포해도 사용자 화면은 안 바뀐다 — 바뀌는 건 핫픽스 3건뿐이다.** 상세: atteze-agents/03_Wiki/Projects/운연_Phase10_설계.md · 진행로그_2026-08-25.md §4 (1)",
+          "note": "【현재 상태 2026-08-26 00:55】 🚀 **배포 완료** — 배포 run #21 · `2b7813d` · `Aliased https://unyeon.com` · Ready 29s. 08-22 run #19 이후 사흘 만의 첫 배포다. Phase 10(무료 3인 결과 + 유료 4상품) + 몰입형 유료 리더 + production 핫픽스 3건이 나갔다. ⚠️ **플래그 전부 OFF · 가격 전부 0(결제 잠김)이라 화면에서 달라지는 건 핫픽스 3건뿐이다** — 조사 오류 · 제목 빈칸 폴백 · 첫 대운 경계. Phase 10 은 코드로만 나가 있고 켜야 보인다. 【경위】 대표님 A안 승인 → 골든 run #40(15콜 승인분, 자동검사 통과, 시트 커밋 86d6fd4) → 배포 run #20 실패 → 원인은 우리 워크플로: `vercel link` 가 저장소 .gitignore 를 고치는데 다음 스텝이 「추적 파일 변경 0건」을 요구해 **PR #40 머지 시점부터 배포가 원천 불가**였다 → PR #41 로 환경변수 스텝을 $RUNNER_TEMP 로 이동(Codex PASS 93b8b99) → 배포 run #21 성공. 【검증】 deploy-gate 15/15 · 최소 재현+대조군 · vitest 2818/2818 · 골든 자동검사 실패 0. 【남은 결함 1건】 「파으로 맞물립니다」 조사 오류(compose.ts:130) — 직전 production 에도 있던 것이라 이번 배포가 넣은 게 아니다. 고치면 골든 전건 재생성이 따라와 다음 사이클로 미뤘다. 상세: atteze-agents/03_Wiki/Projects/운연.md · 진행로그_2026-08-25.md §4 (6)",
           "urgent": true
         },
         {
           "id": "saju-ceo-gates",
-          "t": "운연 — 대표님 대기 항목 (가격은 결제 연동 때)",
+          "t": "운연 — 대표님 대기 항목 (가격 · 플래그 ON · 브랜치 보호)",
           "s": "todo",
           "owner": "ceo",
-          "note": "【① 가격 4종 — 2026-08-25 대표님: **나중에**】 결제(토스) 연동이 아직 없어 지금 막고 있는 것이 아니다. 가격 0 = 「가격 준비 중」 + 결제 잠김(fail-closed) 상태로 두고 연동할 때 정한다. **세션이 먼저 재촉하지 않는다.** 정할 때는 Vercel 환경변수 SAJU_PRICE_SEOYOON/_GEUMOK/_TAEHA/_ALL3 에 넣으면 되고 코드 수정·재배포가 필요 없다. 📌 대표님이 Codex 에 시켜두신 경쟁사 가격 조사는 GitHub 어디에도 없다(이슈·PR·브랜치·products.ts 전수 확인). 세션이 대신 조사하는 길은 막혀 있다 — 한국 사주 사이트 전부 이그레스 차단(08-24 기록된 ❌ 실패한 경로 재확인). 네이버 검색 API 파편: 청월아씨 전통사주 3,900원 · 젠디 사주 9,900원. 코드의 브리프 참고범위: 단건 2,900~4,900 · 정통사주 9,900~19,900. 【② 브랜치 보호 — 대표님 「진행해」(08-25)】 atteze-saju · atteze-agents 두 저장소 Settings → Branches 에서 「Require review from Code Owners」 체크. CODEOWNERS 는 양쪽 다 이미 깔려 있다. ⚠️ 이게 안 켜지면 .github/ 를 고치는 PR 이 고친 로직으로 자기를 판정할 수 있다(YAML 로는 못 막는다). 【③ 플래그 켤 때 한 번】 PHASE10_THREE_VOICES ON 시점에 Supabase SQL 편집기에서 supabase/schema.sql 재실행(fortune_results.kind 에 love 추가). 두 번 돌려도 안전하다."
+          "note": "【2026-08-26 배포 완료 후 남은 것 — 전부 대표님 몫이다. 세션이 먼저 재촉하지 않는다】 ① 가격 4종: 「나중에」(결제 연동 때). Vercel 환경변수 SAJU_PRICE_SEOYOON/_GEUMOK/_TAEHA/_ALL3 에 넣으면 되고 코드 수정·재배포 불필요. ② 플래그 ON: PHASE10_THREE_VOICES 등을 켜야 Phase 10 화면이 사용자에게 보인다. 켜는 시점에 Supabase SQL 편집기에서 supabase/schema.sql 재실행 1회(fortune_results.kind 에 love 추가, 두 번 돌려도 안전). ③ 브랜치 보호: atteze-saju · atteze-agents 두 저장소 Settings → Branches 에서 「Require review from Code Owners」 체크(CODEOWNERS 는 양쪽 다 이미 있다). ── 이전 기록: 【① 가격 4종 — 2026-08-25 대표님: **나중에**】 결제(토스) 연동이 아직 없어 지금 막고 있는 것이 아니다. 가격 0 = 「가격 준비 중」 + 결제 잠김(fail-closed) 상태로 두고 연동할 때 정한다. **세션이 먼저 재촉하지 않는다.** 정할 때는 Vercel 환경변수 SAJU_PRICE_SEOYOON/_GEUMOK/_TAEHA/_ALL3 에 넣으면 되고 코드 수정·재배포가 필요 없다. 📌 대표님이 Codex 에 시켜두신 경쟁사 가격 조사는 GitHub 어디에도 없다(이슈·PR·브랜치·products.ts 전수 확인). 세션이 대신 조사하는 길은 막혀 있다 — 한국 사주 사이트 전부 이그레스 차단(08-24 기록된 ❌ 실패한 경로 재확인). 네이버 검색 API 파편: 청월아씨 전통사주 3,900원 · 젠디 사주 9,900원. 코드의 브리프 참고범위: 단건 2,900~4,900 · 정통사주 9,900~19,900. 【② 브랜치 보호 — 대표님 「진행해」(08-25)】 atteze-saju · atteze-agents 두 저장소 Settings → Branches 에서 「Require review from Code Owners」 체크. CODEOWNERS 는 양쪽 다 이미 깔려 있다. ⚠️ 이게 안 켜지면 .github/ 를 고치는 PR 이 고친 로직으로 자기를 판정할 수 있다(YAML 로는 못 막는다). 【③ 플래그 켤 때 한 번】 PHASE10_THREE_VOICES ON 시점에 Supabase SQL 편집기에서 supabase/schema.sql 재실행(fortune_results.kind 에 love 추가). 두 번 돌려도 안전하다."
         },
         {
           "id": "yt-script-skills",
@@ -689,7 +689,7 @@
     "agenda": {
       "yesterday": [],
       "today": [
-        "운연 — Phase 10 + 몰입형 유료 리더 (main 머지 완료 / 배포 1회만 남음) · 개발팀 이준호 과장 · 긴급",
+        "운연 — production 배포 완료 (플래그 OFF / 켜는 건 대표님 몫) · 개발팀 이준호 과장 · 긴급",
         "유튜브 대본 자동화 — 스킬 3종 구축 완료 / 실전 1회 대기 · 백준우",
         "이별한 개발자의 작업실 — 대표 Voice로 〈떠나기로 한 날짜〉 제작 · 백준우",
         "인스타 정리함 온디맨드 INGEST 운영 검증 · 검수팀 박지민 대리",
@@ -698,13 +698,14 @@
         "JW 개인트레이너 앱화 — 74종 머신·헬스장별 기록 MVP · 백준우",
         "NAS + MeTube 내부망 구축 · 개발팀 이준호 과장",
         "Ponytail 플러그인 설치 (과설계 방지 도구) · 개발팀 이준호 과장",
-        "은지 데일리 콘텐츠 — Cowork 예약작업 → NAS Claude Code 이관 · 백준우"
+        "은지 데일리 콘텐츠 — Cowork 예약작업 → NAS Claude Code 이관 · 백준우",
+        "PR #266 — feat(jw-trainer): 실제 기록 기반 자유 코칭 대화"
       ],
       "tomorrow": [
         "A층/B층 혼동 차단 — 실행 지시를 잡담 페르소나가 수락해버리는 구멍 · 개발팀 이준호 과장 · 긴급",
         "보안 점검 진행 중 · 검수팀 박지민 대리 · 긴급",
         "하위 부서 슬랙 앱 5종 연결 (Not distributed) · 김서연 비서실장 · 긴급",
-        "운연 — 대표님 대기 항목 (가격은 결제 연동 때) · 백준우",
+        "운연 — 대표님 대기 항목 (가격 · 플래그 ON · 브랜치 보호) · 백준우",
         "뽀용베베·뽀용스푼 SNS 자동화 — 나노바나나 API 연동 · 마케팅 최유나 주임",
         "신통방통 도도네 이야기 — 캐릭터 생성 + 채널 개설 · 디자인 정수아 과장",
         "AI 인플루언서 페르소나 최종 확정 (하린·현우) · 영상 한도윤 과장",
@@ -770,6 +771,19 @@
     }
   ],
   "worklog": [
+    {
+      "tool": "codex",
+      "summary": "PR #266 — feat(jw-trainer): 실제 기록 기반 자유 코칭 대화",
+      "detail": "Codex",
+      "brief": "",
+      "where": "266",
+      "result": "",
+      "tag": "atteze-agents",
+      "session": "",
+      "when": "08-26 00:50",
+      "day": "2026-08-26",
+      "ts": 1787673000
+    },
     {
       "tool": "claude-code",
       "summary": "운연 — 유료 API 전면 차단 실행 · Phase 10 설계·mock · 핫픽스 계획",
@@ -1355,10 +1369,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-08-26T00:22:35+09:00"
+    "updated_at": "2026-08-26T01:02:42+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-26T00:22:35+09:00",
+    "checked_at": "2026-08-26T01:02:42+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
