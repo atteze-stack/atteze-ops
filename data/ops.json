@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-26T13:33:08+09:00",
+    "generated_at": "2026-08-26T14:02:46+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -371,6 +371,13 @@
       "name": "수익화",
       "cards": [
         {
+          "id": "gahe-ledger-app",
+          "t": "가히(gahe) 장부앱 — 1단계 리브랜딩 코드 완성 / 레포 생성·개통 대기",
+          "s": "doing",
+          "owner": "dev",
+          "note": "가비 fork 장부앱(수입지출·거래처 수금·정산). 색 전면 회전(웜 앰버)·아이콘·Firebase/EAS 분리 완료, expo 번들링 검증됨. 【대표님】 ①github.com/new 에 gahe-app 레포 생성 ②Claude 앱 접근 허용 ③GAHE-SETUP.md 5단계(Firebase→APK→마스터 로그인). 상세: 03_Wiki/Projects/가히_장부앱.md"
+        },
+        {
           "id": "saju-content-pipeline",
           "t": "운연 — production 배포 완료 (플래그 OFF / 켜는 건 대표님 몫)",
           "s": "doing",
@@ -689,6 +696,7 @@
     "agenda": {
       "yesterday": [],
       "today": [
+        "가히(gahe) 장부앱 — 1단계 리브랜딩 코드 완성 / 레포 생성·개통 대기 · 개발팀 이준호 과장",
         "운연 — production 배포 완료 (플래그 OFF / 켜는 건 대표님 몫) · 개발팀 이준호 과장 · 긴급",
         "유튜브 대본 자동화 — 스킬 3종 구축 완료 / 실전 1회 대기 · 백준우",
         "이별한 개발자의 작업실 — 대표 Voice로 〈떠나기로 한 날짜〉 제작 · 백준우",
@@ -1369,10 +1377,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-08-26T13:33:08+09:00"
+    "updated_at": "2026-08-26T14:02:46+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-26T13:33:08+09:00",
+    "checked_at": "2026-08-26T14:02:46+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
