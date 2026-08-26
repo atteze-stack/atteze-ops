@@ -364,6 +364,13 @@
       "name": "수익화",
       "cards": [
         {
+          "id": "gahe-ledger-app",
+          "t": "가히(gahe) 장부앱 — 1단계 리브랜딩 코드 완성 / 레포 생성·개통 대기",
+          "s": "doing",
+          "owner": "dev",
+          "note": "가비 fork 장부앱(수입지출·거래처 수금·정산). 색 전면 회전(웜 앰버)·아이콘·Firebase/EAS 분리 완료, expo 번들링 검증됨. 【대표님】 ①github.com/new 에 gahe-app 레포 생성 ②Claude 앱 접근 허용 ③GAHE-SETUP.md 5단계(Firebase→APK→마스터 로그인). 상세: 03_Wiki/Projects/가히_장부앱.md"
+        },
+        {
           "id": "saju-content-pipeline",
           "t": "운연 — production 배포 완료 (플래그 OFF / 켜는 건 대표님 몫)",
           "s": "doing",
