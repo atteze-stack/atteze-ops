@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-26T23:58:28+09:00",
+    "generated_at": "2026-08-27T01:24:25+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -694,7 +694,9 @@
       }
     ],
     "agenda": {
-      "yesterday": [],
+      "yesterday": [
+        "PR #266 — feat(jw-trainer): 실제 기록 기반 자유 코칭 대화"
+      ],
       "today": [
         "가히(gahe) 장부앱 — 1단계 리브랜딩 코드 완성 / 레포 생성·개통 대기 · 개발팀 이준호 과장",
         "운연 — 유료 콘텐츠 확장 (이슈 #42 · PR #43) · 대표님 검수 대기 · 개발팀 이준호 과장 · 긴급",
@@ -706,8 +708,7 @@
         "JW 개인트레이너 앱화 — 74종 머신·헬스장별 기록 MVP · 백준우",
         "NAS + MeTube 내부망 구축 · 개발팀 이준호 과장",
         "Ponytail 플러그인 설치 (과설계 방지 도구) · 개발팀 이준호 과장",
-        "은지 데일리 콘텐츠 — Cowork 예약작업 → NAS Claude Code 이관 · 백준우",
-        "PR #266 — feat(jw-trainer): 실제 기록 기반 자유 코칭 대화"
+        "은지 데일리 콘텐츠 — Cowork 예약작업 → NAS Claude Code 이관 · 백준우"
       ],
       "tomorrow": [
         "A층/B층 혼동 차단 — 실행 지시를 잡담 페르소나가 수락해버리는 구멍 · 개발팀 이준호 과장 · 긴급",
@@ -1377,10 +1378,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-08-26T23:58:28+09:00"
+    "updated_at": "2026-08-27T01:24:25+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-26T23:58:28+09:00",
+    "checked_at": "2026-08-27T01:24:25+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
