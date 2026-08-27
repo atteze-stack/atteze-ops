@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-27T18:03:53+09:00",
+    "generated_at": "2026-08-28T00:31:34+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -695,7 +695,8 @@
     ],
     "agenda": {
       "yesterday": [
-        "PR #266 — feat(jw-trainer): 실제 기록 기반 자유 코칭 대화"
+        "자비스 기억 동기화 (2026-08-25)",
+        "자비스 기억 동기화 (2026-08-24)"
       ],
       "today": [
         "가히(gahe) 장부앱 — 1단계 리브랜딩 코드 완성 / 레포 생성·개통 대기 · 개발팀 이준호 과장",
@@ -780,6 +781,32 @@
     }
   ],
   "worklog": [
+    {
+      "tool": "telegram",
+      "summary": "자비스 기억 동기화 (2026-08-25)",
+      "detail": "자비스",
+      "brief": "뽀용베베 썸네일 신규 추가 (08-25)",
+      "where": "2026-08-25.md",
+      "result": "",
+      "tag": "",
+      "session": "",
+      "when": "08-27 17:43",
+      "day": "2026-08-27",
+      "ts": 1787820180
+    },
+    {
+      "tool": "telegram",
+      "summary": "자비스 기억 동기화 (2026-08-24)",
+      "detail": "자비스",
+      "brief": "회사자료 드라이브에 올려놓기 (진행 중인 할일)",
+      "where": "2026-08-24.md",
+      "result": "",
+      "tag": "",
+      "session": "",
+      "when": "08-27 17:43",
+      "day": "2026-08-27",
+      "ts": 1787820180
+    },
     {
       "tool": "codex",
       "summary": "PR #266 — feat(jw-trainer): 실제 기록 기반 자유 코칭 대화",
@@ -1378,10 +1405,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-08-27T18:03:53+09:00"
+    "updated_at": "2026-08-28T00:31:34+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-27T18:03:53+09:00",
+    "checked_at": "2026-08-28T00:31:34+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
