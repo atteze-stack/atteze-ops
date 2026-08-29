@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-29T07:21:32+09:00",
+    "generated_at": "2026-08-29T12:46:13+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -707,7 +707,7 @@
         "NAS + MeTube 내부망 구축 · 개발팀 이준호 과장",
         "Ponytail 플러그인 설치 (과설계 방지 도구) · 개발팀 이준호 과장",
         "은지 데일리 콘텐츠 — Cowork 예약작업 → NAS Claude Code 이관 · 백준우",
-        "PR #333 — docs: 운연 타이트 23개 판독 완료 상태 공유"
+        "자비스 기억 동기화 (2026-08-28)"
       ],
       "tomorrow": [
         "A층/B층 혼동 차단 — 실행 지시를 잡담 페르소나가 수락해버리는 구멍 · 개발팀 이준호 과장 · 긴급",
@@ -779,6 +779,19 @@
     }
   ],
   "worklog": [
+    {
+      "tool": "telegram",
+      "summary": "자비스 기억 동기화 (2026-08-28)",
+      "detail": "자비스",
+      "brief": "자비스 AI 두뇌는 Anthropic 클라우드(미국)에서 실행",
+      "where": "2026-08-28.md",
+      "result": "",
+      "tag": "",
+      "session": "",
+      "when": "08-29 04:00",
+      "day": "2026-08-29",
+      "ts": 1787943600
+    },
     {
       "tool": "codex",
       "summary": "PR #333 — docs: 운연 타이트 23개 판독 완료 상태 공유",
@@ -1416,10 +1429,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-08-29T07:21:32+09:00"
+    "updated_at": "2026-08-29T12:46:13+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-29T07:21:32+09:00",
+    "checked_at": "2026-08-29T12:46:13+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
