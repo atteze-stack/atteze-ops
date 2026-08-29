@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-08-29T15:39:00+09:00",
+    "generated_at": "2026-08-29T15:41:17+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -558,10 +558,11 @@
         },
         {
           "id": "nas-metube",
-          "t": "NAS + MeTube 내부망 구축",
+          "t": "아테즈 다운로더(NAS) — 🔴 다운로드 불가: 영상 403 Forbidden (자막429는 해결)",
           "s": "doing",
-          "owner": "dev",
-          "note": "보안 가이드 완료 · DSM 버전 확인 대기"
+          "owner": "ceo",
+          "note": "【2026-08-29 현재】 텔레에 유튜브 링크를 던져도 영상이 안 받아진다. ✅ **자막 429 는 해결됐다**(PR #314, YAML `ignoreerrors:true`) — NAS 로그에서 429 가 ERROR→WARNING 으로 강등된 것을 실측. 🔴 **남은 진짜 원인은 `ERROR: unable to download video data: HTTP Error 403: Forbidden`** (08-27·08-28 3회). 자막과 다른 문제다. 가설① `metube` 이미지의 yt-dlp 구버전(이미지 생성일 2026-08-05) ② NAS IP 차단 → 쿠키. 🎯 **[대표님 진행 중]** 이미지 최신화: 프로젝트 중지 → 이미지 탭에서 ghcr.io/alexta69/metube 삭제 → 프로젝트 빌드. **결과 미확인.** 🚨 **[대표님 보안, 미완]** 08-28 YAML 캡처로 노출된 키 3개(텔레봇·Anthropic·Apify) 교체 필요. 🔲 봇 파일(NAS /volume1/docker/metube-bot/index.js)이 옛 코드 — 덮으면 실패 사유가 한국어로 온다. 상세: atteze-agents/03_Wiki/Projects/NAS_다운로더.md · 진행로그_2026-08-29.md §4 (2)",
+          "urgent": true
         },
         {
           "id": "dept-slack-apps",
@@ -657,9 +658,10 @@
     },
     {
       "rank": 6,
-      "sev": "info",
-      "t": "NAS DSM 버전 미확인",
-      "d": "MeTube 칸반 t_5e01ea3d 블로킹"
+      "sev": "warn",
+      "t": "아테즈 다운로더 — 영상 403 Forbidden",
+      "d": "자막 429 는 해결. 유튜브가 영상 데이터를 거부한다. metube 이미지 최신화 시도 중, 안 되면 쿠키 경로.",
+      "id": "nas-metube"
     }
   ],
   "assistant": {
@@ -704,7 +706,7 @@
         "AI 기억 공유 — ✅ 읽기 3AI · memsync 수동·자동 확정 / 다음: 하트비트가 초기 실패를 못 잡는 것 · 개발팀 이준호 과장",
         "AI 교차리뷰 — 작성 회사의 반대편만 검토 (가동 중) / 대표님 브랜치 보호 1건 · 백준우",
         "JW 개인트레이너 앱화 — 74종 머신·헬스장별 기록 MVP · 백준우",
-        "NAS + MeTube 내부망 구축 · 개발팀 이준호 과장",
+        "아테즈 다운로더(NAS) — 🔴 다운로드 불가: 영상 403 Forbidden (자막429는 해결) · 백준우 · 긴급",
         "Ponytail 플러그인 설치 (과설계 방지 도구) · 개발팀 이준호 과장",
         "은지 데일리 콘텐츠 — Cowork 예약작업 → NAS Claude Code 이관 · 백준우",
         "자비스 기억 동기화 (2026-08-28)"
@@ -1429,10 +1431,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-08-29T15:39:00+09:00"
+    "updated_at": "2026-08-29T15:41:17+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-08-29T15:39:00+09:00",
+    "checked_at": "2026-08-29T15:41:17+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
