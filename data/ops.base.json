@@ -551,10 +551,11 @@
         },
         {
           "id": "nas-metube",
-          "t": "NAS + MeTube 내부망 구축",
+          "t": "아테즈 다운로더(NAS) — 🔴 다운로드 불가: 영상 403 Forbidden (자막429는 해결)",
           "s": "doing",
-          "owner": "dev",
-          "note": "보안 가이드 완료 · DSM 버전 확인 대기"
+          "owner": "ceo",
+          "note": "【2026-08-29 현재】 텔레에 유튜브 링크를 던져도 영상이 안 받아진다. ✅ **자막 429 는 해결됐다**(PR #314, YAML `ignoreerrors:true`) — NAS 로그에서 429 가 ERROR→WARNING 으로 강등된 것을 실측. 🔴 **남은 진짜 원인은 `ERROR: unable to download video data: HTTP Error 403: Forbidden`** (08-27·08-28 3회). 자막과 다른 문제다. 가설① `metube` 이미지의 yt-dlp 구버전(이미지 생성일 2026-08-05) ② NAS IP 차단 → 쿠키. 🎯 **[대표님 진행 중]** 이미지 최신화: 프로젝트 중지 → 이미지 탭에서 ghcr.io/alexta69/metube 삭제 → 프로젝트 빌드. **결과 미확인.** 🚨 **[대표님 보안, 미완]** 08-28 YAML 캡처로 노출된 키 3개(텔레봇·Anthropic·Apify) 교체 필요. 🔲 봇 파일(NAS /volume1/docker/metube-bot/index.js)이 옛 코드 — 덮으면 실패 사유가 한국어로 온다. 상세: atteze-agents/03_Wiki/Projects/NAS_다운로더.md · 진행로그_2026-08-29.md §4 (2)",
+          "urgent": true
         },
         {
           "id": "dept-slack-apps",
@@ -650,9 +651,10 @@
     },
     {
       "rank": 6,
-      "sev": "info",
-      "t": "NAS DSM 버전 미확인",
-      "d": "MeTube 칸반 t_5e01ea3d 블로킹"
+      "sev": "warn",
+      "t": "아테즈 다운로더 — 영상 403 Forbidden",
+      "d": "자막 429 는 해결. 유튜브가 영상 데이터를 거부한다. metube 이미지 최신화 시도 중, 안 되면 쿠키 경로.",
+      "id": "nas-metube"
     }
   ],
   "assistant": {
