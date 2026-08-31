@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-09-01T04:40:26+09:00",
+    "generated_at": "2026-09-01T08:24:56+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -716,7 +716,8 @@
         "JW 개인트레이너 앱화 — 74종 머신·헬스장별 기록 MVP · 백준우",
         "아테즈 다운로더(NAS) — 🔴 다운로드 불가: 영상 403 Forbidden (자막429는 해결) · 백준우 · 긴급",
         "Ponytail 플러그인 설치 (과설계 방지 도구) · 개발팀 이준호 과장",
-        "은지 데일리 콘텐츠 — Cowork 예약작업 → NAS Claude Code 이관 · 백준우"
+        "은지 데일리 콘텐츠 — Cowork 예약작업 → NAS Claude Code 이관 · 백준우",
+        "자비스 기억 동기화 (2026-08-31)"
       ],
       "tomorrow": [
         "NAS 옛 자비스 컨테이너 정리 — 🔴 슬랙 이중 가동 실측됨 (대표님 조작 1건) · 백준우 · 긴급",
@@ -789,6 +790,19 @@
     }
   ],
   "worklog": [
+    {
+      "tool": "telegram",
+      "summary": "자비스 기억 동기화 (2026-08-31)",
+      "detail": "자비스",
+      "brief": "9월 9일(수) 광주 새벽미팅 07:00 등록 완료",
+      "where": "2026-08-31.md",
+      "result": "",
+      "tag": "",
+      "session": "",
+      "when": "09-01 04:00",
+      "day": "2026-09-01",
+      "ts": 1788202800
+    },
     {
       "tool": "claude-code",
       "summary": "NAS 옛 자비스 컨테이너 — 슬랙 봇 5개가 두 달 넘게 이중 가동이었다",
@@ -1061,71 +1075,6 @@
       "when": "08-18 07:01",
       "day": "2026-08-18",
       "ts": 1787004060
-    },
-    {
-      "tool": "claude-code",
-      "summary": "대시보드 작업 종결 — 요약 펼침·상태 바·시각 위계·홈.md 429 수리",
-      "detail": "Claude-Web",
-      "brief": "대표님이 화면을 보며 지적하신 것을 순서대로 처리하고 대시보드 작업을 닫았다. ① \"도대체 뭘 했는지 모르겠어\" — 원인은 화면이 아니라 배관이었다. 작업일지 본문이 events.jsonl 에 실리지 않아 제목 한 줄만 건너왔다. vault-export 가 한 일 · 왜 첫 대목을 brief 로 실어보내고 화면에서 눌러 펼치게 했다. 공개 레포라 결정 · 수정파일 · 오류는 빼고 경로 · URL 제거 후 240자로 자른다.…",
-      "where": "2026-08-18.md",
-      "result": "",
-      "tag": "atteze-ops",
-      "session": "",
-      "when": "08-18 01:42",
-      "day": "2026-08-18",
-      "ts": 1786984920
-    },
-    {
-      "tool": "claude",
-      "summary": "아이디어 상자 +1건 (총 1건)",
-      "detail": "대표님",
-      "brief": "",
-      "where": "Clippings",
-      "result": "",
-      "tag": "",
-      "session": "",
-      "when": "08-18 01:18",
-      "day": "2026-08-18",
-      "ts": 1786983480
-    },
-    {
-      "tool": "claude-code",
-      "summary": "대시보드 배포 완결 + 기록 정정 — KST·표기·비서실·stalled·미수금",
-      "detail": "Claude-Web",
-      "brief": "대시보드 수정 4건을 실제 배포 · 라이브 확인까지 끝내고, 잘못 적힌 기록을 정정했다. ① atteze-ops PR #5 머지 — KST 고정 · 어제/오늘 KST 분류 · 경과시간 agoText · build_agenda · stalled 표시. ② PR #6 머지 — 미수금 카드 4장 삭제(대표님: \"받은 거니까 없애\"). 「가비앱 정산」(hold)은 남김. ③ 라이브 확인: 15:35 · 7시간 57분 전 · 비서실…",
-      "where": "2026-08-18.md",
-      "result": "",
-      "tag": "atteze-ops",
-      "session": "",
-      "when": "08-18 00:15",
-      "day": "2026-08-18",
-      "ts": 1786979700
-    },
-    {
-      "tool": "claude-code",
-      "summary": "UI/UX 스킬 11개 도입 — 계정 업로드 + 세 레포 커밋 + 대표님 PC",
-      "detail": "Claude-Web",
-      "brief": "대표님 지시로 품질용 스킬을 도입했다. 시작은 플러그인 2개(frontend-design · ui-ux-pro-max)였고, 이어 대표님이 lazyowen 가이드의 스킬 5개 분석을 지시해 4개를 추가 채택했다. 최종적으로 계정 스킬 11개 업로드 + 세 레포 커밋 + 대표님 PC 설치까지 세 층 전부 완료. - 원문은 프록시 egress 차단이라 Firecrawl로 본문을 조각내 긁고, 각 패키지는 npm ·…",
-      "where": "2026-08-18.md",
-      "result": "",
-      "tag": "atteze-agents",
-      "session": "",
-      "when": "08-18 00:11",
-      "day": "2026-08-18",
-      "ts": 1786979460
-    },
-    {
-      "tool": "claude-code",
-      "summary": "옵시디언 연결 완료 + 대표님 PC stash 유실기억 복구 + CI 403 수정",
-      "detail": "Claude-Web",
-      "brief": "옵시디언 연결 마무리. 대표님 PC에서 git stash + git pull 성공(Fast-forward, 24 files, 412+/103-). 직전 세션의 frontmatter 블록형식 수정(ace1714)이 들어가, 노트를 열어도 git pull 이 더는 막히지 않는다. vault · Git 플러그인 · 자동 · 대시보드 회로 모두 동작 확인. Terminal 플러그인 · 웹클리퍼는 선택이라 안 함. - stash 2개…",
-      "where": "2026-08-17.md",
-      "result": "",
-      "tag": "ATTEZE-OS",
-      "session": "",
-      "when": "08-17 23:40",
-      "day": "2026-08-17",
-      "ts": 1786977600
     }
   ],
   "activity": {
@@ -1296,10 +1245,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-09-01T04:40:26+09:00"
+    "updated_at": "2026-09-01T08:24:56+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-09-01T04:40:26+09:00",
+    "checked_at": "2026-09-01T08:24:56+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
