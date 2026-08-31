@@ -466,31 +466,5 @@
   "when": "08-17 19:53",
   "day": "2026-08-17",
   "ts": 1786963980
- },
- {
-  "tool": "claude-code",
-  "summary": "옵시디언 LLM Wiki 1단계 구축 (카파시 3층)",
-  "detail": "Claude-Web",
-  "brief": "\"로그가 안 나타난다\"의 원인을 실측으로 확정 — 저장소가 아니라 수집기 부재. ops.json 의 worklog · feed 가 빈 배열이고 activity 는 건수만이라 슬랙 대화 내용이 시스템 어디에도 없었다. 그래서 vault(금고)와 수집기(나르는 사람)를 같이 만들었다.",
-  "where": "2026-08-17.md",
-  "result": "",
-  "tag": "ATTEZE-OS",
-  "session": "",
-  "when": "08-17 13:42",
-  "day": "2026-08-17",
-  "ts": 1786941720
- },
- {
-  "tool": "claude-code",
-  "summary": "lint 스모크 테스트",
-  "detail": "Claude-Web",
-  "brief": "자동 수집기와 lint 를 처음 돌려본 기록. 토큰은 sk-ant-███REDACTED███ 처럼 생긴 문자열도 넣어 마스킹을 확인.",
-  "where": "2026-08-17.md",
-  "result": "",
-  "tag": "ATTEZE-OS",
-  "session": "",
-  "when": "08-17 13:35",
-  "day": "2026-08-17",
-  "ts": 1786941300
  }
 ]
