@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-09-01T16:39:23+09:00",
+    "generated_at": "2026-09-01T21:44:40+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -1062,19 +1062,6 @@
       "when": "08-18 18:06",
       "day": "2026-08-18",
       "ts": 1787043960
-    },
-    {
-      "tool": "claude",
-      "summary": "아이디어 상자 +18건 (총 19건)",
-      "detail": "대표님",
-      "brief": "",
-      "where": "Clippings",
-      "result": "",
-      "tag": "",
-      "session": "",
-      "when": "08-18 13:21",
-      "day": "2026-08-18",
-      "ts": 1787026860
     }
   ],
   "activity": {
@@ -1245,10 +1232,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-09-01T16:39:23+09:00"
+    "updated_at": "2026-09-01T21:44:40+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-09-01T16:39:23+09:00",
+    "checked_at": "2026-09-01T21:44:40+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
