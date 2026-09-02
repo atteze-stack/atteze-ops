@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-09-02T09:10:43+09:00",
+    "generated_at": "2026-09-02T13:34:55+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -1000,19 +1000,6 @@
       "when": "08-20 02:04",
       "day": "2026-08-20",
       "ts": 1787159040
-    },
-    {
-      "tool": "claude-code",
-      "summary": "텔레 자비스 브리핑 결함 C1~C5 수리 + 운동 일지 AI 방법론 조사",
-      "detail": "Claude-Web",
-      "brief": "대표님이 실사용 07:00 브리핑에서 지적한 결함 6건을 app.js(1,563줄) · atteze-ops(refresh.py · index.html · ops.json) 실물로 원인까지 확정하고 5건을 수리했다(⑥ 오늘 일정은 정상이라 건드리지 않음). 진단을 코드 위치까지 특정한 이유는, 08-15 \"코드에 있다 ≠ 돌고 있다\" 교훈대로 추측 수정이 반복되는 걸 막기 위해서다. - C1 기억 소실: journal.md가…",
-      "where": "2026-08-19.md",
-      "result": "",
-      "tag": "자비스",
-      "session": "",
-      "when": "08-19 10:10",
-      "day": "2026-08-19",
-      "ts": 1787101800
     }
   ],
   "activity": {
@@ -1183,10 +1170,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-09-02T09:10:43+09:00"
+    "updated_at": "2026-09-02T13:34:55+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-09-02T09:10:43+09:00",
+    "checked_at": "2026-09-02T13:34:55+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
