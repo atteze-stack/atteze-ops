@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-09-03T04:52:22+09:00",
+    "generated_at": "2026-09-03T07:12:38+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -1055,19 +1055,6 @@
       "when": "08-20 12:19",
       "day": "2026-08-20",
       "ts": 1787195940
-    },
-    {
-      "tool": "claude-code",
-      "summary": "유튜브 대본 자동화: script-pd·channel-setup·storyboard 스킬 3종 구축 (autoworker-script 웹 이식)",
-      "detail": "Claude",
-      "brief": "대표님이 업로드한 autoworker-script(로컬 VS Code+yt-dlp 전제 유료 강의용 대본 제작 도구 zip)를 분석 → \"웹으로 진행 가능하게 스킬로\" → \"claude.ai 계정 스킬로도 등록 가능하게\" 요구 확장에 따라 이식. 이 환경은 네트워크 egress 정책상 유튜브 · 일반 웹 · TTS 3사 API 전부 차단(실측)이라 ①레퍼런스 수집을 자막 직접 붙여넣기로 ②팩트체크를 WebSearch만으로…",
-      "where": "2026-08-20.md",
-      "result": "",
-      "tag": "유튜브_대본_자동화",
-      "session": "",
-      "when": "08-20 02:04",
-      "day": "2026-08-20",
-      "ts": 1787159040
     }
   ],
   "activity": {
@@ -1238,10 +1225,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-09-03T04:52:22+09:00"
+    "updated_at": "2026-09-03T07:12:38+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-09-03T04:52:22+09:00",
+    "checked_at": "2026-09-03T07:12:38+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
