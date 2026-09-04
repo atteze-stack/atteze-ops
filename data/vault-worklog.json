@@ -193,18 +193,5 @@
   "when": "08-24 10:01",
   "day": "2026-08-24",
   "ts": 1787533260
- },
- {
-  "tool": "claude-code",
-  "summary": "메일 OAuth: dispatch-app 권한 문제 실측 → 새 프로젝트로 전환",
-  "detail": "Claude",
-  "brief": "대표님이 실제로 Gmail API 사용 설정 → OAuth 동의화면 편집을 진행하다가 dispatch-app 프로젝트에서 \"추가 액세스 권한 필요\" 화면에 막힘. IAM 페이지 확인 결과 atteze@atteze.com 계정에 \"Firebase 관리자\" role만 있고 가 없었음 — 캘린더 OAuth 성공(동의 클릭)과 콘솔에서 프로젝트 설정 편집은 서로 다른 권한 체계라는 걸 실측으로 확인. AskUserQuestion으로…",
-  "where": "2026-08-21.md",
-  "result": "",
-  "tag": "이메일_통합",
-  "session": "",
-  "when": "08-21 14:41",
-  "day": "2026-08-21",
-  "ts": 1787290860
  }
 ]
