@@ -193,18 +193,5 @@
   "when": "08-26 00:50",
   "day": "2026-08-26",
   "ts": 1787673000
- },
- {
-  "tool": "claude-code",
-  "summary": "운연 — 유료 API 전면 차단 실행 · Phase 10 설계·mock · 핫픽스 계획",
-  "detail": "Claude",
-  "brief": "대표님이 「너랑 GPT 사이에서 또 api 짓거리 하고 있다」고 중단시키신 뒤, ①유료 API 자동호출 차단 ②차단 검증 ③문서 PR 머지 ④대시보드 ⑤Phase 10 설계 · mock ⑥production 핫픽스 계획을 순서대로 했다. 근거: 내가 코드로 판단할 수 있는 문제를 대표님께 되던져서 대표님이 Claude↔GPT 복사 · 붙여넣기 전달자가 됐고(CLAUDE.md 「대표가 Claude 와 Codex 사이의 내용을…",
-  "where": "2026-08-24.md",
-  "result": "",
-  "tag": "운연",
-  "session": "",
-  "when": "08-24 10:01",
-  "day": "2026-08-24",
-  "ts": 1787533260
  }
 ]
