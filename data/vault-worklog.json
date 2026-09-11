@@ -141,18 +141,5 @@
   "when": "08-29 04:00",
   "day": "2026-08-29",
   "ts": 1787943600
- },
- {
-  "tool": "codex",
-  "summary": "PR #333 — docs: 운연 타이트 23개 판독 완료 상태 공유",
-  "detail": "Codex",
-  "brief": "",
-  "where": "333",
-  "result": "",
-  "tag": "atteze-agents",
-  "session": "",
-  "when": "08-29 00:12",
-  "day": "2026-08-29",
-  "ts": 1787929920
  }
 ]
