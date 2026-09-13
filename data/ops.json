@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-09-14T06:10:31+09:00",
+    "generated_at": "2026-09-14T07:41:13+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -401,10 +401,10 @@
         },
         {
           "id": "saju-ceo-gates",
-          "t": "운연 — 대표님 대기 항목 (값 3 · 실행 1 · 승인 1 · 실측 1)",
+          "t": "운연 — 대표님 대기 항목 (값 2 · 실행 1 · 승인 1 · 실측 1)",
           "s": "todo",
           "owner": "ceo",
-          "note": "【2026-09-10 갱신】 ① 🔴 **통신판매업 신고번호(제일 급한 것)** — 신고는 끝나셨으니 **번호만** 주시면 된다. 비어 있어 `operatorReady()` 가 false 이고 **코드가 결제를 잠그고 있다.** 🔓 이 값은 법이 공개를 요구하는 표시 정보라(사업자등록번호와 같은 급) **채팅으로 주셔도 된다.** ② 🔴 **Supabase 시크릿 2개**(`SUPABASE_URL`·`SUPABASE_SERVICE_ROLE_KEY`) — 결제 기록·퍼널 저장 필수. 지금은 비어 있어 저장 자체가 안 돈다(`db()` 가 null). 👉 https://github.com/atteze-stack/atteze-saju/settings/secrets/actions ③ 🔴 **토스 키 2개**(`TOSS_CLIENT_KEY`·`TOSS_SECRET_KEY`, 같은 주소) — 연동 코드는 다 썼다. 키만 넣으면 켜진다. ⚠️ 결제창이 실제로 뜨는지는 아직 아무도 확인 못 했다(세션은 토스 접속 차단, 실측) — 테스트 키로 한 번 띄워보는 것은 **대표님 PC 세션**에서. 🔐 키 값은 채팅 금지. ④ 🆕 🔴 **Supabase SQL Editor 에 `supabase/schema.sql` 다시 실행** — 09-10 에 `payments` 컬럼 4개를 더했다(`opened_at`·`canceled_at`·`cancel_reason`·`receipt_url`). **안 돌리면 열람 기록이 조용히 안 남고**(`safely()` 가 오류를 삼킨다) **환불 판정이 영원히 불가능해진다.** `add column if not exists` 라 두 번 돌려도 안전하다. ⑤ 🆕 🟡 **`OPS_TOKEN`(32자 이상) 을 만드시면 운영 화면이 열린다** — 없으면 `/ops` 는 404 로 남는다(사이트는 정상). 넣으신 뒤 `https://unyeon.com/api/ops/auth?k=<그 값>` 을 한 번 열면 쿠키가 심어지고 `/ops` 로 이동한다(주소에 열쇠가 안 남는다). 여기서 오늘/7일/30일 순매출 · **사람이 봐야 하는 주문**(돈은 나갔는데 안 열린 것) · 최근 주문 30건(환불 버튼) · 결제가 왜 안 열리는지가 보인다. ⑥ 🟡 (선택) 토스 개발자센터에 웹훅 등록 — `PAYMENT_STATUS_CHANGED`, URL `https://unyeon.com/api/payments/webhook`. 등록하면 **토스 콘솔에서 직접 환불하신 것도** 우리 화면에 반영된다. ⑦ 🔴 **승인**: 배포하려면 **골든 15건 재실행(유료 Anthropic API 1회)** 이 필요하다. 대표님 선택대로 **한 번에** 돌린다. ⑧ 🔲 **실측**: 폰으로 unyeon.com 에서 유료 상품 4종 가격이 숫자로 보이는지. ⚠️ 세션은 이걸 못 본다(이그레스 차단). ⑨ 🔲 **브랜치 보호**: atteze-saju·atteze-agents Settings → Branches → 「Require review from Code Owners」. 안 켜면 `.github/` 를 고치는 PR 이 고친 로직으로 자기를 판정할 수 있다. ⑩ 🔴 **[UNVERIFIED] 계약 불가 업종에 사주·운세가 있는가?** https://tosspublic.notion.site/113ab653d9d849ac86748ea18834d806 — 세션이 못 읽었다. 여기서 걸리면 나머지가 다 무의미하다.",
+          "note": "【2026-09-10 갱신】 ① ✅ **통신판매업 신고번호 — 완료**(`2024-경기하남-2619`, 2026-09-14 기재, PR #24 `07e082d`). ⚠️ **연도가 2024 인 것이 맞다** — 2026년에 한 것은 **변경신고**라 기존 번호가 유지된다. 처음 주신 `2026-경기하남-0123` 은 공정위 기록·일련번호 패턴과 어긋나 확인을 요청했고, 신고증 확인 결과 2024 번호가 맞았다. 🚨 **번호를 채워도 결제는 안 열린다** — `tossReady()` 가 토스 키 2개도 함께 본다(실측: 결제 버튼 0개, /ops 「닫힘 — TOSS_CLIENT_KEY 가 비어 있습니다」). ② 🔴 **Supabase 시크릿 2개**(`SUPABASE_URL`·`SUPABASE_SERVICE_ROLE_KEY`) — 결제 기록·퍼널 저장 필수. 지금은 비어 있어 저장 자체가 안 돈다(`db()` 가 null). 👉 https://github.com/atteze-stack/atteze-saju/settings/secrets/actions ③ 🔴 **토스 키 2개**(`TOSS_CLIENT_KEY`·`TOSS_SECRET_KEY`, 같은 주소) — 연동 코드는 다 썼다. 키만 넣으면 켜진다. ⚠️ 결제창이 실제로 뜨는지는 아직 아무도 확인 못 했다(세션은 토스 접속 차단, 실측) — 테스트 키로 한 번 띄워보는 것은 **대표님 PC 세션**에서. 🔐 키 값은 채팅 금지. ④ 🆕 🔴 **Supabase SQL Editor 에 `supabase/schema.sql` 다시 실행** — 09-10 에 `payments` 컬럼 4개를 더했다(`opened_at`·`canceled_at`·`cancel_reason`·`receipt_url`). **안 돌리면 열람 기록이 조용히 안 남고**(`safely()` 가 오류를 삼킨다) **환불 판정이 영원히 불가능해진다.** `add column if not exists` 라 두 번 돌려도 안전하다. ⑤ 🆕 🟡 **`OPS_TOKEN`(32자 이상) 을 만드시면 운영 화면이 열린다** — 없으면 `/ops` 는 404 로 남는다(사이트는 정상). 넣으신 뒤 `https://unyeon.com/api/ops/auth?k=<그 값>` 을 한 번 열면 쿠키가 심어지고 `/ops` 로 이동한다(주소에 열쇠가 안 남는다). 여기서 오늘/7일/30일 순매출 · **사람이 봐야 하는 주문**(돈은 나갔는데 안 열린 것) · 최근 주문 30건(환불 버튼) · 결제가 왜 안 열리는지가 보인다. ⑥ 🟡 (선택) 토스 개발자센터에 웹훅 등록 — `PAYMENT_STATUS_CHANGED`, URL `https://unyeon.com/api/payments/webhook`. 등록하면 **토스 콘솔에서 직접 환불하신 것도** 우리 화면에 반영된다. ⑦ 🔴 **승인**: 배포하려면 **골든 15건 재실행(유료 Anthropic API 1회)** 이 필요하다. 대표님 선택대로 **한 번에** 돌린다. ⑧ 🔲 **실측**: 폰으로 unyeon.com 에서 유료 상품 4종 가격이 숫자로 보이는지. ⚠️ 세션은 이걸 못 본다(이그레스 차단). ⑨ 🔲 **브랜치 보호**: atteze-saju·atteze-agents Settings → Branches → 「Require review from Code Owners」. 안 켜면 `.github/` 를 고치는 PR 이 고친 로직으로 자기를 판정할 수 있다. ⑩ 🔴 **[UNVERIFIED] 계약 불가 업종에 사주·운세가 있는가?** https://tosspublic.notion.site/113ab653d9d849ac86748ea18834d806 — 세션이 못 읽었다. 여기서 걸리면 나머지가 다 무의미하다.",
           "urgent": true
         },
         {
@@ -735,7 +735,7 @@
         "은지 데일리 콘텐츠 — Cowork 예약작업 → NAS Claude Code 이관 · 백준우"
       ],
       "tomorrow": [
-        "운연 — 대표님 대기 항목 (값 3 · 실행 1 · 승인 1 · 실측 1) · 백준우 · 긴급",
+        "운연 — 대표님 대기 항목 (값 2 · 실행 1 · 승인 1 · 실측 1) · 백준우 · 긴급",
         "NAS 옛 자비스 컨테이너 정리 — 🔴 슬랙 이중 가동 실측됨 (대표님 조작 1건) · 백준우 · 긴급",
         "A층/B층 혼동 차단 — 실행 지시를 잡담 페르소나가 수락해버리는 구멍 · 개발팀 이준호 과장 · 긴급",
         "보안 점검 진행 중 · 검수팀 박지민 대리 · 긴급",
@@ -1103,10 +1103,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-09-14T06:10:31+09:00"
+    "updated_at": "2026-09-14T07:41:13+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-09-14T06:10:31+09:00",
+    "checked_at": "2026-09-14T07:41:13+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
