@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-09-16T10:45:23+09:00",
+    "generated_at": "2026-09-16T15:51:30+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -294,8 +294,8 @@
       "slack_id": "U0BA8UVAE90",
       "app_id": "A0BACHEUUH2",
       "reports_to": "rt",
-      "state": "idle",
-      "status": "대기",
+      "state": "pending",
+      "status": "미연결",
       "desk": "floor",
       "hair": "#4d3f2e",
       "skin": "#f4d2b2",
@@ -308,7 +308,7 @@
       "channel": "slack",
       "model": "GPT-5.6 Sol",
       "track": "QA",
-      "last_seen_note": "2026-08-17",
+      "last_seen_note": "2026-08-15 20:06",
       "name_was": "박지민 대리"
     },
     {
@@ -997,12 +997,12 @@
   ],
   "activity": {
     "range": "08-17 ~ 08-20",
-    "total": 104,
+    "total": 25,
     "sampled": false,
     "channels": [
       {
         "n": "#아테즈-신규",
-        "v": 104,
+        "v": 25,
         "sub": ""
       },
       {
@@ -1020,32 +1020,27 @@
       {
         "id": "rt",
         "n": "김서연 비서실장",
-        "v": 51
+        "v": 14
       },
       {
         "id": "ceo",
         "n": "백준우",
-        "v": 20
+        "v": 5
       },
       {
         "id": "plan",
         "n": "성재경 실장",
-        "v": 13
+        "v": 4
       },
       {
         "id": "chk",
         "n": "차소희 실장",
-        "v": 8
+        "v": 1
       },
       {
         "id": "dev",
         "n": "개발팀 이준호 과장",
-        "v": 7
-      },
-      {
-        "id": "ops",
-        "n": "검수팀 박지민 대리",
-        "v": 5
+        "v": 1
       },
       {
         "id": "mkt",
@@ -1061,12 +1056,17 @@
         "id": "vid",
         "n": "영상 한도윤 과장",
         "v": 0
+      },
+      {
+        "id": "ops",
+        "n": "검수팀 박지민 대리",
+        "v": 0
       }
     ],
     "daily": [
       {
         "d": "08-17",
-        "v": 81
+        "v": 2
       },
       {
         "d": "08-18",
@@ -1141,10 +1141,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-09-16T10:45:23+09:00"
+    "updated_at": "2026-09-16T15:51:30+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-09-16T10:45:23+09:00",
+    "checked_at": "2026-09-16T15:51:30+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
