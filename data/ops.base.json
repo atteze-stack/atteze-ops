@@ -379,11 +379,11 @@
         },
         {
           "id": "jeni-ledger-app",
-          "t": "업무일지 앱(제니) — 🟢 개통 완료·사용 중 (b7) / 대표님 3건",
+          "t": "업무일지 앱(제니) — 🟢 사용 중 (b8) / 대표님 4건",
           "s": "doing",
           "owner": "ceo",
           "urgent": true,
-          "note": "옆 가게(제니) 실장용 장부앱. 대표님: \"장부같은건 내꺼가 보이면 안돼 / 그쪽꺼는 나한테 보이고\" → 헤라 코드를 복사해 별도 앱으로. 2026-09-14 개통 완료(Firebase jeni-31651, APK 설치, 실장 가입). 🔴 칸막이는 src/config/firebase.js 하나뿐이다 — 규칙(firestore.rules)이 전부 isStaff() 라 「누구 장부인가」 개념이 없다(실측: 접근 지점 155곳 중 가게 필터 0곳). 같은 Firebase 를 쓰면 그 순간 옆 가게가 대표님 장부를 전부 본다. 검사기 check-tenant.cjs 가 여섯 항목을 지킨다. 【대표님 ①】 OTA 배포 승인 — 헤라 b180 · 제니 b7 「가게 목록 주고받기」. 양쪽에 다 내려가야 쓸 수 있다 (헤라에서 뽑아 제니에 붙여넣으므로). Actions eas-update.yml 수동 실행. 【②】 실장 권한 — Firestore users 의 실장 문서 role 이 아직 member. siljang 으로. 앱에서도 됨(설정>팀원 목록>역할 지정). 세션은 구글 로그인이 없어 못 한다. 【③】 테트리스 기록 삭제 — gameScores > tetris_jaic63hGmYM2pXzjXAlZHLut7tC2 (테스트로 생긴 것). 상세: 03_Wiki/Projects/업무일지_앱.md"
+          "note": "옆 가게(제니) 실장용 장부앱. 대표님: \"장부같은건 내꺼가 보이면 안돼 / 그쪽꺼는 나한테 보이고\" → 헤라 코드를 복사해 별도 앱으로. 2026-09-14 개통 완료(Firebase jeni-31651, APK 설치, 실장 가입). 🔴 칸막이는 src/config/firebase.js 하나뿐이다 — 규칙(firestore.rules)이 전부 isStaff() 라 「누구 장부인가」 개념이 없다(실측: 접근 지점 155곳 중 가게 필터 0곳). 같은 Firebase 를 쓰면 그 순간 옆 가게가 대표님 장부를 전부 본다. 검사기 check-tenant.cjs 가 여섯 항목을 지킨다. ★ 2026-09-18 b8 — 앱 차단(점검모드)을 앱 안에서 켜고 끄게(PR #7 머지 95c45e7). 대표님: \"3일간 이용하지 않아 데이터를 파기 합니다 라는 팝업이 뜨게 해서 사용 못하게\". 차단 화면은 원래 있었고 없던 것은 켜는 방법뿐이라 설정>앱 차단 탭(마스터 전용)을 넣었다. 🚨 마스터는 차단을 통과한다 — 그게 없으면 대표님 본인이 갇혀 앱으로는 못 푼다. 판정을 utils/appLock.js 로 떼어 값으로 시험(check-applock.cjs, 되돌림 변이 14건 전부 잡힘). 【대표님 ①】 차단을 언제 켤지 — 설정>앱 차단에서 문구 고르고 「차단 시작」. 세션은 Firestore 쓰기 권한이 없어 대신 못 켠다. 【②】 문구가 사실과 다르다 — 지금은 안내만 띄우고 데이터는 남는다. 실제로 지울지 (되돌릴 수 없음·별도 승인) 아니면 문구를 바꿀지. 【③】 실장 권한 — Firestore users 의 실장 문서 role 이 아직 member. siljang 으로. 앱에서도 됨(설정>팀원 목록>역할 지정). 【④】 Codex 「환경」 등록 — jeni-app 은 @codex review 가 무반응(👀 조차 안 붙음). chatgpt.com/codex/cloud/settings/environments 에서 이 저장소 추가. 그때까지 제니 PR 교차검증은 OpenAI 한쪽뿐이다. 상세: 03_Wiki/Projects/업무일지_앱.md"
         },
         {
           "id": "saju-content-pipeline",
