@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-09-18T22:51:50+09:00",
+    "generated_at": "2026-09-19T02:22:31+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -193,8 +193,8 @@
       "slack_id": "U0BA8MJQEHG",
       "app_id": "A0BAAE7T76D",
       "reports_to": "ceo",
-      "state": "idle",
-      "status": "대기",
+      "state": "pending",
+      "status": "미연결",
       "desk": "router",
       "hair": "#33363f",
       "skin": "#f3cdaa",
@@ -207,7 +207,7 @@
       ],
       "channel": "slack+telegram",
       "model": "GPT-5.6 Luna",
-      "last_seen_note": "2026-08-20",
+      "last_seen_note": "2026-08-15 20:25",
       "aide": true
     },
     {
@@ -726,7 +726,9 @@
       }
     ],
     "agenda": {
-      "yesterday": [],
+      "yesterday": [
+        "자비스 기억 동기화 (2026-09-17)"
+      ],
       "today": [
         "헤라 장부앱 — 🟢 운영 중 (b188 배포) / 💬 1:1 대화 b187 동결 — 대표님 승인 3건 대기 · 개발팀 이준호 과장",
         "업무일지 앱(제니) — 🟢 사용 중 (b8) / 대표님 4건 · 백준우 · 긴급",
@@ -892,15 +894,10 @@
     }
   ],
   "activity": {
-    "range": "08-20 ~ 08-20",
-    "total": 1,
+    "range": "데이터 없음",
+    "total": 0,
     "sampled": false,
     "channels": [
-      {
-        "n": "#아테즈-신규",
-        "v": 1,
-        "sub": ""
-      },
       {
         "n": "#랜덤",
         "v": 0,
@@ -910,14 +907,14 @@
         "n": "#일반",
         "v": 0,
         "sub": "이것은 언제나 모두를 포함하게 될 단 하나의 채널로 공지를 올리고 팀 전체의 대화를 나누기에 적합한 공간입니다."
+      },
+      {
+        "n": "#아테즈-신규",
+        "v": 0,
+        "sub": ""
       }
     ],
     "by_person": [
-      {
-        "id": "rt",
-        "n": "김서연 비서실장",
-        "v": 1
-      },
       {
         "id": "ceo",
         "n": "백준우",
@@ -931,6 +928,11 @@
       {
         "id": "chk",
         "n": "차소희 실장",
+        "v": 0
+      },
+      {
+        "id": "rt",
+        "n": "김서연 비서실장",
         "v": 0
       },
       {
@@ -959,12 +961,7 @@
         "v": 0
       }
     ],
-    "daily": [
-      {
-        "d": "08-20",
-        "v": 1
-      }
-    ]
+    "daily": []
   },
   "feed": [],
   "usage": {
@@ -1029,10 +1026,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-09-18T22:51:50+09:00"
+    "updated_at": "2026-09-19T02:22:31+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-09-18T22:51:50+09:00",
+    "checked_at": "2026-09-19T02:22:31+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
@@ -1041,6 +1038,5 @@
     "channel_configured": true,
     "last_attempt_at": "2026-08-16T22:50:25+09:00",
     "last_attempt_ok": true
-  },
-  "feed_note": "공개 배포본에서는 슬랙 원문을 표시하지 않습니다."
+  }
 }
