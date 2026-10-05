@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-10-05T10:52:33+09:00",
+    "generated_at": "2026-10-05T15:15:01+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -422,6 +422,13 @@
           "note": "08-20 채널생성(channel-setup)·대본제작(script-pd)·영상준비(storyboard) 스킬 3종 웹 이식 완료, 결과물 형식은 원본 도구와 동일(diff 실측). 다음: 옌화 대본으로 storyboard 실전 A/B → 대본 파이프라인 실전 1회 → 토큰 개선안 6건 승인. 카드: atteze-agents/03_Wiki/Projects/유튜브_대본_자동화.md"
         },
         {
+          "id": "motion-hyperframes",
+          "t": "모션그래픽(HyperFrames) — 시안 1장면 완료 / 30초 전체 주제 결정 대기",
+          "s": "doing",
+          "owner": "ceo",
+          "note": "10-05 도입. 클로드코드에 장면표로 시켜 광고·인트로 모션그래픽 MP4 제작(웹 세션 렌더 실측). 시안: https://claude.ai/artifact/7LMTNXYQZGpvjwwwFyRCin — 대표님이 보고 OK면 30초 전체 주제·브랜드만 정하면 됨. 같이 검토한 Composio·Graft 등 보류 대장: atteze-agents/03_Wiki/Projects/외부_AI도구_검토.md. 카드: atteze-agents/03_Wiki/Projects/모션그래픽_HyperFrames.md"
+        },
+        {
           "id": "sns-nanobanana",
           "t": "뽀용베베·뽀용스푼 SNS 자동화 — 나노바나나 API 연동",
           "s": "todo",
@@ -732,14 +739,14 @@
         "업무일지 앱(제니) — 🟢 사용 중 (b8) / 대표님 4건 · 백준우 · 긴급",
         "운연 — 대표님 대기: 포트원 가입·Supabase schema 재실행·시크릿 · 백준우 · 긴급",
         "유튜브 대본 자동화 — 스킬 3종 구축 완료 / 실전 1회 대기 · 백준우",
+        "모션그래픽(HyperFrames) — 시안 1장면 완료 / 30초 전체 주제 결정 대기 · 백준우",
         "이별한 개발자의 작업실 — 대표 Voice로 〈떠나기로 한 날짜〉 제작 · 백준우",
         "인스타 정리함 온디맨드 INGEST 운영 검증 · 검수팀 박지민 대리",
         "AI 기억 공유 — ✅ 읽기 3AI · memsync 수동·자동 확정 / 다음: 하트비트가 초기 실패를 못 잡는 것 · 개발팀 이준호 과장",
         "AI 교차리뷰 — 작성 회사의 반대편만 검토 (가동 중) / 대표님 브랜치 보호 1건 · 백준우",
         "JW 개인트레이너 앱화 — 74종 머신·헬스장별 기록 MVP · 백준우",
         "아테즈 다운로더(NAS) — 🔴 다운로드 불가: 영상 403 Forbidden (자막429는 해결) · 백준우 · 긴급",
-        "Ponytail 플러그인 설치 (과설계 방지 도구) · 개발팀 이준호 과장",
-        "은지 데일리 콘텐츠 — Cowork 예약작업 → NAS Claude Code 이관 · 백준우"
+        "Ponytail 플러그인 설치 (과설계 방지 도구) · 개발팀 이준호 과장"
       ],
       "tomorrow": [
         "NAS 옛 자비스 컨테이너 정리 — 🔴 슬랙 이중 가동 실측됨 (대표님 조작 1건) · 백준우 · 긴급",
@@ -1011,10 +1018,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-10-05T10:52:33+09:00"
+    "updated_at": "2026-10-05T15:15:01+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-10-05T10:52:33+09:00",
+    "checked_at": "2026-10-05T15:15:01+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
