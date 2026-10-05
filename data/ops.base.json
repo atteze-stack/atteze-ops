@@ -549,6 +549,13 @@
       "name": "운영",
       "cards": [
         {
+          "id": "subscription-agents",
+          "t": "구독형 에이전트 전환 — 이준호 PC 워커 코드 완료 / 대표님 PC 설치 대기",
+          "s": "doing",
+          "owner": "ceo",
+          "note": "10-05 착수. Hermes·슬랙 직원의 API 종량제를 대표님 PC 의 Claude Code·Codex 구독으로 옮긴다(텔레그램 지시 → PC 워커 → NAS 저장). 순서: 이준호 시범 → 나머지 직원 → 확인 뒤 Hermes·슬랙 A층 끄기. 코드: atteze-agents/pc-worker/ · 카드: atteze-agents/03_Wiki/Projects/구독형_에이전트_전환.md"
+        },
+        {
           "id": "slack-cost-cut",
           "t": "슬랙 AI 비용 절감 — ⏸ 당분간 중지 (대표님 결정 2026-08-25)",
           "s": "hold",
