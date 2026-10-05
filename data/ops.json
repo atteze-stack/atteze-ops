@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-10-05T17:02:23+09:00",
+    "generated_at": "2026-10-05T17:18:21+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -556,6 +556,13 @@
       "name": "운영",
       "cards": [
         {
+          "id": "subscription-agents",
+          "t": "구독형 에이전트 전환 — 이준호 PC 워커 코드 완료 / 대표님 PC 설치 대기",
+          "s": "doing",
+          "owner": "ceo",
+          "note": "10-05 착수. Hermes·슬랙 직원의 API 종량제를 대표님 PC 의 Claude Code·Codex 구독으로 옮긴다(텔레그램 지시 → PC 워커 → NAS 저장). 순서: 이준호 시범 → 나머지 직원 → 확인 뒤 Hermes·슬랙 A층 끄기. 코드: atteze-agents/pc-worker/ · 카드: atteze-agents/03_Wiki/Projects/구독형_에이전트_전환.md"
+        },
+        {
           "id": "slack-cost-cut",
           "t": "슬랙 AI 비용 절감 — ⏸ 당분간 중지 (대표님 결정 2026-08-25)",
           "s": "hold",
@@ -745,8 +752,8 @@
         "AI 기억 공유 — ✅ 읽기 3AI · memsync 수동·자동 확정 / 다음: 하트비트가 초기 실패를 못 잡는 것 · 개발팀 이준호 과장",
         "AI 교차리뷰 — 작성 회사의 반대편만 검토 (가동 중) / 대표님 브랜치 보호 1건 · 백준우",
         "JW 개인트레이너 앱화 — 74종 머신·헬스장별 기록 MVP · 백준우",
-        "아테즈 다운로더(NAS) — 🔴 다운로드 불가: 영상 403 Forbidden (자막429는 해결) · 백준우 · 긴급",
-        "Ponytail 플러그인 설치 (과설계 방지 도구) · 개발팀 이준호 과장"
+        "구독형 에이전트 전환 — 이준호 PC 워커 코드 완료 / 대표님 PC 설치 대기 · 백준우",
+        "아테즈 다운로더(NAS) — 🔴 다운로드 불가: 영상 403 Forbidden (자막429는 해결) · 백준우 · 긴급"
       ],
       "tomorrow": [
         "NAS 옛 자비스 컨테이너 정리 — 🔴 슬랙 이중 가동 실측됨 (대표님 조작 1건) · 백준우 · 긴급",
@@ -1018,10 +1025,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-10-05T17:02:23+09:00"
+    "updated_at": "2026-10-05T17:18:21+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-10-05T17:02:23+09:00",
+    "checked_at": "2026-10-05T17:18:21+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
