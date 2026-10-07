@@ -422,6 +422,13 @@
           "note": "10-05 도입. 클로드코드에 장면표로 시켜 광고·인트로 모션그래픽 MP4 제작(웹 세션 렌더 실측). 시안: https://claude.ai/artifact/7LMTNXYQZGpvjwwwFyRCin — 대표님이 보고 OK면 30초 전체 주제·브랜드만 정하면 됨. 같이 검토한 Composio·Graft 등 보류 대장: atteze-agents/03_Wiki/Projects/외부_AI도구_검토.md. 카드: atteze-agents/03_Wiki/Projects/모션그래픽_HyperFrames.md"
         },
         {
+          "id": "ppoyong-spoon-ad",
+          "t": "뽀용스푼 광고영상 — 1차본(조선 암죽편 66초) 완성 / 대표님 시청·수정 지시 대기",
+          "s": "doing",
+          "owner": "ceo",
+          "note": "10-07 인스타 참고 영상(조선 미백→누룩밤) 형식으로 제작. 힉스필드 장면 17·움직임 16·해설 17 + 자막 조립, 약 100이용권. 다음: 대표님 시청·해설 발음 확인·수정 지시 → 반영, 배경음악은 캡컷 등에서. 카드: atteze-agents/03_Wiki/Projects/뽀용베베_광고영상.md"
+        },
+        {
           "id": "sns-nanobanana",
           "t": "뽀용베베·뽀용스푼 SNS 자동화 — 나노바나나 API 연동",
           "s": "todo",
