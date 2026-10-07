@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-10-07T16:31:48+09:00",
+    "generated_at": "2026-10-07T23:23:08+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -429,6 +429,13 @@
           "note": "10-05 도입. 클로드코드에 장면표로 시켜 광고·인트로 모션그래픽 MP4 제작(웹 세션 렌더 실측). 시안: https://claude.ai/artifact/7LMTNXYQZGpvjwwwFyRCin — 대표님이 보고 OK면 30초 전체 주제·브랜드만 정하면 됨. 같이 검토한 Composio·Graft 등 보류 대장: atteze-agents/03_Wiki/Projects/외부_AI도구_검토.md. 카드: atteze-agents/03_Wiki/Projects/모션그래픽_HyperFrames.md"
         },
         {
+          "id": "ppoyong-spoon-ad",
+          "t": "뽀용스푼 광고영상 — 1차본(조선 암죽편 66초) 완성 / 대표님 시청·수정 지시 대기",
+          "s": "doing",
+          "owner": "ceo",
+          "note": "10-07 인스타 참고 영상(조선 미백→누룩밤) 형식으로 제작. 힉스필드 장면 17·움직임 16·해설 17 + 자막 조립, 약 100이용권. 다음: 대표님 시청·해설 발음 확인·수정 지시 → 반영, 배경음악은 캡컷 등에서. 카드: atteze-agents/03_Wiki/Projects/뽀용베베_광고영상.md"
+        },
+        {
           "id": "sns-nanobanana",
           "t": "뽀용베베·뽀용스푼 SNS 자동화 — 나노바나나 API 연동",
           "s": "todo",
@@ -491,6 +498,13 @@
       "icon": "🤖",
       "name": "자비스",
       "cards": [
+        {
+          "id": "agent-floor-monitor",
+          "t": "픽셀 모니터 + 야간 자율 개발반 — 화면 PR #452 검토 중 / 러너 가동 전",
+          "s": "doing",
+          "owner": "dev",
+          "note": "【무엇】 러너 큐를 읽기 전용으로 한 장(agents.json)으로 떠서 **어느 에이전트가 무슨 일감을 돌고 있는지** 픽셀 사무실 화면으로 본다. 시안: https://claude.ai/artifact/U6W8oyA3mHyxYTUBJxBkGj 【보는 법】 `node scripts/agent-snapshot.js 99_Assets/agents.json` 으로 떠놓고, 레포 폴더에서 `python3 -m http.server 8000` → localhost:8000/99_Assets/모니터_픽셀플로어.html (15초마다 자동 갱신). 파일을 더블클릭해서 열었으면 브라우저가 옆 파일 읽기를 막으므로 배너의 **「스냅샷 파일 열기」**로 고른다. 【화면이 거짓말하지 않게 만든 것】 큐를 못 읽은 것과 빈 큐를 구분(섞이면 「할 일 없음」으로 조용히 보인다) · 손상된 하루 카운터를 0 으로 위장하지 않음 · 「실시간」이라 쓰지 않고 **「스냅샷 N분 전」** · 슬랙 직원 7명은 러너 큐에 없어 점선 + 「상태 미연결」(꺼진 게 아니라 **모른다**). 【아직 안 되는 것】 러너 가동 ❌(토큰·「다시 시작」 창구 선행) · 콘텐츠 공장 파이프라인 ❌ · 스냅샷 주기 실행 ❌(수동). Codex 5라운드 16건 전부 재현·수용. 카드: atteze-agents/03_Wiki/Projects/상주_에이전트.md"
+        },
         {
           "id": "tele-briefing",
           "t": "텔레 브리핑 — 오보 2건 수정 + 비용 경로 확인 (정시 발송 꺼짐)",
@@ -564,10 +578,10 @@
       "cards": [
         {
           "id": "subscription-agents",
-          "t": "구독형 에이전트 전환 — 이준호 PC 워커 코드 완료 / 대표님 PC 설치 대기",
+          "t": "구독형 에이전트 전환 — 러너 본체 머지됨(#431) / 토큰 등록 + 「다시 시작」 창구 대기",
           "s": "doing",
           "owner": "ceo",
-          "note": "10-05 착수. Hermes·슬랙 직원의 API 종량제를 대표님 PC 의 Claude Code·Codex 구독으로 옮긴다(텔레그램 지시 → PC 워커 → NAS 저장). 순서: 이준호 시범 → 나머지 직원 → 확인 뒤 Hermes·슬랙 A층 끄기. 코드: atteze-agents/pc-worker/ · 카드: atteze-agents/03_Wiki/Projects/구독형_에이전트_전환.md"
+          "note": "【2026-10-07 갱신 — 10-05 메모의 경로를 바로잡았다】 이 카드가 가리켰던 `atteze-agents/pc-worker/` 와 `03_Wiki/Projects/구독형_에이전트_전환.md` 는 **master·모든 브랜치·모든 커밋·모든 PR 에 존재한 적이 없다**(실측: git log --all -S, ls-remote, PR 검색 전부 0건). 같은 목표의 코드는 **`agent-runner.js`** 로 들어왔고 PR #431 이 2026-10-07 머지됐다(`4a8b482`, Codex 51라운드·지적 93건 전부 수용·기각 0). ⚠️ 10-05 당시 코드가 대표님 PC 에만 있었던 것인지, 메모가 앞서 적힌 것인지는 **모른다** — 다만 레포에는 없다. 【지금 상태】 러너 본체 ✅ master · 상태 내보내기+픽셀 모니터 🟡 PR #452 · 종량제→구독 단일 창구 🟡 PR #454(Codex 0건) · 교차검증 게이트 🟡 PR #451(Codex 0건). 거처는 대표님 PC/미니PC 로 확정(격리 포기, 10-07 대표님 선택). 【대표님이 하실 것】 ① #451 → #454 순서로 머지 승인 ② PC 터미널 `claude setup-token` → Railway Variables 에 CLAUDE_CODE_OAUTH_TOKEN → 재배포 ③ 로그에 「💳 Max 구독(OAuth)」 확인 — 단 그건 토큰 유무만 본다. 메일 분류나 easycut 을 한 번 돌려 「[claude-cli] 구독 경로 실패」 경고가 없는지까지 봐야 실제 전환이다. 🔐 ANTHROPIC_API_KEY 는 아직 지우지 말 것(이미지 분석·nas-metube·discussion-room 이 그 키로 돈다). 【막고 있는 것】 「멈춰」는 있는데 **「다시 시작」 텔레 창구가 없다**(resumeJobs 가 export 만 돼 있고 아무도 안 부른다) — 러너를 켜기 전 필수. 카드: atteze-agents/03_Wiki/Projects/상주_에이전트.md · Claude_과금_구독전환.md"
         },
         {
           "id": "slack-cost-cut",
@@ -754,13 +768,13 @@
         "운연 — 대표님 대기: 포트원 가입·Supabase schema 재실행·시크릿 · 백준우 · 긴급",
         "유튜브 대본 자동화 — 스킬 3종 구축 완료 / 실전 1회 대기 · 백준우",
         "모션그래픽(HyperFrames) — 시안 1장면 완료 / 30초 전체 주제 결정 대기 · 백준우",
+        "뽀용스푼 광고영상 — 1차본(조선 암죽편 66초) 완성 / 대표님 시청·수정 지시 대기 · 백준우",
         "이별한 개발자의 작업실 — 대표 Voice로 〈떠나기로 한 날짜〉 제작 · 백준우",
         "인스타 정리함 온디맨드 INGEST 운영 검증 · 검수팀 박지민 대리",
+        "픽셀 모니터 + 야간 자율 개발반 — 화면 PR #452 검토 중 / 러너 가동 전 · 개발팀 이준호 과장",
         "AI 기억 공유 — ✅ 읽기 3AI · memsync 수동·자동 확정 / 다음: 하트비트가 초기 실패를 못 잡는 것 · 개발팀 이준호 과장",
         "AI 교차리뷰 — 작성 회사의 반대편만 검토 (가동 중) / 대표님 브랜치 보호 1건 · 백준우",
-        "JW 개인트레이너 앱화 — 74종 머신·헬스장별 기록 MVP · 백준우",
-        "구독형 에이전트 전환 — 이준호 PC 워커 코드 완료 / 대표님 PC 설치 대기 · 백준우",
-        "아테즈 다운로더(NAS) — 🔴 다운로드 불가: 영상 403 Forbidden (자막429는 해결) · 백준우 · 긴급"
+        "JW 개인트레이너 앱화 — 74종 머신·헬스장별 기록 MVP · 백준우"
       ],
       "tomorrow": [
         "NAS 옛 자비스 컨테이너 정리 — 🔴 슬랙 이중 가동 실측됨 (대표님 조작 1건) · 백준우 · 긴급",
@@ -1032,10 +1046,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-10-07T16:31:48+09:00"
+    "updated_at": "2026-10-07T23:23:08+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-10-07T16:31:48+09:00",
+    "checked_at": "2026-10-07T23:23:08+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
