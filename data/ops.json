@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-10-07T15:34:09+09:00",
+    "generated_at": "2026-10-07T16:31:48+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -492,6 +492,13 @@
       "name": "자비스",
       "cards": [
         {
+          "id": "tele-briefing",
+          "t": "텔레 브리핑 — 오보 2건 수정 + 비용 경로 확인 (정시 발송 꺼짐)",
+          "s": "hold",
+          "owner": "ceo",
+          "note": "【2026-10-07】 대표님 제안 「브리핑을 PC/NAS 에이전트로」 검토 → 세션 의견 Railway 유지(PC 는 꺼지면 안 감, NAS·PC 는 기억이 둘로 갈라짐). Codex 가 브리핑이 틀리는 코드 원인 2건을 찾음: ① 대시보드 완료 카드를 날짜 무관하게 「한 일」로 씀 ② 완료가 비어도 활동량만 있으면 슬랙 원문을 버림. 【대표님 할 것】 ① Railway Variables 에 ANTHROPIC_API_KEY·CLAUDE_CODE_OAUTH_TOKEN 이 있는지만 확인 ② 오보 수정 진행 승인. 상세: atteze-agents/03_Wiki/Projects/텔레_브리핑.md"
+        },
+        {
           "id": "nas-legacy-jarvis-cleanup",
           "t": "NAS 옛 자비스 컨테이너 정리 — 🔴 슬랙 이중 가동 실측됨 (대표님 조작 1건)",
           "s": "todo",
@@ -536,10 +543,10 @@
         },
         {
           "id": "shake-tasker",
-          "t": "흔들기(폰 흔들어 자비스) — ✅ 완료",
+          "t": "흔들기(폰 흔들어 자비스) — ✅ 10-07 복구",
           "s": "done",
           "owner": "ceo",
-          "note": "✅ **2026-08-25 대표님 확인 완료** — Tasker → /shake 도달. 08-19 서버측 로그 보강(요청이 닿기만 하면 무조건 한 줄 기록)이 마지막 진단 도구였고, 대표님 실행으로 닫혔다. 🔴 **남은 것은 보안 정리 1건** — 옛 흔들기 Apps Script 의 ANTHROPIC_KEY·TELEGRAM_TOKEN·SHAKE_SECRET 폐기(07-05·08-18 두 번 노출). 옛 Apps Script 를 배포 해제하면 절반이 자동 해소되고 남는 건 Drive 원본 정리. 상세: atteze-agents/03_Wiki/Projects/흔들기.md §5"
+          "note": "✅ **2026-10-07 복구 실측** — 폰 Tasker URL 이 옛 Apps Script(script.google.com)였던 것을 /shake 로 교체 + secret 을 Railway SHAKE_SECRET 에 맞춤 → 메모 저장·캘린더 등록·텔레 회신 성공. 다음 고장 땐 텔레 답 접두부터: `🤳 (흔들기)` 면 폰이 또 옛 URL. 🔴 남은 것 = 옛 Apps Script 배포 해제 + 그 안의 ANTHROPIC_KEY·TELEGRAM_TOKEN·SHAKE_SECRET 폐기. 상세: atteze-agents/03_Wiki/Projects/흔들기.md"
         },
         {
           "id": "jarvis-voice",
@@ -1025,10 +1032,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-10-07T15:34:09+09:00"
+    "updated_at": "2026-10-07T16:31:48+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-10-07T15:34:09+09:00",
+    "checked_at": "2026-10-07T16:31:48+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
