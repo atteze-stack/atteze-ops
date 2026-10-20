@@ -436,6 +436,13 @@
           "note": "10-13 영어 자막판 54초 전달(스킬 multilang-export, scripts/영상-수출.sh — 해설 한국어, 자막만 영어). 작업 폴더는 힉스필드 생성 기록에서 복구. 다음: 대표님 — 영어 더빙판 승인(17줄 ≈ 4이용권)·일본어 등 다음 언어·올릴 해외 채널 결정. 배경음악은 캡컷 등에서. 카드: atteze-agents/03_Wiki/Projects/뽀용베베_광고영상.md · 레시피 §2.23"
         },
         {
+          "id": "katana-lookbook",
+          "t": "카타나 룩북 영상(단발캐릭터) — 12초 1차본 전달 / 수정 지시 대기",
+          "s": "doing",
+          "owner": "ceo",
+          "note": "10-21 대표님 사진 → 힉스필드 엘리먼트 「단발캐릭터」·캐릭터 시트 → 카타나 견본 「가을겨울26 룩북」 참고 12초 세로 룩북(약 60이용권). 영상: https://d2ol7oe51mr4n9.cloudfront.net/user_3F9XPEFCSoDb7JdQcpDpUbp1P1H/6c7003a7-f522-4f0f-add1-8589393f2449.mp4 — 스타터 요금제라 시댄스 2.5·클링 3.0 막혀 seedance_2_0 빠른 모드 720 으로 우회. 다음: 대표님 수정 지시(편집만=0이용권) · 게시 전 음악 교체. 카드: atteze-agents/03_Wiki/Projects/카타나_룩북영상.md"
+        },
+        {
           "id": "sns-nanobanana",
           "t": "뽀용베베·뽀용스푼 SNS 자동화 — 나노바나나 API 연동",
           "s": "todo",
