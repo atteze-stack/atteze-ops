@@ -23,6 +23,7 @@ jobs:
           SLACK_TOKEN:   ${{ secrets.SLACK_TOKEN }}
           ICAL_URL:      ${{ secrets.ICAL_URL }}        # 구글 캘린더 비공개 iCal 주소
           TG_MEMO_TOKEN: ${{ secrets.TG_MEMO_TOKEN }}   # 메모 전용 텔레그램 봇 토큰
+          MONITOR_TOKEN: ${{ secrets.MONITOR_TOKEN }}   # 픽셀 사무실(레일웨이 /monitor) — 레일웨이 Variables 와 같은 값
           DATA_DIR: ${{ github.workspace }}/data
           PUBLIC_MODE: "1"
           ONCE: "1"
@@ -40,7 +41,7 @@ jobs:
           # 안 올라가 수집기가 4시간 넘게 조용히 멈춰 있었다(2026-08-16 사고).
           # `2>/dev/null || true` 가 에러까지 지워서 Actions 는 초록불이었다.
           # 그래서 반드시 **파일별로 따로** add 한다.
-          for f in data/ops.json data/inbox.json; do
+          for f in data/ops.json data/inbox.json data/agents.json data/pixel-office.js; do
             if [ -f "$f" ]; then git add "$f"; fi
           done
           if git diff --staged --quiet; then

@@ -62,6 +62,16 @@ WORKLOG_MARKER = "📋 작업 로그"     # atteze_log.py 가 붙이는 표시
 # 둘 다 슬랙 채널이 필요 없습니다.
 ICAL_URLS  = [u.strip() for u in os.environ.get("ICAL_URL", "").split(",") if u.strip()]
 TG_TOKEN   = os.environ.get("TG_MEMO_TOKEN", "").strip()
+# 픽셀 사무실(상주 러너) — 레일웨이 자비스 서버의 /monitor 에서 5분마다 받아 둔다.
+#   MONITOR_TOKEN: 레일웨이 Variables 의 값과 같은 것(깃허브 비밀 보관함 Actions secrets 에 넣는다). 없으면 건너뛴다.
+#   받는 것: agents.json(일감 제목·상태만 — 지시문·결과는 서버가 애초에 안 보내고 여기서도 한 번 더 거른다. 이 저장소는 공개다)
+#          pixel-office.js(그림판 코드, 토큰 없이 공개). 원본은 atteze-agents/99_Assets/pixel-office.js 하나 — 여기 복사본은 **수집기가 쓰는 것**이지 손으로 고치는 파일이 아니다.
+MONITOR_URL   = os.environ.get("MONITOR_URL", "https://atteze-agents-production.up.railway.app/monitor").rstrip("/")
+MONITOR_TOKEN = os.environ.get("MONITOR_TOKEN", "").strip()
+AGENTS_PATH   = os.path.join(DATA_DIR, "agents.json")
+RENDERER_PATH = os.path.join(DATA_DIR, "pixel-office.js")
+AGENT_KEYS    = ("at", "paused", "lock", "day", "queueReadable", "holes", "error")
+JOB_KEYS      = ("id", "agent", "status", "title")
 PLAN_DAYS  = int(os.environ.get("PLAN_DAYS", "21"))    # 앞으로 N일치 일정만 표시
 # 이름에 이 말이 들어간 캘린더는 '아이디어 보관함'으로 봅니다.
 # 자비스가 아이디어를 이 캘린더에 넣으면 대시보드 아이디어 칸에 뜹니다.
@@ -938,6 +948,85 @@ def alert_stalls(out, prev, alert_cid):
     return status
 
 
+def _write_atomic(path, text):
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        f.write(text)
+    os.replace(tmp, path)
+
+
+def fetch_agents():
+    """레일웨이 /monitor/agents.json → data/agents.json. 실패하면 **지난 파일을 지우지 않고** fetch_error 만 붙인다 —
+    화면이 「N분 전 스냅샷 + 가져오기 실패」를 정직하게 보여주게. 토큰이 없으면 아무것도 안 쓴다(화면은 「미연결」)."""
+    now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    if not MONITOR_TOKEN:
+        log("MONITOR_TOKEN 이 없습니다. 픽셀 사무실 수집은 건너뜁니다(깃허브 Actions secrets 에 넣으면 켜집니다).")
+        return
+    try:
+        url = f"{MONITOR_URL}/agents.json?t={urllib.parse.quote(MONITOR_TOKEN, safe='')}"
+        req = urllib.request.Request(url, headers={"User-Agent": "atteze-ops-refresh"})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            snap = json.loads(r.read().decode("utf-8"))
+        if not isinstance(snap, dict) or not isinstance(snap.get("jobs"), list):
+            raise ValueError("agents.json 모양이 아닙니다(jobs 배열 없음)")
+        out = {k: snap.get(k) for k in AGENT_KEYS if k in snap}
+        out["jobs"] = [{k: j.get(k) for k in JOB_KEYS} for j in snap["jobs"] if isinstance(j, dict)]
+        out["source"] = "railway"
+        out["fetched_at"] = now
+        _write_atomic(AGENTS_PATH, json.dumps(out, ensure_ascii=False, indent=2))
+        log(f"agents.json 갱신 — 일감 {len(out['jobs'])}건")
+    except Exception as e:
+        log("픽셀 사무실 수집 실패:", repr(e))
+        try:
+            old = json.load(open(AGENTS_PATH, encoding="utf-8"))
+        except Exception:
+            old = {"source": "railway", "jobs": [], "queueReadable": False, "error": "아직 한 번도 받지 못했습니다"}
+        old["fetch_error"] = repr(e)
+        old["fetch_error_at"] = now
+        _write_atomic(AGENTS_PATH, json.dumps(old, ensure_ascii=False, indent=2))
+    # 그림판 코드 — 토큰 없이 공개. 못 받으면 지난 복사본을 그대로 둔다.
+    try:
+        req = urllib.request.Request(f"{MONITOR_URL}/pixel-office.js", headers={"User-Agent": "atteze-ops-refresh"})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            js = r.read().decode("utf-8")
+        if "PixelOffice" not in js:
+            raise ValueError("pixel-office.js 모양이 아닙니다")
+        _write_atomic(RENDERER_PATH, js)
+    except Exception as e:
+        log("그림판 코드 받기 실패(지난 복사본 유지):", repr(e))
+
+
+def apply_agents(out):
+    """러너 스냅샷(data/agents.json)을 내부 라인 사람(runner_agent 가 있는 people)의 state·status 에 입힌다.
+    슬랙 판정(merge)과 같은 어휘: live=작업중 · idle=대기/일감 없음 · pending=상태 미연결. 스냅샷이 없으면 손으로 적은 값 유지."""
+    try:
+        snap = json.load(open(AGENTS_PATH, encoding="utf-8"))
+    except Exception:
+        return
+    jobs = [j for j in (snap.get("jobs") or []) if isinstance(j, dict)]
+    rank = {"running": 6, "paused": 5, "failed": 4, "abandoned": 4, "queued": 3, "done": 1}
+    label = {"running": "작업중", "queued": "대기", "paused": "멈춤", "failed": "실패", "abandoned": "중단"}
+    alias = {"night": "research", "factory": "videoteam"}     # 옛 큐 키 → 새 책상(조직도 §9)
+    for p in out.get("people", []):
+        key = p.get("runner_agent")
+        if not key:
+            continue
+        mine = [j for j in jobs if alias.get(j.get("agent"), j.get("agent")) == key]
+        if snap.get("queueReadable") is False and not mine:
+            p["state"], p["status"] = "pending", "상태 미연결(큐 못 읽음)"
+            continue
+        best = max(mine, key=lambda j: rank.get(j.get("status"), 0), default=None)
+        title = str((best or {}).get("title") or "")[:30]
+        if best is None:
+            p["state"], p["status"] = "idle", "일감 없음"
+        elif best.get("status") == "done":
+            p["state"], p["status"] = "idle", "완료: " + title
+        else:
+            p["state"] = "live" if best.get("status") == "running" else "idle"
+            p["status"] = label.get(best.get("status"), str(best.get("status"))) + ": " + title
+        p["work_src"] = "runner"
+
+
 def run_once():
     base = json.load(open(BASE_PATH, encoding="utf-8"))
     try:
@@ -947,6 +1036,7 @@ def run_once():
 
     # 슬랙을 안 거치는 두 갈래 — 토큰/주소가 없으면 조용히 건너뜁니다
     extra = fetch_calendar() + fetch_telegram()
+    fetch_agents()   # 픽셀 사무실(레일웨이) — 실패해도 ops.json 생성은 막지 않는다
 
     if not TOKEN:
         log("SLACK_TOKEN 이 없습니다. 슬랙 수집은 건너뜁니다.")
@@ -956,6 +1046,7 @@ def run_once():
     else:
         s = collect()
     out = merge(base, s, extra)
+    apply_agents(out)          # 내부 라인(조사·기획·영상) 상태는 러너 스냅샷에서
     alert_status = alert_stalls(out, prev, s.get("alert_cid"))
     # 이번 실행에 보낼 신호가 없었으면(attempted=0) 이전 실행의 마지막 실제
     # 시도 결과를 이어받아 대시보드에서 "마지막 알림 발송 상태"가 계속 보이게
