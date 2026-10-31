@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-10-31T17:56:37+09:00",
+    "generated_at": "2026-10-31T23:10:54+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -336,6 +336,129 @@
       "track": "Engineering",
       "last_seen_note": "2026-08-15 20:06",
       "name_was": "이준호 과장"
+    },
+    {
+      "dept": "내부 라인",
+      "desk": "internal",
+      "tier": 1,
+      "channel": "telegram",
+      "track": "Internal",
+      "line": "internal",
+      "hair": "#463623",
+      "skin": "#eec8a2",
+      "sprite": "short",
+      "last_seen_note": "2026-10-24 신설",
+      "id": "lead",
+      "name": "총괄 클로드",
+      "title": "총괄",
+      "engine": "클로드 구독 (웹 세션 + 러너 지시문)",
+      "model": "Claude",
+      "reports_to": "ceo",
+      "state": "idle",
+      "status": "세션",
+      "cloth": "#5ee6a8",
+      "workflow_after": [
+        "ceo"
+      ]
+    },
+    {
+      "dept": "내부 라인",
+      "desk": "internal",
+      "tier": 1,
+      "channel": "github",
+      "track": "Internal",
+      "line": "internal",
+      "hair": "#463623",
+      "skin": "#eec8a2",
+      "sprite": "short",
+      "last_seen_note": "2026-10-24 신설",
+      "id": "codex",
+      "name": "반박 코덱스",
+      "title": "교차검증",
+      "engine": "챗GPT 구독 — 깃허브 PR 리뷰 (@codex review)",
+      "model": "Codex",
+      "reports_to": "ceo",
+      "state": "idle",
+      "status": "PR 리뷰",
+      "cloth": "#4fc3f7",
+      "workflow_after": [
+        "lead"
+      ]
+    },
+    {
+      "dept": "내부 라인",
+      "desk": "internal",
+      "tier": 2,
+      "channel": "telegram",
+      "track": "Internal",
+      "line": "internal",
+      "hair": "#463623",
+      "skin": "#eec8a2",
+      "sprite": "short",
+      "last_seen_note": "2026-10-24 신설",
+      "id": "research",
+      "name": "조사팀",
+      "title": "조사",
+      "engine": "상주 러너 (클로드 구독)",
+      "model": "Claude",
+      "reports_to": "lead",
+      "state": "idle",
+      "status": "매일 02:10 · 03:40",
+      "cloth": "#f5b945",
+      "runner_agent": "research",
+      "workflow_after": [
+        "planteam"
+      ]
+    },
+    {
+      "dept": "내부 라인",
+      "desk": "internal",
+      "tier": 2,
+      "channel": "telegram",
+      "track": "Internal",
+      "line": "internal",
+      "hair": "#463623",
+      "skin": "#eec8a2",
+      "sprite": "short",
+      "last_seen_note": "2026-10-24 신설",
+      "id": "planteam",
+      "name": "기획팀",
+      "title": "기획",
+      "engine": "상주 러너 (클로드 구독)",
+      "model": "Claude",
+      "reports_to": "lead",
+      "state": "idle",
+      "status": "설계 대기",
+      "cloth": "#c38cff",
+      "runner_agent": "planteam",
+      "workflow_after": [
+        "videoteam"
+      ]
+    },
+    {
+      "dept": "내부 라인",
+      "desk": "internal",
+      "tier": 2,
+      "channel": "telegram",
+      "track": "Internal",
+      "line": "internal",
+      "hair": "#463623",
+      "skin": "#eec8a2",
+      "sprite": "short",
+      "last_seen_note": "2026-10-24 신설",
+      "id": "videoteam",
+      "name": "영상팀",
+      "title": "영상",
+      "engine": "상주 러너 (클로드 구독)",
+      "model": "Claude",
+      "reports_to": "lead",
+      "state": "idle",
+      "status": "1호 착수 전",
+      "cloth": "#eda100",
+      "runner_agent": "videoteam",
+      "workflow_after": [
+        "codex"
+      ]
     }
   ],
   "open_seats": [
@@ -514,11 +637,11 @@
       "cards": [
         {
           "id": "internal-teams",
-          "t": "내부 라인(조사팀·기획팀·영상팀) + 총괄 클로드 ⇄ 반박 코덱스 — 🟢 조사팀 가동 / 조직안 대표님 확인 대기",
+          "t": "내부 라인(조사·기획·영상) + 총괄 클로드 ⇄ 반박 코덱스 — ✅ 조직안 확정(10-24) / 픽셀 사무실 B안 PR 검토 중 / 🔑 깃허브 비밀 1개",
           "s": "doing",
           "owner": "ceo",
           "urgent": true,
-          "note": "【2026-10-22 신규 — 대표님 지시】 \"영상팀(인스타·유튜브·틱톡 영상) / 기획팀(나랑 같이 뭘 만들고 배포까지) / 조사팀(유튜브·인스타·깃허브 뒤져 우리 에이전트에 부족한 것 → 기획팀) / 총괄 클로드 + 반박 코덱스, 슬랙팀처럼\". 전부 레일웨이 상주 러너 위에서 **구독으로** 돈다. ✅ 조사팀 1호 일감 매일 03:40(`90_System/매일일감.json`) — 우리에게 없는 스킬 3개 제안(보고만), 첫 결과 10-23 새벽. 🎯 【대표님 결정 3건】 ① 조직안 「맞아」 → 이 대시보드 `people[]`(reports_to 로 조직도 자동)·조직도.md 갱신 ② 인스타 숫자 읽기: 스크레이프크리에이터스 **무료 100회 시작** 승인(로그인 없음·공개 데이터·선불 47달러=2만5천회, 계정 위험 0) ③ 영상팀 1호 기본안 「뽀용베베 30초 모션 쇼츠 매일 1편」 + 첫 발행 채널 한 단어. 【다음 · 비용 0】 `TifisCode/content-team-agents` 인스타 스킬 5개(캡션·해시태그·훅 분석·프로필 점검·쇼츠→릴스) 들여오기. 【영상팀 선행】 이미지에 크롬(하이퍼프레임즈 렌더) + MP4 텔레 전달. 힉스필드는 러너에 MCP 없어 별건. 【발행】 퍼블로라(클로드 연결 앱, 무료) — 승인 게이트 붙여서. ⚠️ 반박 코덱스를 레일웨이 안에서 돌리는 길 미확인(지금은 깃허브 PR 검토만). 도구 조사 전문: atteze-agents/03_Wiki/Projects/외부_AI도구_검토.md §4 10-22 · 진행로그 §4 (52)"
+          "note": "【2026-10-24 갱신 — 대표님 확정 3건】 ① 조직안 「맞아」 → 조직도.md §9 + 이 대시보드 people[] 에 총괄 클로드·반박 코덱스·조사팀·기획팀·영상팀(reports_to 로 보고 계층 자동) ② 픽셀 사무실 **B안**(비스듬한 건물·걷기·일감 흐름 띠·서류 날리기) — 시안 https://claude.ai/artifact/4HyXMQqAfoD2FBtMV9KQ9U ③ **대시보드와 합치기** — 수집기가 5분마다 레일웨이 /monitor 에서 스냅샷(제목만)과 그림판을 받아 「오피스」 뷰에 그리고, 「실시간으로 보기」 단추가 레일웨이 화면을 연다. 🔑 【대표님 1분】 깃허브 atteze-ops → Settings → Secrets and variables → Actions → New repository secret → `MONITOR_TOKEN` = 레일웨이 Variables 의 값과 같은 것(값은 그 화면에만). 전까지 오피스의 본관 책상은 점선(스냅샷 없음)이 정상. ✅ 조사팀 1호 일감 매일 03:40 가동(02:10 쇼츠 보고와 함께 「2/8」로 실측). 【다음】 PR 머지 후 레일웨이·대시보드 실측 → 영상팀 1호(레일웨이 이미지에 크롬 렌더러 + MP4 텔레 전달) → 스크레이프크리에이터스 무료 100회(인스타 숫자, 대표님 승인 대기) → `content-team-agents` 인스타 스킬 5개(비용 0). 경위: atteze-agents 진행로그 §4 (52)·(56) · 조직도.md §9 · 상주_에이전트.md"
         },
         {
           "id": "jaju-call-app",
@@ -802,7 +925,7 @@
         "카타나 룩북 영상(단발캐릭터) — 12초 1차본 전달 / 수정 지시 대기 · 백준우",
         "이별한 개발자의 작업실 — 대표 Voice로 〈떠나기로 한 날짜〉 제작 · 백준우",
         "인스타 정리함 온디맨드 INGEST 운영 검증 · 검수팀 박지민 대리",
-        "내부 라인(조사팀·기획팀·영상팀) + 총괄 클로드 ⇄ 반박 코덱스 — 🟢 조사팀 가동 / 조직안 대표님 확인 대기 · 백준우 · 긴급",
+        "내부 라인(조사·기획·영상) + 총괄 클로드 ⇄ 반박 코덱스 — ✅ 조직안 확정(10-24) / 픽셀 사무실 B안 PR 검토 중 / 🔑 깃허브 비밀 1개 · 백준우 · 긴급",
         "자주전화 앱(갤럭시) — 시험판 5번 전달 / 대표님 설치·확인 대기 · 백준우"
       ],
       "tomorrow": [
@@ -942,6 +1065,96 @@
       "ts": 1789153200
     }
   ],
+  "pipeline_internal": {
+    "title": "내부 라인 — 일감 흐름 (2026-10-24 확정)",
+    "subtitle": "대표님 텔레 지시 한 줄(또는 매일일감)이 조사·기획·영상 책상을 거쳐 보고로 돌아오는 순서. 레일웨이 상주 러너 · 클로드 구독 · 하루 8건",
+    "steps": [
+      {
+        "id": "ceo",
+        "name": "백준우",
+        "role": "대표",
+        "engine": "사람",
+        "act": "텔레그램 「일감 넣어: …」 · 매일일감 켜고 끄기",
+        "from": [],
+        "out": "일감",
+        "state": "live"
+      },
+      {
+        "id": "lead",
+        "name": "총괄 클로드",
+        "role": "총괄",
+        "engine": "클로드",
+        "act": "배정 · 지시문 · 결과 검수 · 보고",
+        "from": [
+          "ceo"
+        ],
+        "out": "배정된 일감",
+        "state": "idle"
+      },
+      {
+        "id": "research",
+        "name": "조사팀",
+        "role": "조사",
+        "engine": "러너",
+        "act": "유튜브·깃허브 조사 → 보강거리 제안",
+        "from": [
+          "lead"
+        ],
+        "out": "조사 보고",
+        "state": "idle"
+      },
+      {
+        "id": "planteam",
+        "name": "기획팀",
+        "role": "기획",
+        "engine": "러너",
+        "act": "대표님과 기획 → 배포 계획",
+        "from": [
+          "research",
+          "lead"
+        ],
+        "out": "기획안",
+        "state": "idle"
+      },
+      {
+        "id": "videoteam",
+        "name": "영상팀",
+        "role": "영상",
+        "engine": "러너",
+        "act": "쇼츠 제작 (렌더러 준비 중)",
+        "from": [
+          "planteam"
+        ],
+        "out": "영상",
+        "state": "idle"
+      },
+      {
+        "id": "codex",
+        "name": "반박 코덱스",
+        "role": "교차검증",
+        "engine": "코덱스",
+        "act": "PR 반박 리뷰 — 「교차검증 확인」 체크",
+        "from": [
+          "lead",
+          "videoteam"
+        ],
+        "out": "BLOCKER/MAJOR 0",
+        "state": "idle"
+      },
+      {
+        "id": "ceo2",
+        "name": "백준우",
+        "role": "대표",
+        "engine": "사람",
+        "act": "머지 · 배포 · 발행 승인 — 사람만",
+        "from": [
+          "codex"
+        ],
+        "out": "배포",
+        "state": "live"
+      }
+    ]
+  },
   "activity": {
     "range": "데이터 없음",
     "total": 0,
@@ -1007,6 +1220,31 @@
       {
         "id": "dev",
         "n": "개발팀 이준호 과장",
+        "v": 0
+      },
+      {
+        "id": "lead",
+        "n": "총괄 클로드",
+        "v": 0
+      },
+      {
+        "id": "codex",
+        "n": "반박 코덱스",
+        "v": 0
+      },
+      {
+        "id": "research",
+        "n": "조사팀",
+        "v": 0
+      },
+      {
+        "id": "planteam",
+        "n": "기획팀",
+        "v": 0
+      },
+      {
+        "id": "videoteam",
+        "n": "영상팀",
         "v": 0
       }
     ],
@@ -1075,10 +1313,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-10-31T17:56:37+09:00"
+    "updated_at": "2026-10-31T23:10:54+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-10-31T17:56:37+09:00",
+    "checked_at": "2026-10-31T23:10:54+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
