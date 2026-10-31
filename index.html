@@ -150,6 +150,12 @@ h2{font-size:16px; font-weight:650; margin:0 0 3px}
 
 /* ---------- 오피스 2열 + KPI 띠 ---------- */
 .offsplit{display:grid; grid-template-columns:minmax(0,1fr) 296px; gap:12px; align-items:start}
+.pixel-wrap{margin-bottom:12px}
+.pixel-head{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:8px}
+#pixelfloor{display:block; width:100%; max-width:100%; height:auto; image-rendering:pixelated; image-rendering:crisp-edges; background:#0a0d11; border:1px solid var(--border); border-radius:10px}
+.btn-live{font-size:12px; color:var(--ink); border:1px solid var(--border); border-radius:7px; padding:4px 10px; text-decoration:none; background:var(--raise)}
+.btn-live:hover{border-color:var(--s1)}
+.legacy summary{cursor:pointer; color:var(--muted); font-size:12px; padding:6px 0}
 @media(max-width:1180px){ .offsplit{grid-template-columns:1fr} }
 .offside{display:flex; flex-direction:column; gap:12px; position:sticky; top:14px}
 .offside .card{margin-bottom:0; padding:14px 15px}
@@ -640,7 +646,20 @@ tbody tr:last-child td{border-bottom:0}
   <section class="view" id="v-office">
     <div class="kpibar" id="kpibar"></div>
     <div class="offsplit">
+      <!-- 픽셀 사무실(B안) — 그림판 data/pixel-office.js 와 스냅샷 data/agents.json 은 수집기(refresh.py)가 레일웨이에서 5분마다 받아 둔다.
+           그림판이 아직 없으면(첫 수집 전) 슬랙 흐름도만 보인다. 뼈대는 아래 템플릿 하나 — renderOffice 가 필요하면 다시 채운다. -->
       <div class="office" id="office"></div>
+      <template id="office-tpl">
+        <div class="pixel-wrap" id="pixelwrap" hidden>
+          <div class="pixel-head">
+            <span class="cap" id="pixelage">스냅샷 —</span>
+            <a class="btn-live" id="pixellive" href="https://atteze-agents-production.up.railway.app/monitor/" target="_blank" rel="noopener">실시간으로 보기 (레일웨이) →</a>
+          </div>
+          <canvas id="pixelfloor" aria-label="아테즈 픽셀 사무실 — 본관 3층과 별관"></canvas>
+          <p class="cap" id="pixelnote" style="margin-top:8px"></p>
+        </div>
+        <details class="legacy" id="office-legacy-wrap"><summary>슬랙 라인 흐름도 (예전 보기)</summary><div id="office-legacy"></div></details>
+      </template>
       <div class="offside">
         <div class="card pan" id="detail"></div>
         <div class="card pan" id="util"></div>
@@ -780,6 +799,7 @@ tbody tr:last-child td{border-bottom:0}
 </div>
 </div>
 
+<script src="data/pixel-office.js"></script>
 <script>
 /* ============================================================
    ATTEZE OPS — 렌더러
@@ -922,10 +942,11 @@ const WORKBADGE = {
   stopped:["⛔ 중단됨","var(--bad)"] };
 function pod(p){
   const st = p.state;
+  // 🔐 p.status 는 러너 일감 **제목**(남이 쓴 글)을 품는다(refresh.py apply_agents) → innerHTML 에 넣기 전에 esc() (Codex #75 1R P2, 저장형 XSS 재현)
   const badge = p.status || (st==="live" ? "근무중" : st==="stopped" ? "중단" : "미연결");
   const w = p.work && WORKBADGE[p.work.state];
   return `<div class="pod ${st}${SELP===p.id?" selp":""}" data-pid="${p.id}" title="${p.name} · ${p.title}${p.work?` · ${WORKBADGE[p.work.state][0]} ${p.work.note||p.work.task||""}`:""}">
-    <div class="badge ${st}">${badge}</div>
+    <div class="badge ${st}">${esc(badge)}</div>
     <div class="sprite">${spriteSVG(p)}</div>
     <div class="desk">${deskSVG(st==="live")}</div>
     <div class="plate"><div class="nm">${p.name}</div><div class="rl">${p.title}</div>
@@ -960,7 +981,7 @@ function downArrow(live, label){
     ${live?`<circle cx="6" r="3" fill="var(--s1)"><animate attributeName="cy" values="0;26" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;1;0" dur="1.8s" repeatCount="indefinite"/></circle>`:""}
     </svg></div>`;
 }
-function renderOffice(){
+function renderOfficeLegacy(){
   const by = id => D.people.find(p=>p.id===id);
   const plan = by("plan"), chk = by("chk"), rt = by("rt"), sec = by("sec");
   const floor = D.people.filter(p=>p.desk==="floor");
@@ -970,7 +991,7 @@ function renderOffice(){
   const deptTotal = floor.filter(f=>f.app_id).length;
   const arrow = ok => `<div class="arrow${ok?"":" dead"}"><span class="alab">기획안</span><i></i></div>`;
 
-  document.getElementById("office").innerHTML = `
+  document.getElementById("office-legacy").innerHTML = `
     <div class="zone exec">
       <div class="ztitle">대표실 · <b>업무 지시 투입</b></div>
       <div class="pods center execpair">
@@ -1033,6 +1054,43 @@ function renderOffice(){
   }));
 }
 
+/* ---------- 픽셀 사무실(B안) ---------- */
+let OFFICE = null, AG = null;    // AG = data/agents.json (러너 스냅샷, 수집기가 5분마다)
+function ageKo(iso){
+  const t = Date.parse(iso||""); if(!isFinite(t)) return "시각 미기재";
+  const s = Math.max(0, Math.round((Date.now()-t)/1000));
+  return s<60 ? s+"초 전" : s<3600 ? Math.floor(s/60)+"분 전" : s<86400 ? Math.floor(s/3600)+"시간 "+Math.floor(s%3600/60)+"분 전" : Math.floor(s/86400)+"일 전";
+}
+const OFFICE_SKELETON = () => document.getElementById("office-tpl").innerHTML;
+function renderOffice(){
+  const host = document.getElementById("office");
+  if(host && !document.getElementById("pixelwrap")) host.innerHTML = OFFICE_SKELETON();   // 오류 문구 등이 덮어쓴 뒤 복구
+  renderOfficeLegacy();
+  const wrap = document.getElementById("pixelwrap"), legacy = document.getElementById("office-legacy-wrap");
+  if(!wrap) return;
+  if(OFFICE && OFFICE.canvas !== document.getElementById("pixelfloor")){ OFFICE.destroy(); OFFICE = null; }   // 캔버스가 새로 만들어졌으면 다시 붙인다
+  if(!window.PixelOffice){ wrap.hidden = true; legacy.open = true; return; }   // 그림판 아직 안 받아짐 → 예전 보기만
+  wrap.hidden = false;
+  const cv = document.getElementById("pixelfloor");
+  const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(!OFFICE){
+    OFFICE = PixelOffice.mount(cv, { people: D.people, snapshot: AG, reduce, selected: SELP,
+      onSelect: k => { SELP = k; renderKpi(); renderDetail(); } });
+    OFFICE.canvas = cv;
+  } else OFFICE.update({ people: D.people, snapshot: AG });
+  OFFICE.select(SELP);
+  const age = document.getElementById("pixelage"), note = document.getElementById("pixelnote");
+  if(!AG){
+    age.textContent = "러너 스냅샷 없음";
+    note.textContent = "레일웨이에서 아직 못 받았습니다 — 깃허브 Actions secrets 에 MONITOR_TOKEN 이 들어가면 5분마다 들어옵니다. 본관 책상은 그동안 점선(모름)으로 그립니다.";
+  }else{
+    age.textContent = "스냅샷 " + ageKo(AG.at || AG.fetched_at) + (AG.fetch_error ? " · 마지막 가져오기 실패" : "");
+    note.textContent = AG.fetch_error
+      ? "⚠️ 레일웨이에서 새 스냅샷을 못 받았습니다(" + String(AG.fetch_error).slice(0,80) + ") — 보이는 건 " + ageKo(AG.at||AG.fetched_at) + " 상태입니다."
+      : "5분마다 받아 둔 스냅샷입니다. 15초 단위 실시간은 오른쪽 위 단추로 레일웨이 화면을 엽니다(한 번 토큰으로 열어 두면 30일 기억).";
+  }
+}
+
 /* ---------- KPI 띠 ---------- */
 const CONN = p => p.state==="live" || p.state==="idle";
 function renderKpi(){
@@ -1090,7 +1148,7 @@ function renderDetail(){
       <div class="who"><div class="av">${spriteSVG(p)}</div>
         <div><div class="n">${p.name}</div><div class="t">${p.title} · ${p.dept}</div>
         ${p.model?`<div class="m">${p.model}</div>`:""}
-        <div class="stt" style="color:${SCOL[p.state]}"><i style="background:${SCOL[p.state]}"></i>${p.status}</div>
+        <div class="stt" style="color:${SCOL[p.state]}"><i style="background:${SCOL[p.state]}"></i>${esc(p.status)}</div>
         </div></div>
       ${p.work?`<div class="kv" style="margin-top:10px"><span>지금</span>
          <b style="color:${WORKBADGE[p.work.state][1]}">${WORKBADGE[p.work.state][0]}</b></div>
@@ -1704,7 +1762,11 @@ function renderToday(){
 
 /* ---------- 부팅 ---------- */
 const TITLES={today:"오늘의 요약",office:"오피스 현황",org:"조직 파이프라인",aide:"비서실",log:"작업 로그",proj:"프로젝트 진행 상황",act:"슬랙 활동"};
-function renderAll(){ renderSide(); renderOffice(); applySize(SZ); renderKpi(); renderDetail(); renderOrg(); renderAide(); renderLog(); renderBoards(); renderAct(); renderToday(); }
+function renderAll(){
+  // 한 뷰가 터져도 나머지는 그린다 — 예전엔 한 군데 TypeError 가 오피스까지 「ops.json 을 읽지 못했습니다」로 바꿔 놓았다(2026-10-24 로컬 실측)
+  [renderSide, renderOffice, ()=>applySize(SZ), renderKpi, renderDetail, renderOrg, renderAide, renderLog, renderBoards, renderAct, renderToday]
+    .forEach(f=>{ try{ f(); }catch(e){ console.error("[render]", f.name||"", e); } });
+}
 
 /* 자비스가 깃허브에 직접 쓴 메모(data/inbox.json)를 즉시 얹습니다.
    ops.json 은 15분마다 갱신되지만, 이건 페이지를 열 때마다 바로 반영됩니다. */
@@ -1731,6 +1793,10 @@ async function load(first){
       const ri = await fetch("data/inbox.json?t="+Date.now(), {cache:"no-store"});
       if(ri.ok) mergeInbox(await ri.json());
     }catch(_){ /* inbox 가 아직 없으면 조용히 넘어갑니다 */ }
+    try{
+      const ra = await fetch("data/agents.json?t="+Date.now(), {cache:"no-store"});
+      AG = ra.ok ? await ra.json() : null;          // 아직 없으면 null — 화면이 「없음」이라고 말한다
+    }catch(_){ AG = null; }
     renderAll();
     document.getElementById("liveTxt").textContent="LIVE";
   }catch(e){
