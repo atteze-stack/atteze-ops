@@ -942,10 +942,11 @@ const WORKBADGE = {
   stopped:["⛔ 중단됨","var(--bad)"] };
 function pod(p){
   const st = p.state;
+  // 🔐 p.status 는 러너 일감 **제목**(남이 쓴 글)을 품는다(refresh.py apply_agents) → innerHTML 에 넣기 전에 esc() (Codex #75 1R P2, 저장형 XSS 재현)
   const badge = p.status || (st==="live" ? "근무중" : st==="stopped" ? "중단" : "미연결");
   const w = p.work && WORKBADGE[p.work.state];
   return `<div class="pod ${st}${SELP===p.id?" selp":""}" data-pid="${p.id}" title="${p.name} · ${p.title}${p.work?` · ${WORKBADGE[p.work.state][0]} ${p.work.note||p.work.task||""}`:""}">
-    <div class="badge ${st}">${badge}</div>
+    <div class="badge ${st}">${esc(badge)}</div>
     <div class="sprite">${spriteSVG(p)}</div>
     <div class="desk">${deskSVG(st==="live")}</div>
     <div class="plate"><div class="nm">${p.name}</div><div class="rl">${p.title}</div>
@@ -1147,7 +1148,7 @@ function renderDetail(){
       <div class="who"><div class="av">${spriteSVG(p)}</div>
         <div><div class="n">${p.name}</div><div class="t">${p.title} · ${p.dept}</div>
         ${p.model?`<div class="m">${p.model}</div>`:""}
-        <div class="stt" style="color:${SCOL[p.state]}"><i style="background:${SCOL[p.state]}"></i>${p.status}</div>
+        <div class="stt" style="color:${SCOL[p.state]}"><i style="background:${SCOL[p.state]}"></i>${esc(p.status)}</div>
         </div></div>
       ${p.work?`<div class="kv" style="margin-top:10px"><span>지금</span>
          <b style="color:${WORKBADGE[p.work.state][1]}">${WORKBADGE[p.work.state][0]}</b></div>
