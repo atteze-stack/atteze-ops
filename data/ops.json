@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-11-08T04:39:50+09:00",
+    "generated_at": "2026-11-08T08:01:57+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -1000,6 +1000,19 @@
   ],
   "worklog": [
     {
+      "tool": "telegram",
+      "summary": "자비스 기억 동기화 (2026-11-07)",
+      "detail": "자비스",
+      "brief": "\"오빠가\" 미완성 메시지 (2026-11-06 22:07:27) — 대표님 말씀 불완전, 나중에 확인 필요",
+      "where": "2026-11-07.md",
+      "result": "",
+      "tag": "",
+      "session": "",
+      "when": "11-08 04:00",
+      "day": "2026-11-08",
+      "ts": 1794078000
+    },
+    {
       "tool": "claude-code",
       "summary": "인제스트: 전자책 「사주 몰라도 AI 사주로 월 500 벌기」 본편·부록",
       "detail": "Claude-Web",
@@ -1287,10 +1300,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-11-08T04:39:50+09:00"
+    "updated_at": "2026-11-08T08:01:57+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-11-08T04:39:50+09:00",
+    "checked_at": "2026-11-08T08:01:57+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
