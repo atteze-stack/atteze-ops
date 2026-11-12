@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-11-12T06:53:30+09:00",
+    "generated_at": "2026-11-12T11:39:30+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -1037,19 +1037,6 @@
       "when": "11-01 04:59",
       "day": "2026-11-01",
       "ts": 1793476740
-    },
-    {
-      "tool": "telegram",
-      "summary": "자비스 기억 동기화 (2026-10-28)",
-      "detail": "자비스",
-      "brief": "애들 운동 일정 (2026-11-01) 캘린더 등록 완료",
-      "where": "2026-10-28.md",
-      "result": "",
-      "tag": "",
-      "session": "",
-      "when": "10-29 04:00",
-      "day": "2026-10-29",
-      "ts": 1793214000
     }
   ],
   "pipeline_internal": {
@@ -1300,10 +1287,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-11-12T06:53:30+09:00"
+    "updated_at": "2026-11-12T11:39:30+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-11-12T06:53:30+09:00",
+    "checked_at": "2026-11-12T11:39:30+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
