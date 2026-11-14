@@ -2,7 +2,7 @@
   "meta": {
     "company": "아테즈 (ATTEZE)",
     "workspace": "테즈",
-    "generated_at": "2026-11-15T03:21:34+09:00",
+    "generated_at": "2026-11-15T07:37:51+09:00",
     "source": "슬랙 API 자동 수집 · 최근 30일 · ops.base.json 병합",
     "notes": "최근 72시간 안에 발언이 있으면 '연결됨'으로 표시합니다. 조직·칸반 내용은 ops.base.json 에서 수정하세요."
   },
@@ -1024,19 +1024,6 @@
       "when": "11-08 04:00",
       "day": "2026-11-08",
       "ts": 1794078000
-    },
-    {
-      "tool": "claude-code",
-      "summary": "인제스트: 전자책 「사주 몰라도 AI 사주로 월 500 벌기」 본편·부록",
-      "detail": "Claude-Web",
-      "brief": "",
-      "where": "2026-11-01.md",
-      "result": "",
-      "tag": "운연",
-      "session": "",
-      "when": "11-01 04:59",
-      "day": "2026-11-01",
-      "ts": 1793476740
     }
   ],
   "pipeline_internal": {
@@ -1287,10 +1274,10 @@
       "hermes": false,
       "slack": true
     },
-    "updated_at": "2026-11-15T03:21:34+09:00"
+    "updated_at": "2026-11-15T07:37:51+09:00"
   },
   "alert_status": {
-    "checked_at": "2026-11-15T03:21:34+09:00",
+    "checked_at": "2026-11-15T07:37:51+09:00",
     "attempted": 0,
     "sent": 0,
     "failed": 0,
